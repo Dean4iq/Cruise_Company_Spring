@@ -35,10 +35,13 @@ public class LoginCommand implements Command {
             throw new AlreadyLoggedInException();
         } catch (NoSuchIdException e) {
             request.setAttribute("noSuchId", true);
+            LOG.warn("No user with login {} in the system", user.getLogin());
         } catch (InvalidLoginOrPasswordException e) {
             request.setAttribute("invalidLoginOrPassword", true);
+            LOG.warn("User with login {} tried to log in the system", user.getLogin());
         } catch (AlreadyLoggedInException e) {
             request.setAttribute("alreadyLoggedIn", true);
+            LOG.warn("User with login {} already logged in the system", user.getLogin());
         }
 
         return "/login.jsp";

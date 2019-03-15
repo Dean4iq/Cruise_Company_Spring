@@ -6,10 +6,12 @@ import model.entity.enums.UserType;
 import model.service.RegisterService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import util.RegExSources;
+import util.RegExStringsGetter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
@@ -21,13 +23,14 @@ public class RegisterCommand implements Command {
         registerService = RegisterService.INSTANCE;
 
         try {
-            if (registerService.checkUniqueLogin(user.getLogin()) && checkFieldRegEx(user)) {
+            if (registerService.checkUniqueLogin(user.getLogin()) && validateFields(user, request)) {
                 registerService.registerNewUser(user);
 
                 return initializeUserSession(user, request);
             }
         } catch (NotUniqueLoginException e) {
-            LOG.error(e);
+            request.setAttribute("notUniqueLogin", true);
+            LOG.warn("Login {} already taken", e);
         }
         return "/register.jsp";
     }
@@ -42,9 +45,37 @@ public class RegisterCommand implements Command {
                 .build();
     }
 
-    private boolean checkFieldRegEx(User user) {
-        //TODO
-        return true;
+    private boolean validateFields(User user, HttpServletRequest request) {
+        Map<String, String> userData = convertUserFieldsToMap(user);
+
+        Map<String, String> resultedMap = userData.entrySet().stream().filter(elem -> {
+            String regexKey = Arrays.stream(RegExSources.values()).filter(source ->
+                    elem.getKey().equals(source.getField())).findFirst().get().getLink();
+            if (!checkFieldRegEx(elem.getValue(), regexKey)) {
+                request.setAttribute(elem.getKey() + "Invalid", true);
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        return resultedMap.isEmpty();
+    }
+
+    private boolean checkFieldRegEx(String field, String regexKey) {
+        String regexString = new RegExStringsGetter().getRegExString(regexKey);
+        return (field.matches(regexString));
+    }
+
+    private Map<String, String> convertUserFieldsToMap(User user) {
+        Map<String, String> userData = new HashMap<>();
+
+        userData.put("login", user.getLogin());
+        userData.put("password", user.getPassword());
+        userData.put("email", user.getEmail());
+        userData.put("name", user.getName());
+        userData.put("surname", user.getSurname());
+
+        return userData;
     }
 
     private String initializeUserSession(User user, HttpServletRequest request) {
