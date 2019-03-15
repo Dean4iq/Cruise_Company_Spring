@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSessionListener;
 import java.util.HashSet;
 import java.util.Set;
 
+import static model.entity.enums.UserType.GUEST;
+
 public class SessionListener implements HttpSessionListener {
     public static final Logger LOG = LogManager.getLogger(SessionListener.class);
 
@@ -20,6 +22,8 @@ public class SessionListener implements HttpSessionListener {
         Set<HttpSession> sessionSet = (Set<HttpSession>) context
                 .getAttribute("userSession");
         sessionSet.add(httpSessionEvent.getSession());
+
+        httpSessionEvent.getSession().setAttribute("Role", GUEST);
     }
 
     @Override
