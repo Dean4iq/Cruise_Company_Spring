@@ -3,8 +3,10 @@ package model.entity;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
+
 @TableName(name = "user")
-public class User {
+public class User implements Serializable {
     @TableField(name = "login", primaryKey = true)
     private String login;
     @TableField(name = "password")
