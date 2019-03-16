@@ -12,4 +12,8 @@ public enum UserType {
     UserType(Map<String, String> menuBarLinks) {
         this.menuBarLinks = menuBarLinks;
     }
+
+    public Map<String, String> getMenuBarLinks() {
+        return menuBarLinks;
+    }
 }
