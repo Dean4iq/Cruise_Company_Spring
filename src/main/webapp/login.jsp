@@ -19,20 +19,20 @@
             </select>
             <h1 class="h3 mb-3 font-weight-normal">${sessionLocalization['login.login_info']}</h1>
             <label for="inputLogin" class="sr-only">Login</label>
-            <input type="text" id="inputLogin" name="login" class="form-control" placeholder="Login" required oninvalid="this.setCustomValidity('${sessionLocalization['form.empty_field']}')">
+            <input type="text" id="inputLogin" name="loginUser" class="form-control" placeholder="Login" required oninvalid="this.setCustomValidity('${sessionLocalization['form.empty_field']}')">
             <label for="inputPassword" class="sr-only">${sessionLocalization['login.password']}</label>
-            <input type="password" name="pass" id="inputPassword" class="form-control" placeholder="${sessionLocalization['form.password']}" required oninvalid="this.setCustomValidity('${sessionLocalization['form.empty_field']}')">
-            <c:if test="${invalidLogin}">
+            <input type="password" name="passwordUser" id="inputPassword" class="form-control" placeholder="${sessionLocalization['form.password']}" required oninvalid="this.setCustomValidity('${sessionLocalization['form.empty_field']}')">
+            <c:if test="${invalidLoginOrPassword}">
                 <div class="alert alert-danger" role="alert">
                     ${sessionLocalization['login.invalid_login_pass']}
                 </div>
             </c:if>
-            <c:if test="${notExistedLogin}">
+            <c:if test="${noSuchId}">
                 <div class="alert alert-danger" role="alert">
                     ${sessionLocalization['login.account_not_exists']}
                 </div>
             </c:if>
-            <c:if test="${loggedLogin}">
+            <c:if test="${alreadyLoggedIn}">
                 <div class="alert alert-danger" role="alert">
                     ${sessionLocalization['login.account_already_in_system']}
                 </div>
