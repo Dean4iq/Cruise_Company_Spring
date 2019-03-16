@@ -37,11 +37,12 @@ public class Servlet extends HttpServlet {
         commands.put("logout", new LogoutCommand());
         commands.put("register", new RegisterCommand());
 
-        LOG.debug("Servlet initialized");
+        LOG.trace("Servlet initialized");
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         processRequest(request, response);
     }
 
@@ -65,14 +66,14 @@ public class Servlet extends HttpServlet {
         path = path.replaceAll(".*/company/", "");
 
         Command command = commands.getOrDefault(path,
-                (r) -> "redirect: /");
+                (r) -> "redirect: /login");
         String page = command.execute(request);
 
         if (page.contains("redirect: ")) {
-            LOG.debug("Servlet redirect to " + page);
+            LOG.trace("Servlet redirect to " + page);
             response.sendRedirect(request.getContextPath() + page.replaceAll("redirect: ", ""));
         } else {
-            LOG.debug("Servlet forward to " + page);
+            LOG.trace("Servlet forward to " + page);
             request.getRequestDispatcher(page).forward(request, response);
         }
     }

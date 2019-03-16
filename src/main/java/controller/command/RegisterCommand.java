@@ -19,11 +19,13 @@ public class RegisterCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        LOG.trace("Execute()");
+
         User user = getRegisterData(request);
         registerService = RegisterService.INSTANCE;
 
         try {
-            if (registerService.checkUniqueLogin(user.getLogin()) && validateFields(user, request)) {
+            if (validateFields(user, request) && registerService.checkUniqueLogin(user.getLogin())) {
                 registerService.registerNewUser(user);
 
                 return initializeUserSession(user, request);
@@ -47,6 +49,10 @@ public class RegisterCommand implements Command {
 
     private boolean validateFields(User user, HttpServletRequest request) {
         Map<String, String> userData = convertUserFieldsToMap(user);
+
+        if (userData.entrySet().stream().anyMatch(elem -> elem.getValue() == null || elem.getValue().isEmpty())) {
+            return false;
+        }
 
         Map<String, String> resultedMap = userData.entrySet().stream().filter(elem -> {
             String regexKey = Arrays.stream(RegExSources.values()).filter(source ->
@@ -86,6 +92,5 @@ public class RegisterCommand implements Command {
 
         request.getSession().setAttribute("Role", UserType.USER);
         return "redirect: /user";
-
     }
 }

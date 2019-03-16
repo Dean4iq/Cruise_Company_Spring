@@ -10,6 +10,7 @@ public class AdminCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        LOG.trace("Execute()");
         return "/WEB-INF/admin/admin_homepage.jsp";
     }
 }

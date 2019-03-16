@@ -18,30 +18,34 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        LOG.trace("Execute()");
+
         User user = new User.Builder()
                 .login(request.getParameter("loginUser"))
                 .password(request.getParameter("passwordUser"))
                 .build();
 
-        try {
-            LoginService loginService = LoginService.INSTANCE;
+        if (user.getLogin() != null) {
+            try {
+                LoginService loginService = LoginService.INSTANCE;
 
-            user = loginService.checkUserData(user);
+                user = loginService.checkUserData(user);
 
-            if (!userInSystem(user, request)) {
-                return processUserInSystem(user, request);
+                if (!userInSystem(user, request)) {
+                    return processUserInSystem(user, request);
+                }
+
+                throw new AlreadyLoggedInException();
+            } catch (NoSuchIdException e) {
+                request.setAttribute("noSuchId", true);
+                LOG.warn("No user with login {} in the system", user.getLogin());
+            } catch (InvalidLoginOrPasswordException e) {
+                request.setAttribute("invalidLoginOrPassword", true);
+                LOG.warn("User with login {} tried to log in the system", user.getLogin());
+            } catch (AlreadyLoggedInException e) {
+                request.setAttribute("alreadyLoggedIn", true);
+                LOG.warn("User with login {} already logged in the system", user.getLogin());
             }
-
-            throw new AlreadyLoggedInException();
-        } catch (NoSuchIdException e) {
-            request.setAttribute("noSuchId", true);
-            LOG.warn("No user with login {} in the system", user.getLogin());
-        } catch (InvalidLoginOrPasswordException e) {
-            request.setAttribute("invalidLoginOrPassword", true);
-            LOG.warn("User with login {} tried to log in the system", user.getLogin());
-        } catch (AlreadyLoggedInException e) {
-            request.setAttribute("alreadyLoggedIn", true);
-            LOG.warn("User with login {} already logged in the system", user.getLogin());
         }
 
         return "/login.jsp";
@@ -58,6 +62,8 @@ public class LoginCommand implements Command {
 
         userList.add(user.getLogin());
         request.getSession().setAttribute("User", user);
+
+        LOG.info("User {} successfully logged in the system", user.getLogin());
 
         if (user.isAdmin()) {
             request.getSession().setAttribute("Role", UserType.ADMIN);

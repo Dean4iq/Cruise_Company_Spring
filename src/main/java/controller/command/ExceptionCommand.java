@@ -10,6 +10,7 @@ public class ExceptionCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        LOG.trace("Execute()");
         return "/error.jsp";
     }
 }

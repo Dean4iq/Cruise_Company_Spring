@@ -15,6 +15,8 @@ public class LogoutCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        LOG.trace("Execute()");
+
         HttpSession session = request.getSession();
         ServletContext context = request.getServletContext();
 

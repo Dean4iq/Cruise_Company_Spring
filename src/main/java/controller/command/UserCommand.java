@@ -10,6 +10,8 @@ public class UserCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        LOG.trace("Execute()");
+
         return "/WEB-INF/user/home.jsp";
     }
 }
