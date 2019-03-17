@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.ShipDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Ship;
+import model.entity.dto.Ship;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,7 +61,7 @@ public class JDBCDaoShip implements ShipDao {
         return ship;
     }
 
-    Ship extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Ship extractFromResultSet(ResultSet resultSet) throws SQLException {
         Ship ship = new Ship();
 
         ship.setId(resultSet.getInt("sh_id"));

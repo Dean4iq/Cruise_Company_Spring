@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;
@@ -13,6 +13,8 @@ public class Excursion {
     private int price;
     @TableField(name = "harbor_hb_id")
     private int harborId;
+
+    private Harbor harbor;
 
     public int getId() {
         return id;
@@ -44,5 +46,13 @@ public class Excursion {
 
     public void setHarborId(int harborId) {
         this.harborId = harborId;
+    }
+
+    public Harbor getHarbor() {
+        return harbor;
+    }
+
+    public void setHarbor(Harbor harbor) {
+        this.harbor = harbor;
     }
 }

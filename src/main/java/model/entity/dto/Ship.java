@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;

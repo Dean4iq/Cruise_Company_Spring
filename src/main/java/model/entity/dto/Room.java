@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;
@@ -11,6 +11,9 @@ public class Room {
     private int roomTypeId;
     @TableField(name = "ship_sh_id")
     private int shipId;
+
+    private RoomType roomType;
+    private Ship ship;
 
     public int getId() {
         return id;
@@ -34,5 +37,21 @@ public class Room {
 
     public void setShipId(int shipId) {
         this.shipId = shipId;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    public Ship getShip() {
+        return ship;
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = ship;
     }
 }

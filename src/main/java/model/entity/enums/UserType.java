@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum UserType {
-    //TODO
-    GUEST(null), USER(new HashMap<>()), ADMIN(new HashMap<>());
+    GUEST(null),
+    USER(new HashMap<String, String>(){{put("search","menu.search");}}),
+    ADMIN(new HashMap<String,String>(){{put("admin/search/users","menu.user_privilegies");}});
 
     Map<String,String> menuBarLinks;
 

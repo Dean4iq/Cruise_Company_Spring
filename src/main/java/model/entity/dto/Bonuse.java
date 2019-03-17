@@ -1,11 +1,11 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;
 
-@TableName(name = "country")
-public class Country {
-    @TableField(name = "co_id", primaryKey = true)
+@TableName(name = "bonuses")
+public class Bonuse {
+    @TableField(name = "bo_id", primaryKey = true, autoincremented = true)
     private int id;
     @TableField(name = "name")
     private String name;

@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.UserDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.User;
+import model.entity.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +66,7 @@ public class JDBCDaoUser implements UserDao {
         return user;
     }
 
-    User extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static User extractFromResultSet(ResultSet resultSet) throws SQLException {
         User.Builder user = new User.Builder();
 
         user.login(resultSet.getString("login"))

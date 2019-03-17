@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.DaoFactory;
 import model.dao.UserDao;
 import model.dao.jdbc.JDBCDaoFactory;
-import model.entity.User;
+import model.entity.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -3,7 +3,7 @@ package controller.command;
 import exception.AlreadyLoggedInException;
 import exception.InvalidLoginOrPasswordException;
 import exception.NoSuchIdException;
-import model.entity.User;
+import model.entity.dto.User;
 import model.entity.enums.UserType;
 import model.service.LoginService;
 import org.apache.logging.log4j.LogManager;

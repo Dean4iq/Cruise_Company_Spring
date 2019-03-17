@@ -1,4 +1,4 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;
@@ -19,6 +19,10 @@ public class Ticket {
     private int roomId;
     @TableField(name = "cruise_cr_id")
     private int cruiseId;
+
+    private User user;
+    private Room room;
+    private Cruise cruise;
 
     public int getId() {
         return id;
@@ -66,5 +70,29 @@ public class Ticket {
 
     public void setCruiseId(int cruiseId) {
         this.cruiseId = cruiseId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Cruise getCruise() {
+        return cruise;
+    }
+
+    public void setCruise(Cruise cruise) {
+        this.cruise = cruise;
     }
 }

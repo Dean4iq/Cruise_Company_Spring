@@ -3,9 +3,13 @@ package model.dao.jdbc;
 import exception.AnnotationAbsenceException;
 import exception.NoSuchIdException;
 import model.dao.CruiseDao;
+import model.dao.sql.SQLScripts;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Cruise;
+import model.entity.dto.Country;
+import model.entity.dto.Cruise;
+import model.entity.dto.Harbor;
+import model.entity.dto.Route;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +19,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JDBCDaoCruise implements CruiseDao {
     private static final Logger LOG = LogManager.getLogger(JDBCDaoCruise.class);
@@ -61,7 +67,58 @@ public class JDBCDaoCruise implements CruiseDao {
         return cruise;
     }
 
-    Cruise extractFromResultSet(ResultSet resultSet) throws SQLException {
+    @Override
+    public List<Cruise> findByLand(String land) {
+        List<Cruise> cruiseList = new ArrayList<>();
+        Map<Integer, Cruise> cruiseMap = new HashMap<>();
+        Map<Integer, Harbor> harborMap = new HashMap<>();
+        Map<Integer, Country> countryMap = new HashMap<>();
+
+        try (PreparedStatement preparedStatement = connection
+                .prepareStatement(SQLScripts.FIND_CRUISE_BY_COUNTRY)) {
+            preparedStatement.setString(1, land);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Cruise cruise = makeUniqueCruise(cruiseMap, extractFromResultSet(resultSet));
+                Route route = JDBCDaoRoute.extractFromResultSet(resultSet);
+                Harbor harbor = makeUniqueHarbor(harborMap, JDBCDaoHarbor.extractFromResultSet(resultSet));
+                Country country = makeUniqueCountry(countryMap, JDBCDaoCountry.extractFromResultSet(resultSet));
+
+                cruise.getRouteList().add(route);
+                route.setCruise(cruise);
+                route.setHarbor(harbor);
+                harbor.setCountry(country);
+
+                cruiseList.add(cruise);
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+
+        return cruiseList;
+    }
+
+    private Cruise makeUniqueCruise(Map<Integer, Cruise> cruiseMap, Cruise cruise) {
+        cruiseMap.putIfAbsent(cruise.getId(), cruise);
+
+        return cruiseMap.get(cruise.getId());
+    }
+
+    private Harbor makeUniqueHarbor(Map<Integer, Harbor> harborMap, Harbor harbor) {
+        harborMap.putIfAbsent(harbor.getId(), harbor);
+
+        return harborMap.get(harbor.getId());
+    }
+
+    private Country makeUniqueCountry(Map<Integer, Country> countryMap, Country country) {
+        countryMap.putIfAbsent(country.getId(), country);
+
+        return countryMap.get(country.getId());
+    }
+
+    static Cruise extractFromResultSet(ResultSet resultSet) throws SQLException {
         Cruise cruise = new Cruise();
 
         cruise.setId(resultSet.getInt("cr_id"));
@@ -120,7 +177,7 @@ public class JDBCDaoCruise implements CruiseDao {
     }
 
     @Override
-    public void close()  {
+    public void close() {
         ConnectorDB.INSTANCE.returnConnectionToPool(connection);
     }
 }

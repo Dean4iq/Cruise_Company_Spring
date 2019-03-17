@@ -1,7 +1,7 @@
 package controller.command;
 
 import exception.NotUniqueLoginException;
-import model.entity.User;
+import model.entity.dto.User;
 import model.entity.enums.UserType;
 import model.service.RegisterService;
 import org.apache.logging.log4j.LogManager;

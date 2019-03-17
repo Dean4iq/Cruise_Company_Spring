@@ -1,16 +1,14 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;
 
-@TableName(name = "harbor")
-public class Harbor {
-    @TableField(name = "hb_id", primaryKey = true)
+@TableName(name = "country")
+public class Country {
+    @TableField(name = "co_id", primaryKey = true)
     private int id;
     @TableField(name = "name")
     private String name;
-    @TableField(name = "country_co_id")
-    private int countryId;
 
     public int getId() {
         return id;
@@ -26,13 +24,5 @@ public class Harbor {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getCountryId() {
-        return countryId;
-    }
-
-    public void setCountryId(int countryId) {
-        this.countryId = countryId;
     }
 }

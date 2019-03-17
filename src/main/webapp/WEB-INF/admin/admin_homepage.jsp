@@ -15,7 +15,6 @@
 
     <body>
         <jsp:include page="/styles/pages/navbar.jsp"/>
-        <h1>${sessionLocalization['main.user.descr']}</h1>
-        <h2 align="center">${sessionLocalization['main.news']}</h2>
+        <h1>${sessionLocalization['main.admin.descr']}</h1>
     </body>
 </html>
