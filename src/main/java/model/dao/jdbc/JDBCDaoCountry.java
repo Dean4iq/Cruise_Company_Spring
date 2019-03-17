@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.CountryDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Country;
+import model.entity.dto.Country;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -62,7 +62,7 @@ public class JDBCDaoCountry implements CountryDao {
         return country;
     }
 
-    Country extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Country extractFromResultSet(ResultSet resultSet) throws SQLException {
         Country country = new Country();
 
         country.setId(resultSet.getInt("co_id"));

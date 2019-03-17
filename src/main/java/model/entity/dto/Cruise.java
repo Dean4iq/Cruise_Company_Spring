@@ -1,9 +1,11 @@
-package model.entity;
+package model.entity.dto;
 
 import annotation.TableField;
 import annotation.TableName;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @TableName(name = "cruise")
 public class Cruise {
@@ -17,6 +19,9 @@ public class Cruise {
     private Timestamp date;
     @TableField(name = "ship_sh_id")
     private int shipId;
+
+    private Ship ship;
+    private List<Route> routeList = new ArrayList<>();
 
     public int getId() {
         return id;
@@ -56,5 +61,21 @@ public class Cruise {
 
     public void setShipId(int shipId) {
         this.shipId = shipId;
+    }
+
+    public Ship getShip() {
+        return ship;
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    public List<Route> getRouteList() {
+        return routeList;
+    }
+
+    public void setRouteList(List<Route> routeList) {
+        this.routeList = routeList;
     }
 }

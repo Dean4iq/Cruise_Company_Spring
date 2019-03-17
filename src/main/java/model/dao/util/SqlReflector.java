@@ -33,9 +33,7 @@ public class SqlReflector {
 
     private <T> String insertion(Class<T> clazz) throws AnnotationAbsenceException {
         int declaredFieldsNumber = 0;
-
-        StringBuilder stringBuilder = new StringBuilder().append(INSERT.sources[0])
-                .append(clazz.getAnnotation(TableName.class).name()).append(INSERT.sources[1]);
+        StringBuilder stringBuilder = addTableName(clazz, INSERT);
         Field[] fields = clazz.getDeclaredFields();
 
         for (Field field : fields) {
@@ -46,9 +44,7 @@ public class SqlReflector {
             }
         }
 
-        if (declaredFieldsNumber == 0) {
-            throw new AnnotationAbsenceException(TableField.class.getName());
-        }
+        checkOnFieldsNumber(declaredFieldsNumber);
 
         stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
         stringBuilder.append(INSERT.sources[2]);
@@ -64,10 +60,59 @@ public class SqlReflector {
     }
 
     private <T> String update(Class<T> clazz) throws AnnotationAbsenceException {
+        StringBuilder stringBuilder = addTableName(clazz, UPDATE);
+        int declaredFieldsNumber = addFields(clazz, stringBuilder);
+
+        checkOnFieldsNumber(declaredFieldsNumber);
+
+        stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
+        stringBuilder.append(UPDATE.sources[2]);
+
+        declaredFieldsNumber = addPrimaryKeyFields(clazz, stringBuilder);
+        checkOnFieldsNumber(declaredFieldsNumber);
+
+        stringBuilder.replace(stringBuilder.length() - 5, stringBuilder.length(), ";");
+
+        return stringBuilder.toString();
+    }
+
+    private <T> String selection(Class<T> clazz) {
+        return new StringBuilder().append(SELECT.sources[0])
+                .append(clazz.getAnnotation(TableName.class).name()).append(";").toString();
+    }
+
+
+    private <T> String delete(Class<T> clazz) throws AnnotationAbsenceException {
+        StringBuilder stringBuilder = addTableName(clazz, DELETE);
+        int declaredFieldsNumber = addPrimaryKeyFields(clazz, stringBuilder);
+
+        checkOnFieldsNumber(declaredFieldsNumber);
+
+        stringBuilder.replace(stringBuilder.length() - 5, stringBuilder.length(), ";");
+
+        return stringBuilder.toString();
+    }
+
+    private <T> String findById(Class<T> clazz) throws AnnotationAbsenceException {
+        StringBuilder stringBuilder = addTableName(clazz, FIND_BY_ID);
+        int declaredFieldsNumber = addPrimaryKeyFields(clazz, stringBuilder);
+
+        checkOnFieldsNumber(declaredFieldsNumber);
+
+        stringBuilder.replace(stringBuilder.length() - 5, stringBuilder.length(), ";");
+
+        return stringBuilder.toString();
+    }
+
+    private <T> StringBuilder addTableName(Class<T> clazz, SQLOperation sqlOperation) {
+        return new StringBuilder().append(sqlOperation.sources[0])
+                .append(clazz.getAnnotation(TableName.class).name())
+                .append(sqlOperation.sources[1]);
+    }
+
+    private <T> int addFields(Class<T> clazz, StringBuilder stringBuilder) {
         int declaredFieldsNumber = 0;
 
-        StringBuilder stringBuilder = new StringBuilder().append(UPDATE.sources[0])
-                .append(clazz.getAnnotation(TableName.class).name()).append(UPDATE.sources[1]);
         Field[] fields = clazz.getDeclaredFields();
 
         for (Field field : fields) {
@@ -78,38 +123,11 @@ public class SqlReflector {
             }
         }
 
-        if (declaredFieldsNumber == 0) {
-            throw new AnnotationAbsenceException(TableField.class.getName());
-        }
-
-        stringBuilder.replace(stringBuilder.length() - 2, stringBuilder.length(), "");
-        stringBuilder.append(UPDATE.sources[2]);
-
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(TableField.class)
-                    && field.getAnnotation(TableField.class).primaryKey()) {
-                stringBuilder.append(field.getAnnotation(TableField.class).name()).append(" = ? AND ");
-
-            }
-        }
-
-        stringBuilder.replace(stringBuilder.length() - 5, stringBuilder.length(), "");
-        stringBuilder.append(";");
-
-        return stringBuilder.toString();
+        return declaredFieldsNumber;
     }
 
-    private <T> String selection(Class<T> clazz) {
-        return new StringBuilder().append(SELECT.sources[0])
-                .append(clazz.getAnnotation(TableName.class).name()).append(";").toString();
-    }
-
-    private <T> String delete(Class<T> clazz) throws AnnotationAbsenceException{
+    private <T> int addPrimaryKeyFields(Class<T> clazz, StringBuilder stringBuilder) {
         int declaredFieldsNumber = 0;
-
-        StringBuilder stringBuilder = new StringBuilder().append(DELETE.sources[0])
-                .append(clazz.getAnnotation(TableName.class).name()).append(DELETE.sources[1]);
-
         Field[] fields = clazz.getDeclaredFields();
 
         for (Field field : fields) {
@@ -120,39 +138,12 @@ public class SqlReflector {
             }
         }
 
-        if (declaredFieldsNumber == 0) {
-            throw new AnnotationAbsenceException(TableField.class.getName());
-        }
-
-        stringBuilder.replace(stringBuilder.length() - 5, stringBuilder.length(), "");
-        stringBuilder.append(";");
-
-        return stringBuilder.toString();
+        return declaredFieldsNumber;
     }
 
-    private <T> String findById(Class<T> clazz) throws AnnotationAbsenceException{
-        int declaredFieldsNumber = 0;
-
-        StringBuilder stringBuilder = new StringBuilder().append(FIND_BY_ID.sources[0])
-                .append(clazz.getAnnotation(TableName.class).name()).append(FIND_BY_ID.sources[1]);
-
-        Field[] fields = clazz.getDeclaredFields();
-
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(TableField.class)
-                    && field.getAnnotation(TableField.class).primaryKey()) {
-                stringBuilder.append(field.getAnnotation(TableField.class).name()).append(" = ? AND ");
-                declaredFieldsNumber++;
-            }
-        }
-
+    private void checkOnFieldsNumber(int declaredFieldsNumber) throws AnnotationAbsenceException {
         if (declaredFieldsNumber == 0) {
             throw new AnnotationAbsenceException(TableField.class.getName());
         }
-
-        stringBuilder.replace(stringBuilder.length() - 5, stringBuilder.length(), "");
-        stringBuilder.append(";");
-
-        return stringBuilder.toString();
     }
 }

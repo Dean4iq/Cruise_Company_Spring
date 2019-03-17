@@ -16,6 +16,12 @@
     </head>
 
     <body>
+        <form name="language" method="post">
+            <select style="position:fixed; top:5px; left:5px;" name="preferredLanguage" onchange="document.language.submit();">
+                <option ${sessionLanguage=="en"?"selected":""} value="en">English</option>
+                <option ${sessionLanguage=="uk"?"selected":""} value="uk">Українська</option>
+            </select>
+        </form>
         <div class="container" style="margin:20px 100px 0 100px;">
             <h4 class="mb-3">${sessionLocalization['register.sign_up']}</h4>
             <form class="needs-validation" method="post">

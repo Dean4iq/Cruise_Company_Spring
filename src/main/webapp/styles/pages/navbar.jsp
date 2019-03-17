@@ -13,15 +13,10 @@
                             ${sessionLocalization['menu.main']}
                         </a>
                     </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="search">
-                            ${sessionLocalization['menu.search']}
-                        </a>
-                    </li>
                     <c:forEach items="${Role.menuBarLinks}" var="keyValue">
                         <li class="nav-item active">
-                            <a class="nav-link" href="${keyValue.value}">
-                                <c:out value="${sessionLocalization[keyValue.key]}"/>
+                            <a class="nav-link" href="${keyValue.key}">
+                                <c:out value="${sessionLocalization[keyValue.value]}"/>
                             </a>
                         </li>
                     </c:forEach>

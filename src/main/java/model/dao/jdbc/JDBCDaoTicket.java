@@ -5,8 +5,8 @@ import exception.NoSuchIdException;
 import model.dao.TicketDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Ship;
-import model.entity.Ticket;
+import model.entity.dto.Ship;
+import model.entity.dto.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +66,7 @@ public class JDBCDaoTicket implements TicketDao {
         return ticket;
     }
 
-    Ticket extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Ticket extractFromResultSet(ResultSet resultSet) throws SQLException {
         Ticket ticket = new Ticket();
 
         ticket.setId(resultSet.getInt("ti_id"));

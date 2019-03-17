@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.RoomDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Room;
+import model.entity.dto.Room;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -62,7 +62,7 @@ public class JDBCDaoRoom implements RoomDao {
         return room;
     }
 
-    Room extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Room extractFromResultSet(ResultSet resultSet) throws SQLException {
         Room room = new Room();
 
         room.setId(resultSet.getInt("ro_id"));

@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.ExcursionDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Excursion;
+import model.entity.dto.Excursion;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,7 +63,7 @@ public class JDBCDaoExcursion implements ExcursionDao {
         return excursion;
     }
 
-    Excursion extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Excursion extractFromResultSet(ResultSet resultSet) throws SQLException {
         Excursion excursion = new Excursion();
 
         excursion.setId(resultSet.getInt("exc_id"));

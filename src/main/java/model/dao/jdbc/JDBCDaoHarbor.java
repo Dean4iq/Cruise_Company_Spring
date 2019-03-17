@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.HarborDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Harbor;
+import model.entity.dto.Harbor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -62,7 +62,7 @@ public class JDBCDaoHarbor implements HarborDao {
         return harbor;
     }
 
-    Harbor extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Harbor extractFromResultSet(ResultSet resultSet) throws SQLException {
         Harbor harbor = new Harbor();
 
         harbor.setId(resultSet.getInt("hb_id"));

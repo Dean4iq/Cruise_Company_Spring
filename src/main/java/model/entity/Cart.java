@@ -1,5 +1,8 @@
 package model.entity;
 
+import model.entity.dto.Excursion;
+import model.entity.dto.Ticket;
+
 import java.util.List;
 
 public class Cart {

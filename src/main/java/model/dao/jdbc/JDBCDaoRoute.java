@@ -5,7 +5,7 @@ import exception.NoSuchIdException;
 import model.dao.RouteDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.Route;
+import model.entity.dto.Route;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,7 +63,7 @@ public class JDBCDaoRoute implements RouteDao {
         return route;
     }
 
-    Route extractFromResultSet(ResultSet resultSet) throws SQLException {
+    static Route extractFromResultSet(ResultSet resultSet) throws SQLException {
         Route route = new Route();
 
         route.setCruiseId(resultSet.getInt("cruise_cr_id"));
