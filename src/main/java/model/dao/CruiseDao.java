@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface CruiseDao extends GenericDao<Cruise> {
     Cruise findById(Integer id) throws NoSuchIdException;
-    List<Cruise> findByLand(String country);
+    List<Cruise> findFullCruiseInfo();
 }

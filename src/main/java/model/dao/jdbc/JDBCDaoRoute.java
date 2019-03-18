@@ -68,6 +68,8 @@ public class JDBCDaoRoute implements RouteDao {
 
         route.setCruiseId(resultSet.getInt("cruise_cr_id"));
         route.setHarborId(resultSet.getInt("harbor_hb_id"));
+        route.setArrival(resultSet.getTimestamp("arrival"));
+        route.setDeparture(resultSet.getTimestamp("departure"));
 
         return route;
     }

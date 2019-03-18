@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#0c5e00;margin:10px">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#00802b;margin:10px">
             <a class="navbar-brand" href=""></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,7 +23,7 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <h5 style="padding:8px; color:#F4F12F;">${User.login}</h5>
+                        <h5 style="padding:8px; color:#ffff00;">${User.login}</h5>
                     </li>
                     <li class="nav-item active" style="margin-right:35px;">
                         <a class="nav-link" href="logout">
@@ -31,7 +31,7 @@
                         </a>
                     </li>
                     <form name="langForm" method="post" align="right">
-                        <select name="langSelect" onchange="document.langForm.submit();">
+                        <select name="preferredLanguage" onchange="document.langForm.submit();">
                             <option ${sessionLanguage=="en"?"selected":""} value="en">English</option>
                             <option ${sessionLanguage=="uk"?"selected":""} value="uk">Українська</option>
                         </select>

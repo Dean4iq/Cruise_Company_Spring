@@ -65,7 +65,7 @@ public class JDBCDaoShip implements ShipDao {
         Ship ship = new Ship();
 
         ship.setId(resultSet.getInt("sh_id"));
-        ship.setName(resultSet.getString("name"));
+        ship.setName(resultSet.getString("ship.name"));
 
         return ship;
     }

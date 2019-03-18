@@ -72,7 +72,7 @@ public class JDBCDaoUser implements UserDao {
         user.login(resultSet.getString("login"))
                 .password(resultSet.getString("password"))
                 .email(resultSet.getString("email"))
-                .name(resultSet.getString("name"))
+                .name(resultSet.getString("user.name"))
                 .surname(resultSet.getString("surname"))
                 .admin(resultSet.getBoolean("admin"));
 

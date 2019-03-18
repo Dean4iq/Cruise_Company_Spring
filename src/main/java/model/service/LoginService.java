@@ -23,6 +23,11 @@ public enum LoginService {
 
     public User checkUserData(User user) throws InvalidLoginOrPasswordException, NoSuchIdException {
         User userInDB = userDao.findById(user.getLogin());
+        try {
+            userDao.close();
+        } catch (Exception e) {
+            LOG.error(e);
+        }
 
         if (userInDB.getLogin().equals(user.getLogin())
                 && userInDB.getPassword().equals(user.getPassword())) {

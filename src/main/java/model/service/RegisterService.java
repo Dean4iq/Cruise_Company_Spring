@@ -26,6 +26,12 @@ public enum RegisterService {
             userDao.findById(login);
         } catch (NoSuchIdException e) {
             return true;
+        } finally {
+            try {
+                userDao.close();
+            } catch (Exception e) {
+                LOG.error(e);
+            }
         }
 
         throw new NotUniqueLoginException(login);

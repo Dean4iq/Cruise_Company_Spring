@@ -71,7 +71,7 @@ public class JDBCDaoTicket implements TicketDao {
 
         ticket.setId(resultSet.getInt("ti_id"));
         ticket.setPurchaseDate(resultSet.getTimestamp("purchase_date"));
-        ticket.setPrice(resultSet.getInt("price"));
+        ticket.setPrice(resultSet.getInt("ticket.price"));
         ticket.setLogin(resultSet.getString("user_login"));
         ticket.setRoomId(resultSet.getInt("room_ro_id"));
         ticket.setCruiseId(resultSet.getInt("cruise_cr_id"));

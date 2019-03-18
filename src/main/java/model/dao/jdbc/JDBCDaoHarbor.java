@@ -66,7 +66,7 @@ public class JDBCDaoHarbor implements HarborDao {
         Harbor harbor = new Harbor();
 
         harbor.setId(resultSet.getInt("hb_id"));
-        harbor.setName(resultSet.getString("name"));
+        harbor.setName(resultSet.getString("harbor.name"));
         harbor.setCountryId(resultSet.getInt("country_co_id"));
 
         return harbor;

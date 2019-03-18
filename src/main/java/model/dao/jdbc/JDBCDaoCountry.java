@@ -66,7 +66,7 @@ public class JDBCDaoCountry implements CountryDao {
         Country country = new Country();
 
         country.setId(resultSet.getInt("co_id"));
-        country.setName(resultSet.getString("name"));
+        country.setName(resultSet.getString("country.name"));
 
         return country;
     }

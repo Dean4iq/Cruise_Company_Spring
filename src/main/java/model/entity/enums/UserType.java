@@ -5,7 +5,7 @@ import java.util.Map;
 
 public enum UserType {
     GUEST(null),
-    USER(new HashMap<String, String>(){{put("search","menu.search");}}),
+    USER(new HashMap<String, String>(){{put("user/search","menu.search");}}),
     ADMIN(new HashMap<String,String>(){{put("admin/search/users","menu.user_privilegies");}});
 
     Map<String,String> menuBarLinks;

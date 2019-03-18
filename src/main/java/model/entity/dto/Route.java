@@ -3,12 +3,18 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.sql.Timestamp;
+
 @TableName(name = "route")
 public class Route {
     @TableField(name = "cruise_cr_id", primaryKey = true)
     private int cruiseId;
     @TableField(name = "harbor_hb_id", primaryKey = true)
     private int harborId;
+    @TableField(name = "arrival")
+    private Timestamp arrival;
+    @TableField(name = "departure")
+    private Timestamp departure;
 
     private Cruise cruise;
     private Harbor harbor;
@@ -43,5 +49,21 @@ public class Route {
 
     public void setHarbor(Harbor harbor) {
         this.harbor = harbor;
+    }
+
+    public Timestamp getArrival() {
+        return arrival;
+    }
+
+    public void setArrival(Timestamp arrival) {
+        this.arrival = arrival;
+    }
+
+    public Timestamp getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(Timestamp departure) {
+        this.departure = departure;
     }
 }
