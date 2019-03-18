@@ -1,5 +1,6 @@
 package controller.listener;
 
+import model.entity.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +39,7 @@ public class SessionListener implements HttpSessionListener {
 
         sessionSet.remove(httpSessionEvent.getSession());
 
-        String userName = (String) session.getAttribute("User");
+        String userName = ((User)session.getAttribute("User")).getLogin();
         loggedUsers.remove(userName);
     }
 }
