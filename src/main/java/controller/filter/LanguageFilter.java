@@ -27,7 +27,7 @@ public class LanguageFilter implements Filter {
         String selectedLanguage = request.getParameter("preferredLanguage");
         String sessionLanguage = (String) session.getAttribute("sessionLanguage");
 
-        if (selectedLanguage != null && !sessionLanguage.equals(selectedLanguage)) {
+        if (selectedLanguage != null && sessionLanguage != null && !sessionLanguage.equals(selectedLanguage)){
             LocalizationGetter localizationGetter = new LocalizationGetter();
 
             session.setAttribute("sessionLanguage", selectedLanguage);
