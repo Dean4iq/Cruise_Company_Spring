@@ -35,6 +35,11 @@ public class JDBCDaoFactory extends DaoFactory {
     }
 
     @Override
+    public RoomTypeDao createRoomTypeDao() {
+        return new JDBCDaoRoomType(getConnection());
+    }
+
+    @Override
     public RouteDao createRouteDao() {
         return new JDBCDaoRoute(getConnection());
     }
@@ -47,6 +52,11 @@ public class JDBCDaoFactory extends DaoFactory {
     @Override
     public TicketDao createTicketDao() {
         return new JDBCDaoTicket(getConnection());
+    }
+
+    @Override
+    public TicketExcursionDao createTicketExcursionDao() {
+        return new JDBCDaoTicketExcursion(getConnection());
     }
 
     @Override

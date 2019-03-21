@@ -18,10 +18,11 @@ public enum LoginService {
 
     LoginService() {
         this.daoFactory = JDBCDaoFactory.getInstance();
-        this.userDao = daoFactory.createUserDao();
     }
 
     public User checkUserData(User user) throws InvalidLoginOrPasswordException, NoSuchIdException {
+        this.userDao = daoFactory.createUserDao();
+
         User userInDB = userDao.findById(user.getLogin());
         try {
             userDao.close();

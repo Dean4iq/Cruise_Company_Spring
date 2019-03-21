@@ -18,10 +18,11 @@ public enum RegisterService {
 
     RegisterService() {
         this.daoFactory = JDBCDaoFactory.getInstance();
-        this.userDao = daoFactory.createUserDao();
     }
 
     public boolean checkUniqueLogin(String login) throws NotUniqueLoginException {
+        this.userDao = daoFactory.createUserDao();
+
         try {
             userDao.findById(login);
         } catch (NoSuchIdException e) {
@@ -38,6 +39,14 @@ public enum RegisterService {
     }
 
     public void registerNewUser(User user) {
+        this.userDao = daoFactory.createUserDao();
+
         userDao.create(user);
+
+        try {
+            userDao.close();
+        } catch (Exception e) {
+            LOG.error(e);
+        }
     }
 }

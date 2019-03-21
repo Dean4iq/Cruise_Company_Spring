@@ -53,12 +53,12 @@
                             <th scope="col">${sessionLocalization['search.th.from']}</th>
                             <th scope="col">${sessionLocalization['search.th.to']}</th>
                             <th scope="col">${sessionLocalization['search.th.date']}</th>
+                            <th scope="col">${sessionLocalization['search.th.duration']}</th>
                             <th scope="col">${sessionLocalization['search.th.price']}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <form method="get">
                             <c:forEach var="cruise" items="${cruiseList}">
                                 <tr>
                                     <th scope="row">${cruise.name}</th>
@@ -73,10 +73,13 @@
                                         (${countryMap[cruise.routeList[fn:length(cruise.routeList)-1].harbor.country.name]})
                                     </td>
                                     <td><fmt:formatDate value="${cruise.date}" type="date"/></td>
-                                    <td><fmt:formatNumber value="${cruise.price}" type="currency" currencySymbol="₴"/></td>
+                                    <td>${cruise.daysInRoute} ${sessionLocalization['search.days']}</td>
+                                    <td><fmt:formatNumber value="${cruise.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/></td>
                                     <td>
-                                        <input type="hidden" name="cruiseId" value="${cruise.id}"/>
-                                        <input type="submit" name="cruise" value="${sessionLocalization['form.look_ticket']}"/>
+                                        <form method="get">
+                                            <input type="hidden" name="cruiseId" value="${cruise.id}"/>
+                                            <input type="submit" name="cruise" value="${sessionLocalization['form.look_ticket']}"/>
+                                        </form>
                                     </td>
                                 </tr>
                                 <tr>
@@ -113,7 +116,6 @@
                                     </td>
                                 </tr>
                             </c:forEach>
-                        </form>
                     </tbody>
                 </table>
             </c:when>

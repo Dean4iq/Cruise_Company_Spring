@@ -38,7 +38,8 @@ public class Servlet extends HttpServlet {
         commands.put("register", new RegisterCommand());
         commands.put("user/search", new SearchCommand());
         commands.put("admin/search/users",new AdminSearchCommand());
-        commands.put("/user/ticket", new CabinSelectionCommand());
+        commands.put("user/tickets", new CabinSelectionCommand());
+        commands.put("user/cart",new CartCommand());
 
         LOG.trace("Servlet initialized");
     }

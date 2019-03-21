@@ -3,8 +3,10 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
+
 @TableName(name = "ship")
-public class Ship {
+public class Ship implements Serializable {
     @TableField(name = "sh_id", primaryKey = true)
     private int id;
     @TableField(name = "name")

@@ -5,7 +5,7 @@
 
 <html>
     <head>
-        <title>${sessionLocalization['search.head']}</title>
+        <title>${sessionLocalization['tickets.head']}</title>
 
         <style>
             <jsp:directive.include file="/styles/css/bootstrap.min.css"/>
@@ -19,8 +19,39 @@
     <body>
         <jsp:include page="/styles/pages/navbar.jsp"/>
 
-        <c:forEach var="room" items="${roomList}">
-
-        </c:forEach>
+        <table align="center" style="width:80%" class="table">
+            <caption style="caption-side:top;"><b>${room.ship.name}</b></caption>
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">${sessionLocalization['tickets.place_number']}</th>
+                    <th scope="col">${sessionLocalization['tickets.place_type']}</th>
+                    <th scope="col">${sessionLocalization['tickets.price']}</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="room" items="${roomList}" varStatus="counter">
+                    <tr>
+                        <th scope="row">${counter.count}.</td>
+                        <td>
+                            <c:set var="room_type" value="room_type.${room.roomType.name}"/>
+                            ${sessionLocalization[room_type]}
+                        </td>
+                        <td>
+                            <fmt:formatNumber value="${room.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/>
+                        </td>
+                        <td>
+                            <c:if test="${room.available}">
+                                <form method="get">
+                                    <input type="hidden" name="roomId" value="${room.id}"/>
+                                    <input type="hidden" name="shipRoomId" value="${counter.count}"/>
+                                    <input type="submit" value="${sessionLocalization['tickets.select_ticket']}"/>
+                                </form>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
     </body>
 </html>

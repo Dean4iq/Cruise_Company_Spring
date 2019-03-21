@@ -3,6 +3,7 @@ package model.dao.jdbc;
 import exception.AnnotationAbsenceException;
 import exception.NoSuchIdException;
 import model.dao.ExcursionDao;
+import model.dao.sql.SQLScripts;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
 import model.entity.dto.Excursion;
@@ -61,6 +62,26 @@ public class JDBCDaoExcursion implements ExcursionDao {
         }
 
         return excursion;
+    }
+
+    @Override
+    public List<Excursion> getExcursionsForCruise(Integer cruiseId) {
+        List<Excursion> excursionList = new ArrayList<>();
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(
+                SQLScripts.INSTANCE.FIND_EXCURSION_LIST_FOR_CRUISE)) {
+            preparedStatement.setInt(1, cruiseId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                excursionList.add(extractFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+
+        return excursionList;
     }
 
     static Excursion extractFromResultSet(ResultSet resultSet) throws SQLException {

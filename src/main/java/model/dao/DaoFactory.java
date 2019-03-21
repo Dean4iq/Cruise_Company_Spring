@@ -15,11 +15,15 @@ public abstract class DaoFactory {
 
     public abstract RoomDao createRoomDao();
 
+    public abstract RoomTypeDao createRoomTypeDao();
+
     public abstract RouteDao createRouteDao();
 
     public abstract ShipDao createShipDao();
 
     public abstract TicketDao createTicketDao();
+
+    public abstract TicketExcursionDao createTicketExcursionDao();
 
     public abstract UserDao createUserDao();
 

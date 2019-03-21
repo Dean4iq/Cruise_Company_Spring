@@ -3,8 +3,10 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
+
 @TableName(name = "room_bonuses")
-public class RoomTypeBonuse {
+public class RoomTypeBonuse implements Serializable {
     @TableField(name = "room_type_rt_id", primaryKey = true)
     private RoomType roomType;
     @TableField(name = "bonuses_bo_id", primaryKey = true)

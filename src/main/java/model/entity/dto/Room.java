@@ -3,8 +3,10 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
+
 @TableName(name = "room")
-public class Room {
+public class Room implements Serializable {
     @TableField(name = "ro_id", primaryKey = true)
     private int id;
     @TableField(name = "room_type_rt_id")
@@ -14,6 +16,8 @@ public class Room {
 
     private RoomType roomType;
     private Ship ship;
+    private int price;
+    private boolean available = true;
 
     public int getId() {
         return id;
@@ -53,5 +57,21 @@ public class Room {
 
     public void setShip(Ship ship) {
         this.ship = ship;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }

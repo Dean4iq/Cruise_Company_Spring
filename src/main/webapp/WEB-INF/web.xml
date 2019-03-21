@@ -67,8 +67,7 @@
   </filter>
   <filter-mapping>
     <filter-name>UserFilter</filter-name>
-    <url-pattern>/user</url-pattern>
-    <url-pattern>/search</url-pattern>
+    <url-pattern>/user/*</url-pattern>
   </filter-mapping>
 
   <filter>

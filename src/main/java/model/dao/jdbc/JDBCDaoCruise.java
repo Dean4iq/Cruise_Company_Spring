@@ -73,7 +73,7 @@ public class JDBCDaoCruise implements CruiseDao {
         Map<Integer, Ship> shipMap = new HashMap<>();
 
         try (PreparedStatement preparedStatement = connection
-                .prepareStatement(SQLScripts.FIND_CRUISE_FULL_INFO)) {
+                .prepareStatement(SQLScripts.INSTANCE.FIND_CRUISE_FULL_INFO)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

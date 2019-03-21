@@ -3,10 +3,11 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @TableName(name = "route")
-public class Route {
+public class Route implements Serializable {
     @TableField(name = "cruise_cr_id", primaryKey = true)
     private int cruiseId;
     @TableField(name = "harbor_hb_id", primaryKey = true)

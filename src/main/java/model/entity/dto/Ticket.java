@@ -3,10 +3,11 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @TableName(name = "ticket")
-public class Ticket {
+public class Ticket implements Serializable {
     @TableField(name = "ti_id", primaryKey = true)
     private int id;
     @TableField(name = "purchase_date")
@@ -23,6 +24,81 @@ public class Ticket {
     private User user;
     private Room room;
     private Cruise cruise;
+
+    public Ticket(Builder builder) {
+        this.id = builder.id;
+        this.purchaseDate = builder.purchaseDate;
+        this.price = builder.price;
+        this.login = builder.login;
+        this.roomId = builder.roomId;
+        this.cruiseId = builder.cruiseId;
+
+        this.user = builder.user;
+        this.room = builder.room;
+        this.cruise = builder.cruise;
+    }
+
+    public static class Builder {
+        private int id;
+        private Timestamp purchaseDate;
+        private int price;
+        private String login;
+        private int roomId;
+        private int cruiseId;
+
+        private User user;
+        private Room room;
+        private Cruise cruise;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder purchaseDate(Timestamp purchaseDate) {
+            this.purchaseDate = purchaseDate;
+            return this;
+        }
+
+        public Builder price(int price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder roomId(int roomId) {
+            this.roomId = roomId;
+            return this;
+        }
+
+        public Builder cruiseId(int cruiseId) {
+            this.cruiseId = cruiseId;
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+
+        public Builder room(Room room) {
+            this.room = room;
+            return this;
+        }
+
+        public Builder cruise(Cruise cruise) {
+            this.cruise = cruise;
+            return this;
+        }
+
+        public Ticket build() {
+            return new Ticket(this);
+        }
+    }
 
     public int getId() {
         return id;

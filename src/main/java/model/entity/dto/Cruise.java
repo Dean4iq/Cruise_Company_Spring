@@ -3,12 +3,13 @@ package model.entity.dto;
 import annotation.TableField;
 import annotation.TableName;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @TableName(name = "cruise")
-public class Cruise {
+public class Cruise implements Serializable {
     @TableField(name = "cr_id", primaryKey = true)
     private int id;
     @TableField(name = "name")
@@ -20,6 +21,7 @@ public class Cruise {
     @TableField(name = "ship_sh_id")
     private int shipId;
 
+    private int daysInRoute;
     private Ship ship;
     private List<Route> routeList = new ArrayList<>();
 
@@ -77,5 +79,13 @@ public class Cruise {
 
     public void setRouteList(List<Route> routeList) {
         this.routeList = routeList;
+    }
+
+    public int getDaysInRoute() {
+        return daysInRoute;
+    }
+
+    public void setDaysInRoute(int daysInRoute) {
+        this.daysInRoute = daysInRoute;
     }
 }

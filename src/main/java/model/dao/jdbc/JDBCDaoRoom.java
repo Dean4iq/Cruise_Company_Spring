@@ -3,9 +3,12 @@ package model.dao.jdbc;
 import exception.AnnotationAbsenceException;
 import exception.NoSuchIdException;
 import model.dao.RoomDao;
+import model.dao.sql.SQLScripts;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
 import model.entity.dto.Room;
+import model.entity.dto.RoomType;
+import model.entity.dto.Ship;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,6 +60,55 @@ public class JDBCDaoRoom implements RoomDao {
 
         if (room == null) {
             throw new NoSuchIdException(id.toString());
+        }
+
+        return room;
+    }
+
+    @Override
+    public List<Room> findByCruise(Integer cruiseId) {
+        List<Room> roomList = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(
+                SQLScripts.INSTANCE.FIND_SEAT_FOR_CRUISE_INFO)) {
+            preparedStatement.setInt(1, cruiseId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Room room = extractFromResultSet(resultSet);
+                Ship ship = JDBCDaoShip.extractFromResultSet(resultSet);
+                RoomType roomType = JDBCDaoRoomType.extractFromResultSet(resultSet);
+
+                room.setRoomType(roomType);
+                room.setShip(ship);
+                roomList.add(room);
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+
+        return roomList;
+    }
+
+    @Override
+    public Room getFullInfo(Integer id) {
+        Room room = null;
+
+        try(PreparedStatement preparedStatement = connection
+                .prepareStatement(SQLScripts.INSTANCE.FIND_ROOM_INFO)) {
+            preparedStatement.setInt(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                room = extractFromResultSet(resultSet);
+                RoomType roomType = JDBCDaoRoomType.extractFromResultSet(resultSet);
+
+                room.setRoomType(roomType);
+            }
+        } catch (SQLException e) {
+            LOG.error(e);
         }
 
         return room;
