@@ -68,7 +68,10 @@ public enum CartService {
 
     public void applyTicketPurchasing(Ticket ticket, List<Excursion> excursions) throws NoSuchIdException {
         int ticketId = addTicketInDB(ticket);
-        addExcursionsInDB(excursions, ticketId);
+
+        if (excursions != null && !excursions.isEmpty()) {
+            addExcursionsInDB(excursions, ticketId);
+        }
     }
 
     private int addTicketInDB(Ticket ticket) throws NoSuchIdException {
@@ -91,7 +94,7 @@ public enum CartService {
     private void addExcursionsInDB(List<Excursion> excursions, int ticketId) {
         List<TicketExcursion> ticketExcursionList = new ArrayList<>();
 
-        excursions.forEach(excursion->{
+        excursions.forEach(excursion -> {
             TicketExcursion ticketExcursion = new TicketExcursion();
 
             ticketExcursion.setTicketId(ticketId);

@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 @TableName(name = "ticket")
 public class Ticket implements Serializable {
-    @TableField(name = "ti_id", primaryKey = true)
+    @TableField(name = "ti_id", primaryKey = true, autoincremented = true)
     private int id;
     @TableField(name = "purchase_date")
     private Timestamp purchaseDate;
