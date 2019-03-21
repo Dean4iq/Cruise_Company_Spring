@@ -21,6 +21,10 @@ public class CabinSelectionCommand implements Command {
         String cruiseId = (String) session.getAttribute("selectedCruiseId");
         String roomId = request.getParameter("roomId");
 
+        if (session.getAttribute("sessionCart") != null) {
+            return "redirect: /user/cart";
+        }
+
         if (roomId != null) {
             session.setAttribute("roomId", roomId);
             session.setAttribute("shipRoomNumber", request.getParameter("shipRoomId"));

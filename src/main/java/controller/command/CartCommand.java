@@ -28,17 +28,14 @@ public class CartCommand implements Command {
         if (cart == null) {
             cart = new Cart();
 
-            Ticket ticket = null;
-
             try {
-                ticket = setTicketData(request);
+                Ticket ticket = setTicketData(request);
+                cart.setTicket(ticket);
+
+                session.setAttribute("sessionCart", cart);
             } catch (NoResultException e) {
                 LOG.warn(e);
             }
-
-            cart.setTicket(ticket);
-
-            session.setAttribute("sessionCart", cart);
         }
 
         if (request.getParameter("payForTicket") != null) {
