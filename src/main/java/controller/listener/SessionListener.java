@@ -39,7 +39,9 @@ public class SessionListener implements HttpSessionListener {
 
         sessionSet.remove(httpSessionEvent.getSession());
 
-        String userName = ((User)session.getAttribute("User")).getLogin();
-        loggedUsers.remove(userName);
+        if (session.getAttribute("Role") != GUEST) {
+            String userName = ((User) session.getAttribute("User")).getLogin();
+            loggedUsers.remove(userName);
+        }
     }
 }

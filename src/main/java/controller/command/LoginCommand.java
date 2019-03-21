@@ -25,7 +25,7 @@ public class LoginCommand implements Command {
                 .password(request.getParameter("passwordUser"))
                 .build();
 
-        if (user.getLogin() != null) {
+        if (request.getParameter("login")!= null && user.getLogin() != null && !user.getLogin().equals("")) {
             try {
                 LoginService loginService = LoginService.INSTANCE;
 

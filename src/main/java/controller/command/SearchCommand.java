@@ -2,6 +2,7 @@ package controller.command;
 
 import exception.NoResultException;
 import model.entity.dto.Cruise;
+import model.entity.dto.Route;
 import model.service.TourSearchingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +10,7 @@ import util.PropertiesSource;
 import util.ResourceBundleGetter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,10 +27,9 @@ public class SearchCommand implements Command {
             try {
                 List<Cruise> cruiseList = TourSearchingService.INSTANCE.searchCruisesFullInfo();
 
-                cruiseList = cruiseList.stream().filter(cruise ->
-                        cruise.getRouteList().stream().anyMatch(route ->
-                                route.getHarbor().getCountry().getName().equals(countryToVisit)))
-                        .collect(Collectors.toList());
+                cruiseList = filterCruiseListByCountry(cruiseList, countryToVisit);
+
+                setCruiseDuration(cruiseList);
 
                 request.setAttribute("searchCommitted", true);
                 request.setAttribute("cruiseList", cruiseList);
@@ -40,13 +41,29 @@ public class SearchCommand implements Command {
 
         if (request.getParameter("cruiseId") != null) {
             request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
-            return "redirect: /tickets";
+            return "redirect: /user/tickets";
         }
 
         setCountryMap(request);
         setHarborMap(request);
 
         return "/WEB-INF/user/search.jsp";
+    }
+
+    private List<Cruise> filterCruiseListByCountry(List<Cruise> cruiseList, String country) {
+        return cruiseList.stream().filter(cruise ->
+                cruise.getRouteList().stream().anyMatch(route ->
+                        route.getHarbor().getCountry().getName().equals(country)))
+                .collect(Collectors.toList());
+    }
+
+    private void setCruiseDuration(List<Cruise> cruiseList) {
+        cruiseList.forEach(cruise -> {
+            Route routeFrom = cruise.getRouteList().get(0);
+            Route routeTo = cruise.getRouteList().get(cruise.getRouteList().size() - 1);
+            cruise.setDaysInRoute((int) ChronoUnit.DAYS.between(routeFrom.getDeparture().toInstant(),
+                    routeTo.getArrival().toInstant()));
+        });
     }
 
     private void setCountryMap(HttpServletRequest request) {
