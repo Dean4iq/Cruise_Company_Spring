@@ -28,7 +28,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="name">${sessionLocalization['form.name']}</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder value required>
+                        <input type="text" class="form-control" id="name" name="userName" placeholder value required>
                         <div class="invalid-feedback">
                             ${sessionLocalization['form.empty_field']}
                         </div>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="surname">${sessionLocalization['form.surname']}</label>
-                        <input type="text" class="form-control" id="surname" name="surname" placeholder value required>
+                        <input type="text" class="form-control" id="surname" name="userSurname" placeholder value required>
                         <div class="invalid-feedback">
                             ${sessionLocalization['form.empty_field']}
                         </div>
@@ -52,8 +52,20 @@
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="email" name="userEmail" placeholder value required>
+                    <div class="invalid-feedback">
+                        ${sessionLocalization['form.empty_field']}
+                    </div>
+                    <c:if test="${emailInvalid}">
+                        <div class="alert alert-danger" role="alert">
+                            ${sessionLocalization['register.hint.email']}
+                        </div>
+                    </c:if>
+                </div>
+                <div class="mb-3">
                     <label for="login">Login</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder value required>
+                    <input type="text" class="form-control" id="login" name="userLogin" placeholder value required>
                     <div class="invalid-feedback">
                         ${sessionLocalization['form.empty_field']}
                     </div>
@@ -70,7 +82,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="pass">${sessionLocalization['form.password']}</label>
-                    <input type="password" class="form-control" id="pass" name="password" placeholder value required>
+                    <input type="password" class="form-control" id="pass" name="userPassword" placeholder value required>
                     <div class="invalid-feedback">
                         ${sessionLocalization['form.empty_field']}
                     </div>

@@ -15,17 +15,17 @@ import java.util.stream.Collectors;
 
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
-    private RegisterService registerService;
 
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
 
         User user = getRegisterData(request);
-        registerService = RegisterService.INSTANCE;
+        RegisterService registerService = RegisterService.INSTANCE;
 
         try {
             if (validateFields(user, request) && registerService.checkUniqueLogin(user.getLogin())) {
+                System.out.println("WAZZZUP");
                 registerService.registerNewUser(user);
 
                 return initializeUserSession(user, request);
@@ -50,13 +50,16 @@ public class RegisterCommand implements Command {
     private boolean validateFields(User user, HttpServletRequest request) {
         Map<String, String> userData = convertUserFieldsToMap(user);
 
-        if (userData.entrySet().stream().anyMatch(elem -> elem.getValue() == null || elem.getValue().isEmpty())) {
+        if (userData.entrySet().stream().anyMatch(elem ->
+                elem.getValue() == null || elem.getValue().isEmpty())) {
             return false;
         }
 
         Map<String, String> resultedMap = userData.entrySet().stream().filter(elem -> {
             String regexKey = Arrays.stream(RegExSources.values()).filter(source ->
-                    elem.getKey().equals(source.getField())).findFirst().get().getLink();
+                    source.getField().equals(elem.getKey())
+            ).findAny().orElse(null).getLink();
+
             if (!checkFieldRegEx(elem.getValue(), regexKey)) {
                 request.setAttribute(elem.getKey() + "Invalid", true);
                 return true;

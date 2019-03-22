@@ -2,7 +2,7 @@ package util;
 
 public enum RegExSources {
     NAME("name", "regex.name"),
-    LAST_NAME("lastName", "regex.lastName"),
+    LAST_NAME("surname", "regex.lastName"),
     LOGIN("login", "regex.login"),
     PASSWORD("password", "regex.password"),
     EMAIL("email", "regex.email");
