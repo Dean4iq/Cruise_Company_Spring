@@ -25,6 +25,12 @@
                     <c:if test="${Role.type == 'USER'}">
                         <a class="nav-link" href="${pageContext.request.contextPath}/user/cart">
                             ${sessionLocalization['cart.head']}
+                            <c:if test="${not empty sessionCart}">
+                                (1)
+                            </c:if>
+                            <c:if test="${empty sessionCart}">
+                                (0)
+                            </c:if>
                         </a>
                     </c:if>
                     <li class="nav-item active">

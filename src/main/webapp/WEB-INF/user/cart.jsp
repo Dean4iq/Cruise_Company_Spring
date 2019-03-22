@@ -19,6 +19,17 @@
     <body>
         <jsp:include page="/styles/pages/navbar.jsp"/>
 
+        <c:if test="${paymentAccepted}">
+            <div class="alert alert-success" role="alert">
+                ${sessionLocalization['cart.msg.paymentAccepted']}
+            </div>
+        </c:if>
+        <c:if test="${paymentDeclined}">
+            <div class="alert alert-warning" role="alert">
+                ${sessionLocalization['cart.msg.purchasingDeclined']}
+            </div>
+        </c:if>
+
         <c:choose>
             <c:when test="${not empty sessionCart.ticket}">
                 <fmt:setLocale value="${sessionLanguage}"/>
@@ -62,10 +73,68 @@
                 </form>
 
                 <p style="margin:0 30px; background:#EFEFEF;">
-                    Excursions:
+                    ${sessionLocalization['cart.excursion.selected']}:
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">${sessionLocalization['cart.excursion.col.descr']}</th>
+                                <th scope="col">${sessionLocalization['cart.excursion.col.harbor']}</th>
+                                <th scope="col">${sessionLocalization['cart.excursion.col.price']}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="excursion" items="${sessionCart.excursionList}">
+                                <tr>
+                                    <form method="get">
+                                        <td>${localeTourInfo[excursion.information]}</td>
+                                        <td>
+                                            <c:set var="HarborName" value="${excursion.harbor.country.name}.${excursion.harbor.name}"/>
+                                            ${harborMap[HarborName]}
+                                            (${countryMap[excursion.harbor.country.name]})
+                                        </td>
+                                        <td><fmt:formatNumber value="${excursion.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/></td>
+                                        <td>
+                                            <input type="hidden" name="excursionId" value="${excursion.id}"/>
+                                            <input type="submit" name="removeExcursion" value="${sessionLocalization['cart.excursion.remove']}"/>
+                                        </td>
+                                    </form>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </p>
                 <p style="margin:0 30px; background:#EFEFEF;">
-                    Available Excursions:
+                    ${sessionLocalization['cart.excursion.available']}:
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">${sessionLocalization['cart.excursion.col.descr']}</th>
+                                <th scope="col">${sessionLocalization['cart.excursion.col.harbor']}</th>
+                                <th scope="col">${sessionLocalization['cart.excursion.col.price']}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="excursion" items="${excursionList}">
+                                <tr>
+                                    <form method="get">
+                                        <td>${localeTourInfo[excursion.information]}</td>
+                                        <td>
+                                            <c:set var="HarborName" value="${excursion.harbor.country.name}.${excursion.harbor.name}"/>
+                                            ${harborMap[HarborName]}
+                                            (${countryMap[excursion.harbor.country.name]})
+                                        </td>
+                                        <td><fmt:formatNumber value="${excursion.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/></td>
+                                        <td>
+                                            <input type="hidden" name="excursionId" value="${excursion.id}"/>
+                                            <input type="submit" name="addNewExcursion" value="${sessionLocalization['cart.excursion.add']}"/>
+                                        </td>
+                                    </form>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </p>
             </c:when>
             <c:otherwise>

@@ -53,6 +53,19 @@ public enum CartService {
         return room;
     }
 
+    public Excursion getExcursionById(int excursionId) throws NoSuchIdException{
+        excursionDao = daoFactory.createExcursionDao();
+        Excursion excursion = excursionDao.findById(excursionId);
+
+        try {
+            excursionDao.close();
+        } catch (Exception e) {
+            LOG.error(e);
+        }
+
+        return excursion;
+    }
+
     public List<Excursion> getExcursionList(String cruiseId) {
         excursionDao = daoFactory.createExcursionDao();
         List<Excursion> excursionList = excursionDao.getExcursionsForCruise(Integer.parseInt(cruiseId));

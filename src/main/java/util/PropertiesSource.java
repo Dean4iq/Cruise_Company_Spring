@@ -5,7 +5,8 @@ public enum PropertiesSource {
     REGEX_STRINGS("regex"),
     DATABASE("database"),
     COUNTRY("country_name"),
-    HARBOR("harbor_names");
+    HARBOR("harbor_names"),
+    EXCURSION_INFO("excursion_info");
 
     public String source;
 

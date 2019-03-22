@@ -4,11 +4,12 @@ import model.entity.dto.Excursion;
 import model.entity.dto.Ticket;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cart implements Serializable {
     private Ticket ticket;
-    private List<Excursion> excursionList;
+    private List<Excursion> excursionList = new ArrayList<>();
 
     public Ticket getTicket() {
         return ticket;

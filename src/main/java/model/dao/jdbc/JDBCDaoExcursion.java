@@ -6,7 +6,9 @@ import model.dao.ExcursionDao;
 import model.dao.sql.SQLScripts;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
+import model.entity.dto.Country;
 import model.entity.dto.Excursion;
+import model.entity.dto.Harbor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +18,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JDBCDaoExcursion implements ExcursionDao {
     private static final Logger LOG = LogManager.getLogger(JDBCDaoExcursion.class);
@@ -67,6 +71,8 @@ public class JDBCDaoExcursion implements ExcursionDao {
     @Override
     public List<Excursion> getExcursionsForCruise(Integer cruiseId) {
         List<Excursion> excursionList = new ArrayList<>();
+        Map<Integer, Harbor> harborMap = new HashMap<>();
+        Map<Integer, Country> countryMap = new HashMap<>();
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(
                 SQLScripts.INSTANCE.FIND_EXCURSION_LIST_FOR_CRUISE)) {
@@ -75,13 +81,31 @@ public class JDBCDaoExcursion implements ExcursionDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                excursionList.add(extractFromResultSet(resultSet));
+                Excursion excursion = extractFromResultSet(resultSet);
+                Harbor harbor = JDBCDaoHarbor.extractFromResultSet(resultSet);
+                Country country = JDBCDaoCountry.extractFromResultSet(resultSet);
+
+                harbor.setCountry(makeUniqueCountry(countryMap, country));
+                excursion.setHarbor(makeUniqueHarbor(harborMap, harbor));
+                excursionList.add(excursion);
             }
         } catch (SQLException e) {
             LOG.error(e);
         }
 
         return excursionList;
+    }
+
+    private Harbor makeUniqueHarbor(Map<Integer, Harbor> harborMap, Harbor harbor) {
+        harborMap.putIfAbsent(harbor.getId(), harbor);
+
+        return harborMap.get(harbor.getId());
+    }
+
+    private Country makeUniqueCountry(Map<Integer, Country> countryMap, Country country) {
+        countryMap.putIfAbsent(country.getId(), country);
+
+        return countryMap.get(country.getId());
     }
 
     static Excursion extractFromResultSet(ResultSet resultSet) throws SQLException {
