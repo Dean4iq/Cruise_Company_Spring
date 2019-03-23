@@ -2,7 +2,7 @@ package controller.command;
 
 import exception.NoResultException;
 import exception.NoSuchIdException;
-import model.entity.Cart;
+import model.entity.dto.Cart;
 import model.entity.dto.*;
 import model.service.CartService;
 import org.apache.logging.log4j.LogManager;
@@ -53,8 +53,10 @@ public class CartCommand implements Command {
             return "/WEB-INF/user/cart.jsp";
         } else if (request.getParameter("removeExcursion") != null) {
             removeExcursionFromCart(request);
+            return "redirect: /user/cart";
         } else if (request.getParameter("addNewExcursion") != null) {
             addExcursionToCart(request);
+            return "redirect: /user/cart";
         }
 
         setExcursionList(request);

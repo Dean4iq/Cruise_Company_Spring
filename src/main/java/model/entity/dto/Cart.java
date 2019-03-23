@@ -1,7 +1,4 @@
-package model.entity;
-
-import model.entity.dto.Excursion;
-import model.entity.dto.Ticket;
+package model.entity.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
