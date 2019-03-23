@@ -22,10 +22,10 @@ public class LogoutCommand implements Command {
 
         User user = (User) session.getAttribute("User");
 
-        Set<String> loggedUsers = (HashSet<String>) context.getAttribute("userList");
-
-        session.removeAttribute("User");
-        loggedUsers.remove(user.getLogin());
+        if (user != null) {
+            Set<String> loggedUsers = (HashSet<String>) context.getAttribute("userList");
+            loggedUsers.remove(user.getLogin());
+        }
 
         session.invalidate();
         return "redirect: /login";

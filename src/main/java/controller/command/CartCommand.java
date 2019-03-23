@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.util.Map.Entry.comparingByValue;
 
 public class CartCommand implements Command {
-    public static final Logger LOG = LogManager.getLogger(CartCommand.class);
+    private static final Logger LOG = LogManager.getLogger(CartCommand.class);
 
     @Override
     public String execute(HttpServletRequest request) {
