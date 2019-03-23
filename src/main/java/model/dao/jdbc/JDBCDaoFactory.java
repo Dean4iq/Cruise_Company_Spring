@@ -10,6 +10,11 @@ public class JDBCDaoFactory extends DaoFactory {
     }
 
     @Override
+    public BonuseDao createBonuseDao() {
+        return new JDBCDaoBonuse(getConnection());
+    }
+
+    @Override
     public CountryDao createCountryDao() {
         return new JDBCDaoCountry(getConnection());
     }

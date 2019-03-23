@@ -127,9 +127,9 @@ public class JDBCDaoCruise implements CruiseDao {
     static Cruise extractFromResultSet(ResultSet resultSet) throws SQLException {
         return new Cruise.Builder().id(resultSet.getInt("cr_id"))
                 .name(resultSet.getString("cruise.name"))
-                .price(resultSet.getInt("price"))
-                .date(resultSet.getTimestamp("date"))
-                .shipId(resultSet.getInt("ship_sh_id")).build();
+                .price(resultSet.getInt("cruise.price"))
+                .date(resultSet.getTimestamp("cruise.date"))
+                .shipId(resultSet.getInt("cruise.ship_sh_id")).build();
     }
 
     @Override

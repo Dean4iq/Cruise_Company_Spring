@@ -69,12 +69,12 @@ public class JDBCDaoUser implements UserDao {
     static User extractFromResultSet(ResultSet resultSet) throws SQLException {
         User.Builder user = new User.Builder();
 
-        user.login(resultSet.getString("login"))
-                .password(resultSet.getString("password"))
-                .email(resultSet.getString("email"))
+        user.login(resultSet.getString("user.login"))
+                .password(resultSet.getString("user.password"))
+                .email(resultSet.getString("user.email"))
                 .name(resultSet.getString("user.name"))
-                .surname(resultSet.getString("surname"))
-                .admin(resultSet.getBoolean("admin"));
+                .surname(resultSet.getString("user.surname"))
+                .admin(resultSet.getBoolean("user.admin"));
 
         return user.build();
     }

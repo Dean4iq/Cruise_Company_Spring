@@ -118,8 +118,8 @@ public class JDBCDaoRoom implements RoomDao {
         Room room = new Room();
 
         room.setId(resultSet.getInt("ro_id"));
-        room.setRoomTypeId(resultSet.getInt("room_type_rt_id"));
-        room.setShipId(resultSet.getInt("ship_sh_id"));
+        room.setRoomTypeId(resultSet.getInt("room.room_type_rt_id"));
+        room.setShipId(resultSet.getInt("room.ship_sh_id"));
 
         return room;
     }

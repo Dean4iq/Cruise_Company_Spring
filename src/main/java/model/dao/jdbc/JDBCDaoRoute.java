@@ -66,10 +66,10 @@ public class JDBCDaoRoute implements RouteDao {
     static Route extractFromResultSet(ResultSet resultSet) throws SQLException {
         Route route = new Route();
 
-        route.setCruiseId(resultSet.getInt("cruise_cr_id"));
-        route.setHarborId(resultSet.getInt("harbor_hb_id"));
-        route.setArrival(resultSet.getTimestamp("arrival"));
-        route.setDeparture(resultSet.getTimestamp("departure"));
+        route.setCruiseId(resultSet.getInt("route.cruise_cr_id"));
+        route.setHarborId(resultSet.getInt("route.harbor_hb_id"));
+        route.setArrival(resultSet.getTimestamp("route.arrival"));
+        route.setDeparture(resultSet.getTimestamp("route.departure"));
 
         return route;
     }

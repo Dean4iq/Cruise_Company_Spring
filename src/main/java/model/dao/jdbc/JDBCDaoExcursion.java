@@ -114,7 +114,7 @@ public class JDBCDaoExcursion implements ExcursionDao {
         excursion.setId(resultSet.getInt("exc_id"));
         excursion.setInformation(resultSet.getString("excursion.info"));
         excursion.setPrice(resultSet.getInt("excursion.price"));
-        excursion.setHarborId(resultSet.getInt("harbor_hb_id"));
+        excursion.setHarborId(resultSet.getInt("excursion.harbor_hb_id"));
 
         return excursion;
     }

@@ -54,8 +54,8 @@ public class JDBCDaoTicketExcursion implements TicketExcursionDao {
     static TicketExcursion extractFromResultSet(ResultSet resultSet) throws SQLException {
         TicketExcursion ticketExcursion = new TicketExcursion();
 
-        ticketExcursion.setTicketId(resultSet.getInt("ticket_ti_id"));
-        ticketExcursion.setExcursionId(resultSet.getInt("excursion_exc_id"));
+        ticketExcursion.setTicketId(resultSet.getInt("ticket_excursion.ticket_ti_id"));
+        ticketExcursion.setExcursionId(resultSet.getInt("ticket_excursion.excursion_exc_id"));
 
         return ticketExcursion;
     }

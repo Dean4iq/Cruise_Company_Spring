@@ -2,10 +2,10 @@ package model.dao.jdbc;
 
 import exception.AnnotationAbsenceException;
 import exception.NoSuchIdException;
-import model.dao.RoomTypeDao;
+import model.dao.BonuseDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.dto.RoomType;
+import model.entity.dto.Bonuse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,54 +17,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCDaoRoomType implements RoomTypeDao {
-    private static final Logger LOG = LogManager.getLogger(JDBCDaoRoomType.class);
+public class JDBCDaoBonuse implements BonuseDao {
+    private static final Logger LOG = LogManager.getLogger(JDBCDaoBonuse.class);
     private Connection connection;
 
-    JDBCDaoRoomType(Connection connection) {
+    JDBCDaoBonuse(Connection connection) {
         this.connection = connection;
     }
 
     @Override
-    public RoomType findById(Integer id) throws NoSuchIdException {
-        RoomType roomType = null;
+    public Bonuse findById(Integer id) throws NoSuchIdException {
+        Bonuse bonuse = null;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(RoomType.class, SQLOperation.FIND_BY_ID))) {
+                new SqlReflector().process(Bonuse.class, SQLOperation.FIND_BY_ID))) {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                roomType = extractFromResultSet(resultSet);
+                bonuse = extractFromResultSet(resultSet);
             }
         } catch (OperationNotSupportedException | AnnotationAbsenceException | SQLException e) {
             LOG.error(e);
         }
 
-        if (roomType == null) {
+        if (bonuse == null) {
             throw new NoSuchIdException(id.toString());
         }
 
-        return roomType;
-    }
-
-    static RoomType extractFromResultSet(ResultSet resultSet) throws SQLException{
-        RoomType roomType = new RoomType();
-
-        roomType.setId(resultSet.getInt("rt_id"));
-        roomType.setName(resultSet.getString("room_type.name"));
-        roomType.setPriceModifier(resultSet.getInt("room_type.cost_modifier"));
-
-        return roomType;
+        return bonuse;
     }
 
     @Override
-    public void create(RoomType roomType) {
+    public void create(Bonuse bonuse) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(roomType.getClass(), SQLOperation.INSERT))) {
-            preparedStatement.setString(1, roomType.getName());
-            preparedStatement.setInt(2, roomType.getPriceModifier());
+                new SqlReflector().process(bonuse.getClass(), SQLOperation.INSERT))) {
+            preparedStatement.setString(1, bonuse.getName());
 
             preparedStatement.executeUpdate();
         } catch (OperationNotSupportedException | AnnotationAbsenceException | SQLException e) {
@@ -72,31 +61,39 @@ public class JDBCDaoRoomType implements RoomTypeDao {
         }
     }
 
+    static Bonuse extractFromResultSet(ResultSet resultSet) throws SQLException {
+        Bonuse bonuse = new Bonuse();
+
+        bonuse.setId(resultSet.getInt("bo_id"));
+        bonuse.setName(resultSet.getString("bonuses.name"));
+
+        return bonuse;
+    }
+
     @Override
-    public List<RoomType> findAll() {
-        List<RoomType> roomTypeList = new ArrayList<>();
+    public List<Bonuse> findAll() {
+        List<Bonuse> bonuseList = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(RoomType.class, SQLOperation.SELECT))) {
+                new SqlReflector().process(Bonuse.class, SQLOperation.SELECT))) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                roomTypeList.add(extractFromResultSet(resultSet));
+                bonuseList.add(extractFromResultSet(resultSet));
             }
         } catch (OperationNotSupportedException | AnnotationAbsenceException | SQLException e) {
             LOG.error(e);
         }
 
-        return roomTypeList;
+        return bonuseList;
     }
 
     @Override
-    public void update(RoomType roomType) {
+    public void update(Bonuse bonuse) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(roomType.getClass(), SQLOperation.UPDATE))) {
-            preparedStatement.setString(1, roomType.getName());
-            preparedStatement.setInt(2, roomType.getPriceModifier());
-            preparedStatement.setInt(3, roomType.getId());
+                new SqlReflector().process(bonuse.getClass(), SQLOperation.UPDATE))) {
+            preparedStatement.setString(1, bonuse.getName());
+            preparedStatement.setInt(2, bonuse.getId());
 
             preparedStatement.executeUpdate();
         } catch (OperationNotSupportedException | AnnotationAbsenceException | SQLException e) {
@@ -105,10 +102,10 @@ public class JDBCDaoRoomType implements RoomTypeDao {
     }
 
     @Override
-    public void delete(RoomType roomType) {
+    public void delete(Bonuse bonuse) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(roomType.getClass(), SQLOperation.DELETE))) {
-            preparedStatement.setInt(1, roomType.getId());
+                new SqlReflector().process(bonuse.getClass(), SQLOperation.DELETE))) {
+            preparedStatement.setInt(1, bonuse.getId());
 
             preparedStatement.executeUpdate();
         } catch (OperationNotSupportedException | AnnotationAbsenceException | SQLException e) {
@@ -117,7 +114,7 @@ public class JDBCDaoRoomType implements RoomTypeDao {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         ConnectorDB.INSTANCE.returnConnectionToPool(connection);
     }
 }

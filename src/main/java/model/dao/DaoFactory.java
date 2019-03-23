@@ -5,6 +5,8 @@ import model.dao.jdbc.JDBCDaoFactory;
 public abstract class DaoFactory {
     private static DaoFactory daoFactory;
 
+    public abstract BonuseDao createBonuseDao();
+
     public abstract CountryDao createCountryDao();
 
     public abstract CruiseDao createCruiseDao();
