@@ -6,7 +6,6 @@ import model.dao.TicketDao;
 import model.dao.sql.SQLScripts;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
-import model.entity.dto.Ship;
 import model.entity.dto.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -121,7 +120,7 @@ public class JDBCDaoTicket implements TicketDao {
         List<Ticket> tickets = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(Ship.class, SQLOperation.SELECT))) {
+                new SqlReflector().process(Ticket.class, SQLOperation.SELECT))) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
