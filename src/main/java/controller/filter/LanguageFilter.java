@@ -3,7 +3,8 @@ package controller.filter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import util.LanguageISO;
-import util.LocalizationGetter;
+import util.PropertiesSource;
+import util.ResourceBundleGetter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -27,20 +28,18 @@ public class LanguageFilter implements Filter {
         String selectedLanguage = request.getParameter("preferredLanguage");
         String sessionLanguage = (String) session.getAttribute("sessionLanguage");
 
-        if (selectedLanguage != null && sessionLanguage != null && !sessionLanguage.equals(selectedLanguage)){
-            LocalizationGetter localizationGetter = new LocalizationGetter();
-
+        if (selectedLanguage != null && sessionLanguage != null && !sessionLanguage.equals(selectedLanguage)) {
             session.setAttribute("sessionLanguage", selectedLanguage);
 
             session.setAttribute("sessionLocalization",
-                    localizationGetter.getLocalization(selectedLanguage));
+                    ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.LOCALIZATION_STRINGS.source,
+                            selectedLanguage));
         } else if (sessionLanguage == null) {
-            LocalizationGetter localizationGetter = new LocalizationGetter();
-
             session.setAttribute("sessionLanguage", LanguageISO.UKRAINIAN.getCode());
 
             session.setAttribute("sessionLocalization",
-                    localizationGetter.getLocalization(LanguageISO.UKRAINIAN.getCode()));
+                    ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.LOCALIZATION_STRINGS.source,
+                            LanguageISO.UKRAINIAN.getCode()));
         }
 
         filterChain.doFilter(request, servletResponse);
