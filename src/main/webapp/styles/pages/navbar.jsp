@@ -23,14 +23,16 @@
                 </ul>
                 <ul class="navbar-nav">
                     <c:if test="${Role.type == 'USER'}">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/user/cart">
-                            ${sessionLocalization['cart.head']}
-                            <c:if test="${not empty sessionCart}">
+                        <c:if test="${not empty sessionCart}">
+                            <a class="nav-link" style="color:#FFF;" href="${pageContext.request.contextPath}/user/cart">
+                                ${sessionLocalization['cart.head']}
                                 (1)
-                            </c:if>
-                            <c:if test="${empty sessionCart}">
+                        </c:if>
+                        <c:if test="${empty sessionCart}">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/user/cart">
+                                ${sessionLocalization['cart.head']}
                                 (0)
-                            </c:if>
+                        </c:if>
                         </a>
                     </c:if>
                     <li class="nav-item active">
