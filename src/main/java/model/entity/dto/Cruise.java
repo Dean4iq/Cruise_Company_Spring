@@ -26,6 +26,51 @@ public class Cruise implements Serializable {
     private Ship ship;
     private List<Route> routeList = new ArrayList<>();
 
+    public Cruise(Builder builder) {
+        this.id = builder.id;
+        this.name = builder.name;
+        this.price = builder.price;
+        this.date = builder.date;
+        this.shipId = builder.shipId;
+    }
+
+    public static class Builder {
+        private int id;
+        private String name;
+        private int price;
+        private Timestamp date;
+        private int shipId;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder price(int price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder date(Timestamp date) {
+            this.date = date;
+            return this;
+        }
+
+        public Builder shipId(int shipId) {
+            this.shipId = shipId;
+            return this;
+        }
+
+        public Cruise build() {
+            return new Cruise(this);
+        }
+    }
+
     public int getId() {
         return id;
     }
