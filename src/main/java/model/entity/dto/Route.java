@@ -5,6 +5,7 @@ import annotation.TableName;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @TableName(name = "route")
 public class Route implements Serializable {
@@ -66,5 +67,35 @@ public class Route implements Serializable {
 
     public void setDeparture(Timestamp departure) {
         this.departure = departure;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        Route route = (Route) object;
+        return getCruiseId() == route.getCruiseId() &&
+                getHarborId() == route.getHarborId() &&
+                Objects.equals(getArrival(), route.getArrival()) &&
+                Objects.equals(getDeparture(), route.getDeparture());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCruiseId(), getHarborId(), getArrival(), getDeparture());
+    }
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "cruiseId=" + cruiseId +
+                ", harborId=" + harborId +
+                ", arrival=" + arrival +
+                ", departure=" + departure +
+                '}';
     }
 }

@@ -4,6 +4,7 @@ import annotation.TableField;
 import annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @TableName(name = "ticket_excursion")
 public class TicketExcursion implements Serializable {
@@ -26,5 +27,31 @@ public class TicketExcursion implements Serializable {
 
     public void setExcursionId(int excursionId) {
         this.excursionId = excursionId;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        TicketExcursion that = (TicketExcursion) object;
+        return getTicketId() == that.getTicketId() &&
+                getExcursionId() == that.getExcursionId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTicketId(), getExcursionId());
+    }
+
+    @Override
+    public String toString() {
+        return "TicketExcursion{" +
+                "ticketId=" + ticketId +
+                ", excursionId=" + excursionId +
+                '}';
     }
 }

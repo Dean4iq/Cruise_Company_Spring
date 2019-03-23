@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @TableName(name = "cruise")
 public class Cruise implements Serializable {
@@ -87,5 +88,37 @@ public class Cruise implements Serializable {
 
     public void setDaysInRoute(int daysInRoute) {
         this.daysInRoute = daysInRoute;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        Cruise cruise = (Cruise) object;
+        return getId() == cruise.getId() &&
+                getPrice() == cruise.getPrice() &&
+                getShipId() == cruise.getShipId() &&
+                Objects.equals(getName(), cruise.getName()) &&
+                Objects.equals(getDate(), cruise.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getPrice(), getDate(), getShipId());
+    }
+
+    @Override
+    public String toString() {
+        return "Cruise{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", date=" + date +
+                ", shipId=" + shipId +
+                ", daysInRoute=" + daysInRoute;
     }
 }

@@ -5,6 +5,7 @@ import annotation.TableName;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @TableName(name = "ticket")
 public class Ticket implements Serializable {
@@ -170,5 +171,39 @@ public class Ticket implements Serializable {
 
     public void setCruise(Cruise cruise) {
         this.cruise = cruise;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        Ticket ticket = (Ticket) object;
+        return getId() == ticket.getId() &&
+                getPrice() == ticket.getPrice() &&
+                getRoomId() == ticket.getRoomId() &&
+                getCruiseId() == ticket.getCruiseId() &&
+                Objects.equals(getPurchaseDate(), ticket.getPurchaseDate()) &&
+                Objects.equals(getLogin(), ticket.getLogin());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPurchaseDate(), getPrice(), getLogin(), getRoomId(), getCruiseId());
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", purchaseDate=" + purchaseDate +
+                ", price=" + price +
+                ", login='" + login + '\'' +
+                ", roomId=" + roomId +
+                ", cruiseId=" + cruiseId +
+                '}';
     }
 }

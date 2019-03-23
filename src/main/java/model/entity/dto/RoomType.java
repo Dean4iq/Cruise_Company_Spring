@@ -6,6 +6,7 @@ import annotation.TableName;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @TableName(name = "room_type")
 public class RoomType implements Serializable {
@@ -48,5 +49,33 @@ public class RoomType implements Serializable {
 
     public void setBonuses(List<Bonuse> bonuses) {
         this.bonuses = bonuses;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        RoomType roomType = (RoomType) object;
+        return getId() == roomType.getId() &&
+                getPriceModifier() == roomType.getPriceModifier() &&
+                Objects.equals(getName(), roomType.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getPriceModifier());
+    }
+
+    @Override
+    public String toString() {
+        return "RoomType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priceModifier=" + priceModifier +
+                '}';
     }
 }

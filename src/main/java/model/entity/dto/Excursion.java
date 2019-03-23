@@ -4,6 +4,7 @@ import annotation.TableField;
 import annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @TableName(name = "excursion")
 public class Excursion implements Serializable {
@@ -56,5 +57,35 @@ public class Excursion implements Serializable {
 
     public void setHarbor(Harbor harbor) {
         this.harbor = harbor;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        Excursion excursion = (Excursion) object;
+        return getId() == excursion.getId() &&
+                getPrice() == excursion.getPrice() &&
+                getHarborId() == excursion.getHarborId() &&
+                Objects.equals(getInformation(), excursion.getInformation());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getInformation(), getPrice(), getHarborId());
+    }
+
+    @Override
+    public String toString() {
+        return "Excursion{" +
+                "id=" + id +
+                ", information='" + information + '\'' +
+                ", price=" + price +
+                ", harborId=" + harborId +
+                '}';
     }
 }

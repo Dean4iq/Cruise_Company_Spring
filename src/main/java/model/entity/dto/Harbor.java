@@ -4,6 +4,7 @@ import annotation.TableField;
 import annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @TableName(name = "harbor")
 public class Harbor implements Serializable {
@@ -46,5 +47,33 @@ public class Harbor implements Serializable {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        Harbor harbor = (Harbor) object;
+        return getId() == harbor.getId() &&
+                getCountryId() == harbor.getCountryId() &&
+                Objects.equals(getName(), harbor.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getCountryId());
+    }
+
+    @Override
+    public String toString() {
+        return "Harbor{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", countryId=" + countryId +
+                '}';
     }
 }

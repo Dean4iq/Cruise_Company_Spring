@@ -4,6 +4,7 @@ import annotation.TableField;
 import annotation.TableName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @TableName(name = "room")
 public class Room implements Serializable {
@@ -73,5 +74,33 @@ public class Room implements Serializable {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || object.getClass() != this.getClass()) {
+            return false;
+        }
+        Room room = (Room) object;
+        return getId() == room.getId() &&
+                getRoomTypeId() == room.getRoomTypeId() &&
+                getShipId() == room.getShipId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getRoomTypeId(), getShipId());
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + id +
+                ", roomTypeId=" + roomTypeId +
+                ", shipId=" + shipId +
+                '}';
     }
 }
