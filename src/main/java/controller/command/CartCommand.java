@@ -98,7 +98,7 @@ public class CartCommand implements Command {
         String cruiseId = (String) session.getAttribute("selectedCruiseId");
         Cart cart = (Cart) session.getAttribute("sessionCart");
 
-        if (cruiseId != null) {
+        if (cruiseId != null && cart != null) {
             List<Excursion> excursionList = CartService.INSTANCE.getExcursionList(cruiseId).stream()
                     .filter(excursion -> cart.getExcursionList().stream().noneMatch(excursionInCart ->
                             excursion.getId() == excursionInCart.getId())).collect(Collectors.toList());
