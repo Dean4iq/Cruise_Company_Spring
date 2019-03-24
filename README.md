@@ -1,4 +1,4 @@
-# Final project “Railway ticket office”
+# Project “Cruise company”
 
 ## Variant 22. System "Cruise company"
 	The passenger makes an application for a ticket to the destination station he needs, time and date of travel. The system searches for a suitable train. The passenger makes the choice of a train and receives an invoice. The administrator manages the list of registered passengers.
@@ -42,7 +42,7 @@
 	3.	If the mvn command is not detected, then the path to the installed Maven should be specified in Path environment variables, then try to start the project again.
 
 
-# Финальный проект “Железнодорожная касса”
+# Проект “Круизная Компания”
 
 ## Вариант 8. Система Круизная Компания. 
 The Company has several Ships. Ships have passenger capacity, route, number of ports visited, duration of one cruise, personnel. The client chooses and pays the cruise. Selects guided tours upon arrival at the port for an additional fee. The Administrator of the Ship indicates bonuses for passengers, taking into account the class of the ticket (pool, gym, cinema, beauty salons ...).
