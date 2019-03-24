@@ -20,7 +20,7 @@ public class EncodingFilter implements Filter {
         servletResponse.setCharacterEncoding("UTF-8");
         servletRequest.setCharacterEncoding("UTF-8");
 
-        LOG.debug("EncodingFilter doFilter()");
+        LOG.trace("EncodingFilter doFilter()");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
