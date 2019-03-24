@@ -38,9 +38,7 @@ public class SearchCommand implements Command {
                 LOG.warn("No results for request: '{}'", countryToVisit);
                 request.setAttribute("noResult", true);
             }
-        }
-
-        if (request.getParameter("cruiseId") != null) {
+        } else if (request.getParameter("cruiseId") != null) {
             request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
             return "redirect: /user/tickets";
         }
