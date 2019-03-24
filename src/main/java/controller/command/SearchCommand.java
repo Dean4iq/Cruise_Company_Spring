@@ -1,6 +1,6 @@
 package controller.command;
 
-import exception.NoResultException;
+import model.exception.NoResultException;
 import model.entity.dto.Cruise;
 import model.entity.dto.Route;
 import model.service.TourSearchingService;
@@ -18,6 +18,7 @@ import static java.util.Map.Entry.comparingByValue;
 
 public class SearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
+    private TourSearchingService tourSearchingService = TourSearchingService.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -25,7 +26,7 @@ public class SearchCommand implements Command {
             String countryToVisit = request.getParameter("countryToVisit");
 
             try {
-                List<Cruise> cruiseList = TourSearchingService.INSTANCE.searchCruisesFullInfo();
+                List<Cruise> cruiseList = tourSearchingService.searchCruisesFullInfo();
 
                 cruiseList = filterCruiseListByCountry(cruiseList, countryToVisit);
 

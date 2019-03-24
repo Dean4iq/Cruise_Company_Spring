@@ -1,7 +1,7 @@
 package model.dao.jdbc;
 
-import exception.AnnotationAbsenceException;
-import exception.NoSuchIdException;
+import model.exception.AnnotationAbsenceException;
+import model.exception.NoSuchIdException;
 import model.dao.TicketDao;
 import model.dao.sql.SQLScripts;
 import model.dao.util.SQLOperation;
@@ -112,7 +112,6 @@ public class JDBCDaoTicket implements TicketDao {
                 User user = JDBCDaoUser.extractFromResultSet(resultSet);
 
                 room.setRoomType(makeUniqueRoomType(roomTypeMap, roomType));
-                roomType.getBonuses().add(bonuse);
                 cruise.setShip(makeUniqueShip(shipMap, ship));
                 room.setShip(cruise.getShip());
 
@@ -120,6 +119,8 @@ public class JDBCDaoTicket implements TicketDao {
                 ticket.setRoom(makeUniqueRoom(roomMap, room));
                 ticket.setUser(makeUniqueUser(userMap, user));
                 ticket.setCruise(makeUniqueCruise(cruiseMap, cruise));
+
+                ticket.getRoom().getRoomType().getBonuses().add(bonuse);
             }
         } catch (SQLException e) {
             LOG.error(e);

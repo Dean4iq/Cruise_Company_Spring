@@ -1,7 +1,7 @@
 package controller.command;
 
-import exception.NoResultException;
-import exception.NoSuchIdException;
+import model.exception.NoResultException;
+import model.exception.NoSuchIdException;
 import model.entity.dto.Cart;
 import model.entity.dto.*;
 import model.service.CartService;
@@ -23,6 +23,7 @@ import static java.util.Map.Entry.comparingByValue;
 
 public class CartCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CartCommand.class);
+    private CartService cartService = CartService.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -77,8 +78,8 @@ public class CartCommand implements Command {
             throw new NoResultException();
         }
 
-        Cruise cruise = CartService.INSTANCE.getCruiseInfo(cruiseId);
-        Room room = CartService.INSTANCE.getRoomInfo(roomId);
+        Cruise cruise = cartService.getCruiseInfo(cruiseId);
+        Room room = cartService.getRoomInfo(roomId);
 
         room.setPrice(room.getRoomType().getPriceModifier() * cruise.getPrice());
 
@@ -87,7 +88,7 @@ public class CartCommand implements Command {
                 .roomId(room.getId())
                 .purchaseDate(new Timestamp(new Date().getTime()))
                 .login(userName)
-                .price(cruise.getPrice())
+                .price(room.getPrice())
                 .room(room)
                 .cruise(cruise)
                 .build();
@@ -99,7 +100,7 @@ public class CartCommand implements Command {
         Cart cart = (Cart) session.getAttribute("sessionCart");
 
         if (cruiseId != null && cart != null) {
-            List<Excursion> excursionList = CartService.INSTANCE.getExcursionList(cruiseId).stream()
+            List<Excursion> excursionList = cartService.getExcursionList(cruiseId).stream()
                     .filter(excursion -> cart.getExcursionList().stream().noneMatch(excursionInCart ->
                             excursion.getId() == excursionInCart.getId())).collect(Collectors.toList());
             request.setAttribute("excursionList", excursionList);
@@ -112,7 +113,7 @@ public class CartCommand implements Command {
         Cart cart = (Cart) session.getAttribute("sessionCart");
 
         try {
-            CartService.INSTANCE.applyTicketPurchasing(cart.getTicket(), cart.getExcursionList());
+            cartService.applyTicketPurchasing(cart.getTicket(), cart.getExcursionList());
             session.removeAttribute("sessionCart");
             session.removeAttribute("selectedCruiseId");
             session.removeAttribute("roomId");
@@ -135,7 +136,7 @@ public class CartCommand implements Command {
         String excursionId = request.getParameter("excursionId");
 
         try {
-            Excursion excursionToDelete = CartService.INSTANCE.getExcursionById(Integer.parseInt(excursionId));
+            Excursion excursionToDelete = cartService.getExcursionById(Integer.parseInt(excursionId));
             cart.getTicket().setPrice(cart.getTicket().getPrice() - excursionToDelete.getPrice());
         } catch (NoSuchIdException e) {
             LOG.error(e);
@@ -152,7 +153,7 @@ public class CartCommand implements Command {
         String excursionId = request.getParameter("excursionId");
         String cruiseId = (String) request.getSession().getAttribute("selectedCruiseId");
 
-        List<Excursion> excursionList = CartService.INSTANCE.getExcursionList(cruiseId);
+        List<Excursion> excursionList = cartService.getExcursionList(cruiseId);
 
         Excursion excursionToAdd = excursionList.stream().filter(excursion ->
                 excursion.getId() == Integer.parseInt(excursionId)).findFirst().orElse(new Excursion());

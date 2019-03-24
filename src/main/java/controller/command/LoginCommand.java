@@ -1,8 +1,8 @@
 package controller.command;
 
-import exception.AlreadyLoggedInException;
-import exception.InvalidLoginOrPasswordException;
-import exception.NoSuchIdException;
+import model.exception.AlreadyLoggedInException;
+import model.exception.InvalidLoginOrPasswordException;
+import model.exception.NoSuchIdException;
 import model.entity.dto.User;
 import model.entity.enums.UserType;
 import model.service.LoginService;
@@ -15,6 +15,7 @@ import java.util.Set;
 
 public class LoginCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
+    private LoginService loginService = LoginService.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -27,8 +28,6 @@ public class LoginCommand implements Command {
 
         if (request.getParameter("login")!= null && user.getLogin() != null && !user.getLogin().equals("")) {
             try {
-                LoginService loginService = LoginService.INSTANCE;
-
                 user = loginService.checkUserData(user);
 
                 if (!userInSystem(user, request)) {

@@ -3,7 +3,7 @@ package model.dao;
 import model.dao.jdbc.JDBCDaoFactory;
 
 public abstract class DaoFactory {
-    private static DaoFactory daoFactory;
+    private static volatile DaoFactory daoFactory;
 
     public abstract BonuseDao createBonuseDao();
 
@@ -33,8 +33,7 @@ public abstract class DaoFactory {
         if (daoFactory == null) {
             synchronized (DaoFactory.class) {
                 if (daoFactory == null) {
-                    DaoFactory temp = new JDBCDaoFactory();
-                    daoFactory = temp;
+                    daoFactory = new JDBCDaoFactory();
                 }
             }
         }

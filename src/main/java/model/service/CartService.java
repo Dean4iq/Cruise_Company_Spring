@@ -1,6 +1,6 @@
 package model.service;
 
-import exception.NoSuchIdException;
+import model.exception.NoSuchIdException;
 import model.dao.*;
 import model.dao.jdbc.JDBCDaoFactory;
 import model.entity.dto.*;
@@ -10,9 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum CartService {
-    INSTANCE;
-
+public class CartService {
     private static final Logger LOG = LogManager.getLogger(CartService.class);
     private DaoFactory daoFactory;
     private CruiseDao cruiseDao;
@@ -21,11 +19,21 @@ public enum CartService {
     private TicketDao ticketDao;
     private TicketExcursionDao ticketExcursionDao;
 
-    CartService() {
+    private CartService() {
         daoFactory = JDBCDaoFactory.getInstance();
     }
 
+    private static class SingletonHolder {
+        private static final CartService instance = new CartService();
+    }
+
+    public static CartService getInstance() {
+        return SingletonHolder.instance;
+    }
+
     public Cruise getCruiseInfo(String cruiseId) {
+        LOG.trace("getCruiseInfo({})", cruiseId);
+
         cruiseDao = daoFactory.createCruiseDao();
 
         List<Cruise> cruiseList = cruiseDao.findFullCruiseInfo();
@@ -37,10 +45,12 @@ public enum CartService {
         }
 
         return cruiseList.stream().filter(cruise ->
-                cruise.getId() == Integer.parseInt(cruiseId)).findFirst().get();
+                cruise.getId() == Integer.parseInt(cruiseId)).findFirst().orElse(null);
     }
 
     public Room getRoomInfo(String roomId) {
+        LOG.trace("getRoomInfo({})", roomId);
+
         roomDao = daoFactory.createRoomDao();
         Room room = roomDao.getFullInfo(Integer.parseInt(roomId));
 
@@ -53,7 +63,9 @@ public enum CartService {
         return room;
     }
 
-    public Excursion getExcursionById(int excursionId) throws NoSuchIdException{
+    public Excursion getExcursionById(int excursionId) throws NoSuchIdException {
+        LOG.trace("getExcursionById({})", excursionId);
+
         excursionDao = daoFactory.createExcursionDao();
         Excursion excursion = excursionDao.findById(excursionId);
 
@@ -67,6 +79,8 @@ public enum CartService {
     }
 
     public List<Excursion> getExcursionList(String cruiseId) {
+        LOG.trace("getExcursionList({})", cruiseId);
+
         excursionDao = daoFactory.createExcursionDao();
         List<Excursion> excursionList = excursionDao.getExcursionsForCruise(Integer.parseInt(cruiseId));
 
@@ -80,6 +94,7 @@ public enum CartService {
     }
 
     public void applyTicketPurchasing(Ticket ticket, List<Excursion> excursions) throws NoSuchIdException {
+        LOG.trace("applyTicketPurchasing()");
         int ticketId = addTicketInDB(ticket);
 
         if (excursions != null && !excursions.isEmpty()) {
@@ -88,6 +103,8 @@ public enum CartService {
     }
 
     private int addTicketInDB(Ticket ticket) throws NoSuchIdException {
+        LOG.trace("addTicketInDB()");
+
         ticketDao = daoFactory.createTicketDao();
         int id = ticketDao.createAndReturnId(ticket);
 
@@ -105,6 +122,7 @@ public enum CartService {
     }
 
     private void addExcursionsInDB(List<Excursion> excursions, int ticketId) {
+        LOG.trace("addExcursionsInDB()");
         List<TicketExcursion> ticketExcursionList = new ArrayList<>();
 
         excursions.forEach(excursion -> {

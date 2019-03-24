@@ -1,8 +1,8 @@
 package model.dao.util;
 
-import annotation.TableField;
-import annotation.TableName;
-import exception.AnnotationAbsenceException;
+import model.annotation.TableField;
+import model.annotation.TableName;
+import model.exception.AnnotationAbsenceException;
 
 import javax.naming.OperationNotSupportedException;
 import java.lang.reflect.Field;

@@ -1,6 +1,6 @@
 package model.dao;
 
-import exception.NoSuchIdException;
+import model.exception.NoSuchIdException;
 import model.entity.dto.TicketExcursion;
 
 import java.util.List;

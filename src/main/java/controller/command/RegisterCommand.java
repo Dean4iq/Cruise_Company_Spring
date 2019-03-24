@@ -1,6 +1,6 @@
 package controller.command;
 
-import exception.NotUniqueLoginException;
+import model.exception.NotUniqueLoginException;
 import model.entity.dto.User;
 import model.entity.enums.UserType;
 import model.service.RegisterService;
@@ -15,13 +15,13 @@ import java.util.stream.Collectors;
 
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
+    private RegisterService registerService = RegisterService.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
 
         User user = getRegisterData(request);
-        RegisterService registerService = RegisterService.INSTANCE;
 
         try {
             if (validateFields(user, request) && registerService.checkUniqueLogin(user.getLogin())) {

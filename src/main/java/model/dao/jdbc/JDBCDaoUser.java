@@ -1,7 +1,7 @@
 package model.dao.jdbc;
 
-import exception.AnnotationAbsenceException;
-import exception.NoSuchIdException;
+import model.exception.AnnotationAbsenceException;
+import model.exception.NoSuchIdException;
 import model.dao.UserDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;

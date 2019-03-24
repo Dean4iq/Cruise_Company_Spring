@@ -1,6 +1,6 @@
 package controller.command;
 
-import exception.NoSuchIdException;
+import model.exception.NoSuchIdException;
 import model.entity.dto.Cruise;
 import model.entity.dto.Room;
 import model.entity.dto.Ticket;
@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
+    private CabinSelectionService cabinSelectionService = CabinSelectionService.getInstance();
 
     @Override
     public String execute(HttpServletRequest request) {
@@ -31,12 +32,12 @@ public class CabinSelectionCommand implements Command {
             return "redirect: /user/cart";
         }
 
-        List<Room> roomList = CabinSelectionService.INSTANCE.getCruiseLoadInfo(cruiseId);
+        List<Room> roomList = cabinSelectionService.getCruiseLoadInfo(cruiseId);
 
         try {
-            Cruise cruise = CabinSelectionService.INSTANCE.getSearchedCruiseInfo(cruiseId);
+            Cruise cruise = cabinSelectionService.getSearchedCruiseInfo(cruiseId);
             roomList.forEach(room -> room.setPrice(room.getRoomType().getPriceModifier() * cruise.getPrice()));
-            List<Ticket> tickets = CabinSelectionService.INSTANCE.getTicketsForCruise(cruiseId);
+            List<Ticket> tickets = cabinSelectionService.getTicketsForCruise(cruiseId);
 
             tickets.forEach(ticket ->
                     roomList.forEach(room -> {

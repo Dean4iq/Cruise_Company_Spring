@@ -64,9 +64,9 @@
                             ${sessionLocalization[room_type]}
                         </td>
                         <td>
-                            <c:forEach var="bonuse" items="${foundedTicket.room.roomType.bonuses}">
-                                <c:set var="bonuse_type" value="bonuse.${bonuse.name}"/>
-                                ${sessionLocalization[bonuse_type]}<br>
+                            <c:forEach var="bonuses" items="${foundedTicket.room.roomType.bonuses}">
+                                <c:set var="bonuses_type" value="bonuse.${bonuses.name}"/>
+                                ${sessionLocalization[bonuses_type]}<br>
                             </c:forEach>
                         </td>
                         <td><fmt:formatDate value="${foundedTicket.purchaseDate}" type="date"/></td>

@@ -1,6 +1,6 @@
 package model.service;
 
-import exception.NoSuchIdException;
+import model.exception.NoSuchIdException;
 import model.dao.DaoFactory;
 import model.dao.TicketDao;
 import model.dao.jdbc.JDBCDaoFactory;
@@ -8,18 +8,26 @@ import model.entity.dto.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public enum AdminSearchService {
-    INSTANCE;
-
+public class AdminSearchService {
     private static final Logger LOG = LogManager.getLogger(AdminSearchService.class);
     private DaoFactory daoFactory;
     private TicketDao ticketDao;
 
-    AdminSearchService() {
+    private AdminSearchService() {
         daoFactory = JDBCDaoFactory.getInstance();
     }
 
+    private static class SingletonHolder {
+        private static final AdminSearchService instance = new AdminSearchService();
+    }
+
+    public static AdminSearchService getInstance() {
+        return SingletonHolder.instance;
+    }
+
     public Ticket getTicketInfo(int ticketId) throws NoSuchIdException {
+        LOG.trace("getTicketInfo({})", ticketId);
+
         ticketDao = daoFactory.createTicketDao();
         Ticket ticket = ticketDao.findFullTicketInfo(ticketId);
 

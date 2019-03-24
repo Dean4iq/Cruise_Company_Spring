@@ -1,7 +1,7 @@
 package model.entity.dto;
 
-import annotation.TableField;
-import annotation.TableName;
+import model.annotation.TableField;
+import model.annotation.TableName;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

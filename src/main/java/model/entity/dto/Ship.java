@@ -1,7 +1,7 @@
 package model.entity.dto;
 
-import annotation.TableField;
-import annotation.TableName;
+import model.annotation.TableField;
+import model.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,6 +12,8 @@ public class Ship implements Serializable {
     private int id;
     @TableField(name = "name")
     private String name;
+    @TableField(name = "crew_number")
+    private int crewNumber;
 
     public int getId() {
         return id;
@@ -29,6 +31,14 @@ public class Ship implements Serializable {
         this.name = name;
     }
 
+    public int getCrewNumber() {
+        return crewNumber;
+    }
+
+    public void setCrewNumber(int crewNumber) {
+        this.crewNumber = crewNumber;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
@@ -39,12 +49,13 @@ public class Ship implements Serializable {
         }
         Ship ship = (Ship) object;
         return getId() == ship.getId() &&
-                Objects.equals(getName(), ship.getName());
+                Objects.equals(getName(), ship.getName()) &&
+                getCrewNumber() == ship.getCrewNumber();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(getId(), getName(), getCrewNumber());
     }
 
     @Override
@@ -52,6 +63,7 @@ public class Ship implements Serializable {
         return "Ship{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", crewNumber=" + crewNumber +
                 '}';
     }
 }

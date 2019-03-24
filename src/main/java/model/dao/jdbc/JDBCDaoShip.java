@@ -1,7 +1,7 @@
 package model.dao.jdbc;
 
-import exception.AnnotationAbsenceException;
-import exception.NoSuchIdException;
+import model.exception.AnnotationAbsenceException;
+import model.exception.NoSuchIdException;
 import model.dao.ShipDao;
 import model.dao.util.SQLOperation;
 import model.dao.util.SqlReflector;
@@ -66,6 +66,7 @@ public class JDBCDaoShip implements ShipDao {
 
         ship.setId(resultSet.getInt("sh_id"));
         ship.setName(resultSet.getString("ship.name"));
+        ship.setCrewNumber(resultSet.getInt("ship.crew_number"));
 
         return ship;
     }

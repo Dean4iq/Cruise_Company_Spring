@@ -1,6 +1,6 @@
 package model.service;
 
-import exception.NoSuchIdException;
+import model.exception.NoSuchIdException;
 import model.dao.CruiseDao;
 import model.dao.DaoFactory;
 import model.dao.RoomDao;
@@ -14,20 +14,28 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
-public enum CabinSelectionService {
-    INSTANCE;
-
+public class CabinSelectionService {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionService.class);
     private DaoFactory daoFactory;
     private RoomDao roomDao;
     private CruiseDao cruiseDao;
     private TicketDao ticketDao;
 
-    CabinSelectionService() {
+    private CabinSelectionService() {
         daoFactory = JDBCDaoFactory.getInstance();
     }
 
+    private static class SingletonHolder {
+        private static final CabinSelectionService instance = new CabinSelectionService();
+    }
+
+    public static CabinSelectionService getInstance() {
+        return SingletonHolder.instance;
+    }
+
     public List<Room> getCruiseLoadInfo(String cruiseId) {
+        LOG.trace("getCruiseInfo({})", cruiseId);
+
         roomDao = daoFactory.createRoomDao();
 
         List<Room> roomList = roomDao.findByCruise(Integer.parseInt(cruiseId));
@@ -42,6 +50,8 @@ public enum CabinSelectionService {
     }
 
     public Cruise getSearchedCruiseInfo(String cruiseId) throws NoSuchIdException {
+        LOG.trace("getSearchedCruiseInfo({})", cruiseId);
+
         cruiseDao = daoFactory.createCruiseDao();
 
         Cruise cruise = cruiseDao.findById(Integer.parseInt(cruiseId));
@@ -56,6 +66,8 @@ public enum CabinSelectionService {
     }
 
     public List<Ticket> getTicketsForCruise(String cruiseId) {
+        LOG.trace("getTicketsForCruise({})", cruiseId);
+
         ticketDao = daoFactory.createTicketDao();
         List<Ticket> tickets = ticketDao.getTicketsForCruise(Integer.parseInt(cruiseId));
 
