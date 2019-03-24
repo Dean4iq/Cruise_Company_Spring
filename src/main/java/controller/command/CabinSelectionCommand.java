@@ -1,5 +1,6 @@
 package controller.command;
 
+import controller.util.Pagination;
 import model.exception.NoSuchIdException;
 import model.entity.dto.Cruise;
 import model.entity.dto.Room;
@@ -32,7 +33,7 @@ public class CabinSelectionCommand implements Command {
             return "redirect: /user/cart";
         }
 
-        List<Room> roomList = cabinSelectionService.getCruiseLoadInfo(cruiseId);
+        List<Room> roomList = setUpPages(request, cabinSelectionService.getCruiseLoadInfo(cruiseId));
 
         try {
             Cruise cruise = cabinSelectionService.getSearchedCruiseInfo(cruiseId);
@@ -53,5 +54,23 @@ public class CabinSelectionCommand implements Command {
         request.setAttribute("roomList", roomList);
 
         return "/WEB-INF/user/tickets.jsp";
+    }
+
+    private List<Room> setUpPages(HttpServletRequest request, List<Room> roomList) {
+        Pagination<Room> pagination = new Pagination<>();
+        String pageNumber = request.getParameter("page");
+
+        int page = (pageNumber != null && !pageNumber.equals("")) ? Integer.parseInt(pageNumber) : 1;
+        request.setAttribute("currentPage", page);
+
+        request.setAttribute("pageNumber", getPageNumber(roomList));
+        request.setAttribute("countModifier", pagination.getPageCountModifier(page));
+
+        return pagination.getPageList(roomList, page);
+    }
+
+    private int getPageNumber(List<Room> roomList) {
+        Pagination<Room> pagination = new Pagination<>();
+        return pagination.getPageNumber(roomList);
     }
 }

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="pag" uri="/WEB-INF/custom taglibs/tld/paginate.tld" %>
 
 <html>
     <head>
@@ -31,8 +32,9 @@
             </thead>
             <tbody>
                 <c:forEach var="room" items="${roomList}" varStatus="counter">
+                    <c:set var="count" value="${counter.count + countModifier}" scope="page"/>
                     <tr>
-                        <th scope="row">${counter.count}.</td>
+                        <th scope="row">${count}.</td>
                         <td>
                             <c:set var="room_type" value="room_type.${room.roomType.name}"/>
                             ${sessionLocalization[room_type]}
@@ -44,7 +46,7 @@
                             <c:if test="${room.available}">
                                 <form method="get">
                                     <input type="hidden" name="roomId" value="${room.id}"/>
-                                    <input type="hidden" name="shipRoomId" value="${counter.count}"/>
+                                    <input type="hidden" name="shipRoomId" value="${count}"/>
                                     <input type="submit" value="${sessionLocalization['tickets.select_ticket']}"/>
                                 </form>
                             </c:if>
@@ -53,5 +55,7 @@
                 </c:forEach>
             </tbody>
         </table>
+
+        <pag:pagination pageNumber="${pageNumber}" currentPage="${currentPage}"/>
     </body>
 </html>
