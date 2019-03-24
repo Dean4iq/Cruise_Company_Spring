@@ -32,12 +32,10 @@ public class PaginationJstl extends TagSupport {
 
             if (currentPage != 1) {
                 out.write("<li class='page-item'>");
-                out.write("<a class='page-link' href='#' aria-label='Previous' style='padding:8px 12px;'>");
+                out.write("<a class='page-link' href='#' aria-label='Previous' style='padding:0;'>");
                 out.write("<form method='post' style='margin:0;'>");
                 out.write("<input type='hidden' name='page' value='" + (currentPage - 1) + "'/>");
-                //out.write("<input type='submit' name='page" + (currentPage - 1) + "' value='&laquo;' style='padding: .5rem .75rem; color: #007bff; background-color: #fff; border:0;'/>");
-                out.write("<span aria-hidden=\"true\">&laquo;</span>");
-                out.write("<span class=\"sr-only\">Previous</span>");
+                out.write("<input type='submit' value='&laquo;' style='padding: .5rem .75rem; color: #007bff; background-color: #fff; border:0;'/>");
                 out.write("</form>");
                 out.write("</a>");
                 out.write("</li>");
@@ -67,18 +65,16 @@ public class PaginationJstl extends TagSupport {
 
             if (currentPage != pageNumber) {
                 out.write("<li class='page-item'>");
-                out.write("<a class='page-link' href='#' aria-label='Next' style='padding:8px 12px;'>");
+                out.write("<a class='page-link' href='#' aria-label='Next' style='padding:0;'>");
                 out.write("<form method='post' style='margin:0;'>");
-                out.write("<input type='hidden' name='page' value='"+ (currentPage + 1)+"'/>");
-                //out.write("<input type='submit' value='&raquo;'>");
-                out.write("<span aria-hidden=\"true\">&raquo;</span>");
-                out.write("<span class=\"sr-only\">Next</span>");
+                out.write("<input type='hidden' name='page' value='" + (currentPage + 1) + "'/>");
+                out.write("<input type='submit' value='&raquo;' style='padding: .5rem .75rem; color: #007bff; background-color: #fff; border:0;'/>");
                 out.write("</form>");
-                out.write("</input>");
                 out.write("</a>");
+                out.write("</li>");
             }
 
-            out.write("</li>");
+
             out.write("</ul></nav>");
         } catch (IOException ex) {
             LOG.error("Exception in JSTL {}", ex);
