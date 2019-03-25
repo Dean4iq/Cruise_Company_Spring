@@ -40,7 +40,7 @@ public class CabinSelectionServiceTest {
 
         cruise = new Cruise.Builder()
                 .id(22)
-                .name("Haawiian holidays")
+                .name("Hawaiian holidays")
                 .price(342)
                 .date(new Timestamp(new Date().getTime()))
                 .shipId(3).build();
