@@ -10,6 +10,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Class {@code TourSearchingService} provides methods to receive data from DB on
+ * servlet commands demand
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class TourSearchingService {
     private static final Logger LOG = LogManager.getLogger(TourSearchingService.class);
     private DaoFactory daoFactory;
@@ -27,6 +34,12 @@ public class TourSearchingService {
         return SingletonHolder.instance;
     }
 
+    /**
+     * Receives and provides list of cruises from DB
+     *
+     * @return list of cruises
+     * @throws NoResultException if there will be no cruise in DB
+     */
     public List<Cruise> searchCruisesFullInfo() throws NoResultException {
         LOG.trace("searchCruisesFullInfo()");
 

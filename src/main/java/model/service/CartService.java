@@ -10,6 +10,13 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class {@code CartService} provides methods to receive and create data from/to DB on
+ * servlet commands demand
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class CartService {
     private static final Logger LOG = LogManager.getLogger(CartService.class);
     private DaoFactory daoFactory;
@@ -31,6 +38,12 @@ public class CartService {
         return SingletonHolder.instance;
     }
 
+    /**
+     * Receives and returns cruise info from DB
+     *
+     * @param cruiseId id of cruise to find
+     * @return cruise from DB
+     */
     public Cruise getCruiseInfo(String cruiseId) {
         LOG.trace("getCruiseInfo({})", cruiseId);
 
@@ -48,6 +61,12 @@ public class CartService {
                 cruise.getId() == Integer.parseInt(cruiseId)).findFirst().orElse(null);
     }
 
+    /**
+     * Receives and returns room info from DB
+     *
+     * @param roomId id of room to find
+     * @return room from DB
+     */
     public Room getRoomInfo(String roomId) {
         LOG.trace("getRoomInfo({})", roomId);
 
@@ -63,6 +82,13 @@ public class CartService {
         return room;
     }
 
+    /**
+     * Receives and returns excursion info from DB
+     *
+     * @param excursionId id of excursion to find
+     * @return excursion from DB
+     * @throws NoSuchIdException if excursion will not be found
+     */
     public Excursion getExcursionById(int excursionId) throws NoSuchIdException {
         LOG.trace("getExcursionById({})", excursionId);
 
@@ -78,6 +104,12 @@ public class CartService {
         return excursion;
     }
 
+    /**
+     * Receives and returns list of excursion from DB for specified cruise
+     *
+     * @param cruiseId id of cruise to find available excursions
+     * @return list of excursions from DB for cruise
+     */
     public List<Excursion> getExcursionList(String cruiseId) {
         LOG.trace("getExcursionList({})", cruiseId);
 
@@ -93,6 +125,13 @@ public class CartService {
         return excursionList;
     }
 
+    /**
+     * Adds ticket and selected excursions from cart info to DB
+     *
+     * @param ticket to be added
+     * @param excursions list of excursions to be added to DB
+     * @throws NoSuchIdException if ticket will be not found
+     */
     public void applyTicketPurchasing(Ticket ticket, List<Excursion> excursions) throws NoSuchIdException {
         LOG.trace("applyTicketPurchasing()");
         int ticketId = addTicketInDB(ticket);
@@ -102,6 +141,13 @@ public class CartService {
         }
     }
 
+    /**
+     * Adds ticket in DB
+     *
+     * @param ticket to be added
+     * @return id of row in DB after 'Create' ticket
+     * @throws NoSuchIdException if created ticket row will be not found
+     */
     private int addTicketInDB(Ticket ticket) throws NoSuchIdException {
         LOG.trace("addTicketInDB()");
 
@@ -121,6 +167,12 @@ public class CartService {
         return id;
     }
 
+    /**
+     * Adds excursion in DB
+     *
+     * @param excursions from cart to be added
+     * @param ticketId ticket id to join with Ticket table in DB
+     */
     private void addExcursionsInDB(List<Excursion> excursions, int ticketId) {
         LOG.trace("addExcursionsInDB()");
         List<TicketExcursion> ticketExcursionList = new ArrayList<>();

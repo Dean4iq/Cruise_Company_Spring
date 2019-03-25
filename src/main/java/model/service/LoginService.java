@@ -9,6 +9,13 @@ import model.entity.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Class {@code LoginService} provides methods to receive data from DB on
+ * servlet commands demand
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class LoginService {
     private static final Logger LOG = LogManager.getLogger(LoginService.class);
     private DaoFactory daoFactory;
@@ -26,6 +33,14 @@ public class LoginService {
         return SingletonHolder.instance;
     }
 
+    /**
+     * checks user data on login process
+     *
+     * @param user to be checked
+     * @return user from DB after successful check
+     * @throws InvalidLoginOrPasswordException if passwords from form and DB will be mismatched
+     * @throws NoSuchIdException if there will be no user with defined login
+     */
     public User checkUserData(User user) throws InvalidLoginOrPasswordException, NoSuchIdException {
         LOG.trace("checkUserData({})", user.getLogin());
 

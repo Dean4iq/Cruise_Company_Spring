@@ -14,6 +14,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * Class {@code CabinSelectionService} provides methods to receive data from DB for servlet commands
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class CabinSelectionService {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionService.class);
     private DaoFactory daoFactory;
@@ -33,6 +39,12 @@ public class CabinSelectionService {
         return SingletonHolder.instance;
     }
 
+    /**
+     * Receives and returns list of rooms on ship assigned for cruise
+     *
+     * @param cruiseId id of cruise to find ship with rooms
+     * @return list of rooms on ship
+     */
     public List<Room> getCruiseLoadInfo(String cruiseId) {
         LOG.trace("getCruiseInfo({})", cruiseId);
 
@@ -49,6 +61,13 @@ public class CabinSelectionService {
         return roomList;
     }
 
+    /**
+     * Receives a cruise from DB and returns it to command
+     *
+     * @param cruiseId id of the cruise
+     * @return cruise with filled fields
+     * @throws NoSuchIdException if cruise will be not found
+     */
     public Cruise getSearchedCruiseInfo(String cruiseId) throws NoSuchIdException {
         LOG.trace("getSearchedCruiseInfo({})", cruiseId);
 
@@ -65,6 +84,12 @@ public class CabinSelectionService {
         return cruise;
     }
 
+    /**
+     * Receives a list of tickets from DB for cruise and returns it to the command
+     *
+     * @param cruiseId id of cruise to find tickets for it
+     * @return list of tickets for cruise
+     */
     public List<Ticket> getTicketsForCruise(String cruiseId) {
         LOG.trace("getTicketsForCruise({})", cruiseId);
 

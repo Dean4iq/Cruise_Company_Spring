@@ -9,6 +9,13 @@ import model.entity.dto.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Class {@code RegisterService} provides methods to receive and create data from/to DB on
+ * servlet commands demand
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class RegisterService {
     private static final Logger LOG = LogManager.getLogger(RegisterService.class);
     private DaoFactory daoFactory;
@@ -26,6 +33,13 @@ public class RegisterService {
         return SingletonHolder.instance;
     }
 
+    /**
+     * Checks if user with defined login not exists in the system
+     *
+     * @param login defined login to check
+     * @return true if login is unique
+     * @throws NotUniqueLoginException if login exists in DB
+     */
     public boolean checkUniqueLogin(String login) throws NotUniqueLoginException {
         LOG.trace("checkUniqueLogin({})", login);
 
@@ -46,6 +60,11 @@ public class RegisterService {
         throw new NotUniqueLoginException(login);
     }
 
+    /**
+     * Creates new row with user data in DB
+     *
+     * @param user object to be created
+     */
     public void registerNewUser(User user) {
         LOG.trace("checkUniqueLogin({})", user.getLogin());
 
