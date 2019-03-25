@@ -1,6 +1,7 @@
 package controller.command;
 
 import controller.util.Pagination;
+import model.entity.dto.Cart;
 import model.exception.NoSuchIdException;
 import model.entity.dto.Cruise;
 import model.entity.dto.Room;
@@ -11,7 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Class {@code CabinSelectionCommand} provide methods to select rooms on ship and checks their availability
@@ -49,19 +52,10 @@ public class CabinSelectionCommand implements Command {
         List<Room> roomList = setUpPages(request, cabinSelectionService.getCruiseLoadInfo(cruiseId));
 
         try {
-            Cruise cruise = cabinSelectionService.getSearchedCruiseInfo(cruiseId);
-            roomList.forEach(room -> room.setPrice(room.getRoomType().getPriceModifier() * cruise.getPrice()));
-            List<Ticket> tickets = cabinSelectionService.getTicketsForCruise(cruiseId);
-
-            tickets.forEach(ticket ->
-                    roomList.forEach(room -> {
-                        if (room.getId() == ticket.getRoomId()) {
-                            room.setAvailable(false);
-                        }
-                    }));
+            setUpRoomList(request, roomList, cruiseId);
         } catch (NoSuchIdException e) {
-            LOG.error(e);
-            return new ExceptionCommand().execute(request);
+            LOG.warn(e);
+            return "redirect: /error";
         }
 
         request.setAttribute("roomList", roomList);
@@ -70,12 +64,48 @@ public class CabinSelectionCommand implements Command {
     }
 
     /**
+     * Checks rooms availability in DB and other user sessions
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @param roomList list of rooms to operate
+     * @param cruiseId id of cruise to differ rooms in list
+     * @throws NoSuchIdException if there will be no tickets for cruise
+     */
+    private void setUpRoomList(HttpServletRequest request, List<Room> roomList, String cruiseId)
+            throws NoSuchIdException {
+        Set<HttpSession> sessions = (HashSet<HttpSession>) request.getServletContext()
+                .getAttribute("userSession");
+        Cruise cruise = cabinSelectionService.getSearchedCruiseInfo(cruiseId);
+        roomList.forEach(room -> room.setPrice(room.getRoomType().getPriceModifier() * cruise.getPrice()));
+        List<Ticket> tickets = cabinSelectionService.getTicketsForCruise(cruiseId);
+
+        sessions.forEach(session -> {
+            Cart cart = (Cart) session.getAttribute("sessionCart");
+            if (cart != null && cart.getTicket() != null) {
+                roomList.forEach(room -> {
+                    if (room.getId() == cart.getTicket().getRoomId()
+                            && Integer.parseInt(cruiseId) == cart.getTicket().getCruiseId()) {
+                        room.setAvailable(false);
+                    }
+                });
+            }
+        });
+
+        tickets.forEach(ticket ->
+                roomList.forEach(room -> {
+                    if (room.getId() == ticket.getRoomId()) {
+                        room.setAvailable(false);
+                    }
+                }));
+    }
+
+    /**
      * Calculates and records page numbers to jsp page and returns list of rooms for selected page
      *
-     * @see Pagination
-     * @param request stores and provides user data to process and link to session and context
+     * @param request  stores and provides user data to process and link to session and context
      * @param roomList list of rooms on ship from DB
      * @return list of rooms on ship for the selection page
+     * @see Pagination
      */
     private List<Room> setUpPages(HttpServletRequest request, List<Room> roomList) {
         Pagination<Room> pagination = new Pagination<>();
