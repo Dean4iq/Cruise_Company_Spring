@@ -81,9 +81,4 @@ public class Servlet extends HttpServlet {
             request.getRequestDispatcher(page).forward(request, response);
         }
     }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
 }

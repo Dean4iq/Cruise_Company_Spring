@@ -10,9 +10,21 @@ import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class {@code LogoutCommand} provide methods to process logout
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class LogoutCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LogoutCommand.class);
 
+    /**
+     * Process user request to logout
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return link to the login page
+     */
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");

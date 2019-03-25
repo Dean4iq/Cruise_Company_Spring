@@ -13,10 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Class {@code RegisterCommand} provide methods to process registration
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
     private RegisterService registerService = RegisterService.getInstance();
 
+    /**
+     * Calls methods to operate the registration process and returns link to the register page
+     * or redirects to the user page (after registration)
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return link to the login or user page (after successful registration)
+     */
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
@@ -37,6 +50,12 @@ public class RegisterCommand implements Command {
         return "/register.jsp";
     }
 
+    /**
+     * Receives the register data and initializes a new user
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return new user with filled fields
+     */
     private User getRegisterData(HttpServletRequest request) {
         return new User.Builder()
                 .login(request.getParameter("userLogin"))
@@ -47,6 +66,13 @@ public class RegisterCommand implements Command {
                 .build();
     }
 
+    /**
+     * Method to validate fields on regular expressions
+     *
+     * @param user provides fields to validate
+     * @param request stores and provides user data to process and link to session and context
+     * @return true if fields are valid
+     */
     private boolean validateFields(User user, HttpServletRequest request) {
         Map<String, String> userData = convertUserFieldsToMap(user);
 
@@ -70,11 +96,24 @@ public class RegisterCommand implements Command {
         return resultedMap.isEmpty();
     }
 
+    /**
+     * Method to validate concrete user field
+     *
+     * @param field to check
+     * @param regexKey key to regular expression string
+     * @return true if field is valid
+     */
     private boolean checkFieldRegEx(String field, String regexKey) {
         String regexString = new RegExStringsGetter().getRegExString(regexKey);
         return (field.matches(regexString));
     }
 
+    /**
+     * Initializes new map with user data
+     *
+     * @param user provides user data
+     * @return new map with user data
+     */
     private Map<String, String> convertUserFieldsToMap(User user) {
         Map<String, String> userData = new HashMap<>();
 
@@ -87,6 +126,13 @@ public class RegisterCommand implements Command {
         return userData;
     }
 
+    /**
+     * Initializes new user session after successful registration
+     *
+     * @param user date to initialize new session
+     * @param request stores and provides user data to process and link to session and context
+     * @return link to user homepage
+     */
     private String initializeUserSession(User user, HttpServletRequest request) {
         Set<String> userList = (HashSet<String>) request.getServletContext().getAttribute("userList");
 

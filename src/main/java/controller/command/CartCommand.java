@@ -21,10 +21,22 @@ import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
 
+/**
+ * Class {@code CartCommand} provide methods to operate with the session cart for users
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class CartCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CartCommand.class);
     private CartService cartService = CartService.getInstance();
 
+    /**
+     * Calls methods to operate with session cart and returns link to the cart page
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return link to the cart page
+     */
     @Override
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -68,6 +80,13 @@ public class CartCommand implements Command {
         return "/WEB-INF/user/cart.jsp";
     }
 
+    /**
+     * Initializes ticket data depending on the choice of the user in previous pages
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return ticket with filled data
+     * @throws NoResultException if there will be no ticket for these data
+     */
     private Ticket setTicketData(HttpServletRequest request) throws NoResultException {
         HttpSession session = request.getSession();
         String cruiseId = (String) session.getAttribute("selectedCruiseId");
@@ -94,6 +113,12 @@ public class CartCommand implements Command {
                 .build();
     }
 
+    /**
+     * Gets and adds to request attributes list of excursions, available for selected cruise
+     * in harbors on route
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void setExcursionList(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String cruiseId = (String) session.getAttribute("selectedCruiseId");
@@ -107,6 +132,11 @@ public class CartCommand implements Command {
         }
     }
 
+    /**
+     * Process the request to apply the ticket purchasing
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void payForTicket(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
@@ -122,6 +152,11 @@ public class CartCommand implements Command {
         }
     }
 
+    /**
+     * Cleans the cart and session from purchasing data
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void declinePayments(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
@@ -130,6 +165,11 @@ public class CartCommand implements Command {
         session.removeAttribute("roomId");
     }
 
+    /**
+     * Method to remove excursions from the cart on user demand
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void removeExcursionFromCart(HttpServletRequest request) {
         Cart cart = (Cart) request.getSession().getAttribute("sessionCart");
 
@@ -148,6 +188,11 @@ public class CartCommand implements Command {
         cart.setExcursionList(excursionList);
     }
 
+    /**
+     * Method to add excursions to the cart on user demand
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void addExcursionToCart(HttpServletRequest request) {
         Cart cart = (Cart) request.getSession().getAttribute("sessionCart");
         String excursionId = request.getParameter("excursionId");
@@ -162,6 +207,11 @@ public class CartCommand implements Command {
         cart.getExcursionList().add(excursionToAdd);
     }
 
+    /**
+     * Method to add locale values of country names
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void setCountryMap(HttpServletRequest request) {
         String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
 
@@ -177,6 +227,11 @@ public class CartCommand implements Command {
         request.setAttribute("countryMap", countryMap);
     }
 
+    /**
+     * Method to add locale values of harbor names
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void setHarborMap(HttpServletRequest request) {
         String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
 
@@ -186,6 +241,11 @@ public class CartCommand implements Command {
         request.setAttribute("harborMap", harborMap);
     }
 
+    /**
+     * Method to add locale values of excursion descriptions
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void setExcursionInfoMap(HttpServletRequest request) {
         String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
 

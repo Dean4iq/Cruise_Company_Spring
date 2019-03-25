@@ -16,10 +16,23 @@ import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
 
+/**
+ * Class {@code SearchCommand} provide methods to search cruises
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class SearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
     private TourSearchingService tourSearchingService = TourSearchingService.getInstance();
 
+    /**
+     * Calls methods to get cruise info and provides them to the user and returns link to
+     * the search page
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return link to the cruise search page or to the room selecting page (after cruise selection)
+     */
     @Override
     public String execute(HttpServletRequest request) {
         if (request.getParameter("searchCruise") != null) {
@@ -49,6 +62,13 @@ public class SearchCommand implements Command {
         return "/WEB-INF/user/search.jsp";
     }
 
+    /**
+     * Filters list of cruise by country
+     *
+     * @param cruiseList list to filter
+     * @param country name of country for filter
+     * @return filtered list of cruise
+     */
     private List<Cruise> filterCruiseListByCountry(List<Cruise> cruiseList, String country) {
         return cruiseList.stream().filter(cruise ->
                 cruise.getRouteList().stream().anyMatch(route ->
@@ -56,6 +76,11 @@ public class SearchCommand implements Command {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Initializes duration field of cruise
+     *
+     * @param cruiseList list of cruises
+     */
     private void setCruiseDuration(List<Cruise> cruiseList) {
         cruiseList.forEach(cruise -> {
             Route routeFrom = cruise.getRouteList().get(0);
@@ -65,6 +90,11 @@ public class SearchCommand implements Command {
         });
     }
 
+    /**
+     * Method to add locale values of country names
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void setCountryMap(HttpServletRequest request) {
         String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
 
@@ -80,6 +110,11 @@ public class SearchCommand implements Command {
         request.setAttribute("countryMap", countryMap);
     }
 
+    /**
+     * Method to add locale values of harbor names
+     *
+     * @param request stores and provides user data to process and link to session and context
+     */
     private void setHarborMap(HttpServletRequest request) {
         String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
 

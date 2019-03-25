@@ -13,10 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Class {@code CabinSelectionCommand} provide methods to select rooms on ship and checks their availability
+ * for purchasing. Also class uses page with pagination
+ *
+ * @author Dean4iq
+ * @version 1.0
+ */
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
     private CabinSelectionService cabinSelectionService = CabinSelectionService.getInstance();
 
+    /**
+     * Returns link to the selection page and provides data about rooms on ship
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @return link to the selection page
+     */
     @Override
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -56,6 +69,14 @@ public class CabinSelectionCommand implements Command {
         return "/WEB-INF/user/tickets.jsp";
     }
 
+    /**
+     * Calculates and records page numbers to jsp page and returns list of rooms for selected page
+     *
+     * @see Pagination
+     * @param request stores and provides user data to process and link to session and context
+     * @param roomList list of rooms on ship from DB
+     * @return list of rooms on ship for the selection page
+     */
     private List<Room> setUpPages(HttpServletRequest request, List<Room> roomList) {
         Pagination<Room> pagination = new Pagination<>();
         String pageNumber = request.getParameter("page");
@@ -69,6 +90,12 @@ public class CabinSelectionCommand implements Command {
         return pagination.getPageList(roomList, page);
     }
 
+    /**
+     * Returns number of pages depends on number of rooms
+     *
+     * @param roomList list of rooms to process
+     * @return total number of pages
+     */
     private int getPageNumber(List<Room> roomList) {
         Pagination<Room> pagination = new Pagination<>();
         return pagination.getPageNumber(roomList);
