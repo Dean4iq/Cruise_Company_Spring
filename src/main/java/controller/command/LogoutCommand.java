@@ -30,14 +30,6 @@ public class LogoutCommand implements Command {
         LOG.trace("Execute()");
 
         HttpSession session = request.getSession();
-        ServletContext context = request.getServletContext();
-
-        User user = (User) session.getAttribute("User");
-
-        if (user != null) {
-            Set<String> loggedUsers = (HashSet<String>) context.getAttribute("userList");
-            loggedUsers.remove(user.getLogin());
-        }
 
         session.invalidate();
         return "redirect: /login";

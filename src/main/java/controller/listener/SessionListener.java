@@ -36,7 +36,6 @@ public class SessionListener implements HttpSessionListener {
                 .getAttribute("userList");
         Set<HttpSession> sessionSet = (Set<HttpSession>) context
                 .getAttribute("userSession");
-
         sessionSet.remove(httpSessionEvent.getSession());
 
         if (session.getAttribute("Role") != GUEST) {
