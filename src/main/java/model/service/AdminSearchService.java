@@ -42,14 +42,15 @@ public class AdminSearchService {
         LOG.trace("getTicketInfo({})", ticketId);
 
         ticketDao = daoFactory.createTicketDao();
-        Ticket ticket = ticketDao.findFullTicketInfo(ticketId);
 
         try {
-            ticketDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
+            return ticketDao.findFullTicketInfo(ticketId);
+        } finally {
+            try {
+                ticketDao.close();
+            } catch (Exception e) {
+                LOG.error(e);
+            }
         }
-
-        return ticket;
     }
 }

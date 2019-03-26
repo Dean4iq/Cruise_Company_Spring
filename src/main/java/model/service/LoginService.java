@@ -39,24 +39,26 @@ public class LoginService {
      * @param user to be checked
      * @return user from DB after successful check
      * @throws InvalidLoginOrPasswordException if passwords from form and DB will be mismatched
-     * @throws NoSuchIdException if there will be no user with defined login
+     * @throws NoSuchIdException               if there will be no user with defined login
      */
     public User checkUserData(User user) throws InvalidLoginOrPasswordException, NoSuchIdException {
         LOG.trace("checkUserData({})", user.getLogin());
 
         this.userDao = daoFactory.createUserDao();
 
-        User userInDB = userDao.findById(user.getLogin());
-
         try {
-            userDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
+            User userInDB = userDao.findById(user.getLogin());
 
-        if (userInDB.getLogin().equals(user.getLogin())
-                && userInDB.getPassword().equals(user.getPassword())) {
-            return userInDB;
+            if (userInDB.getLogin().equals(user.getLogin())
+                    && userInDB.getPassword().equals(user.getPassword())) {
+                return userInDB;
+            }
+        } finally {
+            try {
+                userDao.close();
+            } catch (Exception e) {
+                LOG.error(e);
+            }
         }
 
         throw new InvalidLoginOrPasswordException();

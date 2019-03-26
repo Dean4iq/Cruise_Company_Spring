@@ -93,15 +93,15 @@ public class CartService {
         LOG.trace("getExcursionById({})", excursionId);
 
         excursionDao = daoFactory.createExcursionDao();
-        Excursion excursion = excursionDao.findById(excursionId);
-
         try {
-            excursionDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
+            return excursionDao.findById(excursionId);
+        } finally {
+            try {
+                excursionDao.close();
+            } catch (Exception e) {
+                LOG.error(e);
+            }
         }
-
-        return excursion;
     }
 
     /**
@@ -128,7 +128,7 @@ public class CartService {
     /**
      * Adds ticket and selected excursions from cart info to DB
      *
-     * @param ticket to be added
+     * @param ticket     to be added
      * @param excursions list of excursions to be added to DB
      * @throws NoSuchIdException if ticket will be not found
      */
@@ -152,26 +152,28 @@ public class CartService {
         LOG.trace("addTicketInDB()");
 
         ticketDao = daoFactory.createTicketDao();
-        int id = ticketDao.createAndReturnId(ticket);
-
         try {
-            ticketDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
+            int id = ticketDao.createAndReturnId(ticket);
 
-        if (id == -1) {
-            throw new NoSuchIdException(Integer.toString(id));
-        }
+            if (id == -1) {
+                throw new NoSuchIdException(Integer.toString(id));
+            }
 
-        return id;
+            return id;
+        } finally {
+            try {
+                ticketDao.close();
+            } catch (Exception e) {
+                LOG.error(e);
+            }
+        }
     }
 
     /**
      * Adds excursion in DB
      *
      * @param excursions from cart to be added
-     * @param ticketId ticket id to join with Ticket table in DB
+     * @param ticketId   ticket id to join with Ticket table in DB
      */
     private void addExcursionsInDB(List<Excursion> excursions, int ticketId) {
         LOG.trace("addExcursionsInDB()");

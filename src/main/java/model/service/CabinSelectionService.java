@@ -73,15 +73,15 @@ public class CabinSelectionService {
 
         cruiseDao = daoFactory.createCruiseDao();
 
-        Cruise cruise = cruiseDao.findById(Integer.parseInt(cruiseId));
-
         try {
-            cruiseDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
+            return cruiseDao.findById(Integer.parseInt(cruiseId));
+        } finally {
+            try {
+                cruiseDao.close();
+            } catch (Exception e) {
+                LOG.error(e);
+            }
         }
-
-        return cruise;
     }
 
     /**
