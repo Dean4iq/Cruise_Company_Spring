@@ -1,9 +1,11 @@
 package controller.command;
 
+import model.exception.AlreadyReservedException;
 import model.exception.NoResultException;
 import model.exception.NoSuchIdException;
 import model.entity.dto.Cart;
 import model.entity.dto.*;
+import model.service.CabinSelectionService;
 import model.service.CartService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,10 +15,7 @@ import util.ResourceBundleGetter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
@@ -60,6 +59,10 @@ public class CartCommand implements Command {
                 session.setAttribute(SESSION_CART, cart);
             } catch (NoResultException e) {
                 LOG.warn(e);
+            } catch (AlreadyReservedException e) {
+                request.setAttribute("alreadyTaken", true);
+                declinePayments(request);
+                return CART_LINK;
             }
         }
 
@@ -94,7 +97,8 @@ public class CartCommand implements Command {
      * @return ticket with filled data
      * @throws NoResultException if there will be no ticket for these data
      */
-    private Ticket setTicketData(HttpServletRequest request) throws NoResultException {
+    private Ticket setTicketData(HttpServletRequest request)
+            throws NoResultException, AlreadyReservedException {
         HttpSession session = request.getSession();
         String cruiseId = (String) session.getAttribute(SELECTED_CRUISE_ID);
         String roomId = (String) session.getAttribute(ROOM_ID);
@@ -103,6 +107,7 @@ public class CartCommand implements Command {
         if (cruiseId == null || roomId == null) {
             throw new NoResultException();
         }
+        checkTicketAvailability(request, roomId, cruiseId);
 
         Cruise cruise = cartService.getCruiseInfo(cruiseId);
         Room room = cartService.getRoomInfo(roomId);
@@ -118,6 +123,61 @@ public class CartCommand implements Command {
                 .room(room)
                 .cruise(cruise)
                 .build();
+    }
+
+    /**
+     * Checks in other carts and in DB if ticket's still available
+     *
+     * @param request stores and provides user data to process and link to session and context
+     * @param roomId number of room to check
+     * @param cruiseId number of cruise to define
+     * @throws AlreadyReservedException if room for cruise is already taken
+     */
+    private void checkTicketAvailability(HttpServletRequest request, String roomId, String cruiseId)
+            throws AlreadyReservedException {
+        Set<HttpSession> sessions = (HashSet<HttpSession>) request.getServletContext()
+                .getAttribute("userSession");
+
+        int roomNumber = Integer.parseInt(roomId);
+        int cruiseNumber = Integer.parseInt(cruiseId);
+
+        if (!(checkAvailabilityInCart(sessions, roomNumber, cruiseNumber)
+                && checkAvailabilityInDB(roomNumber, cruiseId))) {
+            throw new AlreadyReservedException(roomId);
+        }
+    }
+
+    /**
+     * Checks room availability in other carts
+     *
+     * @param sessions other user sessions
+     * @param roomNumber number of room to check
+     * @param cruiseId number of cruise to define
+     * @return true if room is available
+     */
+    private boolean checkAvailabilityInCart(Set<HttpSession> sessions, int roomNumber, int cruiseId) {
+        return sessions.stream().noneMatch(session -> {
+            Cart cart = (Cart) session.getAttribute(SESSION_CART);
+            if (cart != null && cart.getTicket() != null) {
+                return roomNumber == cart.getTicket().getRoomId()
+                        && cruiseId == cart.getTicket().getCruiseId();
+            }
+            return false;
+        });
+    }
+
+    /**
+     * Checks room availability in DB
+     *
+     * @param roomNumber number of room to check
+     * @param cruiseId number of cruise to define
+     * @return true if room is available
+     */
+    private boolean checkAvailabilityInDB(int roomNumber, String cruiseId) {
+        List<Ticket> tickets = CabinSelectionService.getInstance().getTicketsForCruise(cruiseId);
+
+        return tickets.stream().noneMatch(ticket ->
+                roomNumber == ticket.getRoomId());
     }
 
     /**

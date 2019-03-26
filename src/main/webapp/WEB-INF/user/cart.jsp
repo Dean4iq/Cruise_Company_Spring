@@ -29,6 +29,11 @@
                 ${sessionLocalization['cart.msg.purchasingDeclined']}
             </div>
         </c:if>
+        <c:if test="${alreadyTaken}">
+            <div class="alert alert-danger" role="alert">
+                ${sessionLocalization['cart.msg.alreadyTaken']}
+            </div>
+        </c:if>
 
         <c:choose>
             <c:when test="${not empty sessionCart.ticket}">
