@@ -29,6 +29,13 @@ import static java.util.Map.Entry.comparingByValue;
  */
 public class CartCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CartCommand.class);
+
+    private static final String CART_LINK = "/WEB-INF/user/cart.jsp";
+    private static final String SESSION_CART = "sessionCart";
+    private static final String SELECTED_CRUISE_ID = "selectedCruiseId";
+    private static final String ROOM_ID = "roomId";
+    private static final String SESSION_LANGUAGE = "sessionLanguage";
+
     private CartService cartService = CartService.getInstance();
 
     /**
@@ -41,7 +48,7 @@ public class CartCommand implements Command {
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        Cart cart = (Cart) session.getAttribute("sessionCart");
+        Cart cart = (Cart) session.getAttribute(SESSION_CART);
 
         if (cart == null) {
             cart = new Cart();
@@ -50,7 +57,7 @@ public class CartCommand implements Command {
                 Ticket ticket = setTicketData(request);
                 cart.setTicket(ticket);
 
-                session.setAttribute("sessionCart", cart);
+                session.setAttribute(SESSION_CART, cart);
             } catch (NoResultException e) {
                 LOG.warn(e);
             }
@@ -59,11 +66,11 @@ public class CartCommand implements Command {
         if (request.getParameter("payForTicket") != null) {
             payForTicket(request);
             request.setAttribute("paymentAccepted", true);
-            return "/WEB-INF/user/cart.jsp";
+            return CART_LINK;
         } else if (request.getParameter("declinePayment") != null) {
             declinePayments(request);
             request.setAttribute("paymentDeclined", true);
-            return "/WEB-INF/user/cart.jsp";
+            return CART_LINK;
         } else if (request.getParameter("removeExcursion") != null) {
             removeExcursionFromCart(request);
             return "redirect: /user/cart";
@@ -77,7 +84,7 @@ public class CartCommand implements Command {
         setCountryMap(request);
         setExcursionInfoMap(request);
 
-        return "/WEB-INF/user/cart.jsp";
+        return CART_LINK;
     }
 
     /**
@@ -89,8 +96,8 @@ public class CartCommand implements Command {
      */
     private Ticket setTicketData(HttpServletRequest request) throws NoResultException {
         HttpSession session = request.getSession();
-        String cruiseId = (String) session.getAttribute("selectedCruiseId");
-        String roomId = (String) session.getAttribute("roomId");
+        String cruiseId = (String) session.getAttribute(SELECTED_CRUISE_ID);
+        String roomId = (String) session.getAttribute(ROOM_ID);
         String userName = ((User) session.getAttribute("User")).getLogin();
 
         if (cruiseId == null || roomId == null) {
@@ -121,8 +128,8 @@ public class CartCommand implements Command {
      */
     private void setExcursionList(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String cruiseId = (String) session.getAttribute("selectedCruiseId");
-        Cart cart = (Cart) session.getAttribute("sessionCart");
+        String cruiseId = (String) session.getAttribute(SELECTED_CRUISE_ID);
+        Cart cart = (Cart) session.getAttribute(SESSION_CART);
 
         if (cruiseId != null && cart != null) {
             List<Excursion> excursionList = cartService.getExcursionList(cruiseId).stream()
@@ -140,13 +147,13 @@ public class CartCommand implements Command {
     private void payForTicket(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        Cart cart = (Cart) session.getAttribute("sessionCart");
+        Cart cart = (Cart) session.getAttribute(SESSION_CART);
 
         try {
             cartService.applyTicketPurchasing(cart.getTicket(), cart.getExcursionList());
-            session.removeAttribute("sessionCart");
-            session.removeAttribute("selectedCruiseId");
-            session.removeAttribute("roomId");
+            session.removeAttribute(SESSION_CART);
+            session.removeAttribute(SELECTED_CRUISE_ID);
+            session.removeAttribute(ROOM_ID);
         } catch (NoSuchIdException e) {
             LOG.error(e);
         }
@@ -160,9 +167,9 @@ public class CartCommand implements Command {
     private void declinePayments(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        session.removeAttribute("sessionCart");
-        session.removeAttribute("selectedCruiseId");
-        session.removeAttribute("roomId");
+        session.removeAttribute(SESSION_CART);
+        session.removeAttribute(SELECTED_CRUISE_ID);
+        session.removeAttribute(ROOM_ID);
     }
 
     /**
@@ -171,7 +178,7 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void removeExcursionFromCart(HttpServletRequest request) {
-        Cart cart = (Cart) request.getSession().getAttribute("sessionCart");
+        Cart cart = (Cart) request.getSession().getAttribute(SESSION_CART);
 
         String excursionId = request.getParameter("excursionId");
 
@@ -194,9 +201,9 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void addExcursionToCart(HttpServletRequest request) {
-        Cart cart = (Cart) request.getSession().getAttribute("sessionCart");
+        Cart cart = (Cart) request.getSession().getAttribute(SESSION_CART);
         String excursionId = request.getParameter("excursionId");
-        String cruiseId = (String) request.getSession().getAttribute("selectedCruiseId");
+        String cruiseId = (String) request.getSession().getAttribute(SELECTED_CRUISE_ID);
 
         List<Excursion> excursionList = cartService.getExcursionList(cruiseId);
 
@@ -213,7 +220,7 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void setCountryMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
+        String sessionLanguage = (String) request.getSession().getAttribute(SESSION_LANGUAGE);
 
         Map<String, String> countryMap =
                 ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.COUNTRY.source, sessionLanguage);
@@ -233,7 +240,7 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void setHarborMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
+        String sessionLanguage = (String) request.getSession().getAttribute(SESSION_LANGUAGE);
 
         Map<String, String> harborMap =
                 ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.HARBOR.source, sessionLanguage);
@@ -247,7 +254,7 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void setExcursionInfoMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
+        String sessionLanguage = (String) request.getSession().getAttribute(SESSION_LANGUAGE);
 
         Map<String, String> excursionInfoMap =
                 ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.EXCURSION_INFO.source,

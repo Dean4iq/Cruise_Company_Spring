@@ -38,7 +38,6 @@ public class RegisterCommand implements Command {
 
         try {
             if (validateFields(user, request) && registerService.checkUniqueLogin(user.getLogin())) {
-                System.out.println("WAZZZUP");
                 registerService.registerNewUser(user);
 
                 return initializeUserSession(user, request);
