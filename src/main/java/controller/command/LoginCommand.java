@@ -39,7 +39,7 @@ public class LoginCommand implements Command {
                 .password(request.getParameter("passwordUser"))
                 .build();
 
-        if (request.getParameter("login")!= null && user.getLogin() != null && !user.getLogin().equals("")) {
+        if (request.getParameter("login") != null && user.getLogin() != null && !user.getLogin().equals("")) {
             try {
                 user = loginService.checkUserData(user);
 
@@ -66,7 +66,7 @@ public class LoginCommand implements Command {
     /**
      * Checks if user with this login already exists in the system
      *
-     * @param user user to check
+     * @param user    user to check
      * @param request stores and provides user data to process and link to session and context
      * @return true if user is already logged in
      */
@@ -79,7 +79,7 @@ public class LoginCommand implements Command {
     /**
      * Initializes user session and add info to it
      *
-     * @param user user to initialize
+     * @param user    user to initialize
      * @param request stores and provides user data to process and link to session and context
      * @return redirect link
      */

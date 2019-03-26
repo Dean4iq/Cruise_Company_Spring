@@ -66,7 +66,7 @@ public class CabinSelectionCommand implements Command {
     /**
      * Checks rooms availability in DB and other user sessions
      *
-     * @param request stores and provides user data to process and link to session and context
+     * @param request  stores and provides user data to process and link to session and context
      * @param roomList list of rooms to operate
      * @param cruiseId id of cruise to differ rooms in list
      * @throws NoSuchIdException if there will be no tickets for cruise

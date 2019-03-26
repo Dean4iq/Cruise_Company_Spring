@@ -68,7 +68,7 @@ public class RegisterCommand implements Command {
     /**
      * Method to validate fields on regular expressions
      *
-     * @param user provides fields to validate
+     * @param user    provides fields to validate
      * @param request stores and provides user data to process and link to session and context
      * @return true if fields are valid
      */
@@ -98,7 +98,7 @@ public class RegisterCommand implements Command {
     /**
      * Method to validate concrete user field
      *
-     * @param field to check
+     * @param field    to check
      * @param regexKey key to regular expression string
      * @return true if field is valid
      */
@@ -128,7 +128,7 @@ public class RegisterCommand implements Command {
     /**
      * Initializes new user session after successful registration
      *
-     * @param user date to initialize new session
+     * @param user    date to initialize new session
      * @param request stores and provides user data to process and link to session and context
      * @return link to user homepage
      */

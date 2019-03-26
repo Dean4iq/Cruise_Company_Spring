@@ -128,8 +128,8 @@ public class CartCommand implements Command {
     /**
      * Checks in other carts and in DB if ticket's still available
      *
-     * @param request stores and provides user data to process and link to session and context
-     * @param roomId number of room to check
+     * @param request  stores and provides user data to process and link to session and context
+     * @param roomId   number of room to check
      * @param cruiseId number of cruise to define
      * @throws AlreadyReservedException if room for cruise is already taken
      */
@@ -150,9 +150,9 @@ public class CartCommand implements Command {
     /**
      * Checks room availability in other carts
      *
-     * @param sessions other user sessions
+     * @param sessions   other user sessions
      * @param roomNumber number of room to check
-     * @param cruiseId number of cruise to define
+     * @param cruiseId   number of cruise to define
      * @return true if room is available
      */
     private boolean checkAvailabilityInCart(Set<HttpSession> sessions, int roomNumber, int cruiseId) {
@@ -170,7 +170,7 @@ public class CartCommand implements Command {
      * Checks room availability in DB
      *
      * @param roomNumber number of room to check
-     * @param cruiseId number of cruise to define
+     * @param cruiseId   number of cruise to define
      * @return true if room is available
      */
     private boolean checkAvailabilityInDB(int roomNumber, String cruiseId) {

@@ -66,7 +66,7 @@ public class SearchCommand implements Command {
      * Filters list of cruise by country
      *
      * @param cruiseList list to filter
-     * @param country name of country for filter
+     * @param country    name of country for filter
      * @return filtered list of cruise
      */
     private List<Cruise> filterCruiseListByCountry(List<Cruise> cruiseList, String country) {
