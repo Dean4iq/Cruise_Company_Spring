@@ -44,9 +44,9 @@ Install the DBMS **MySQL Server 5.7** and load the sql dump script (**__database
 	2.	Enter the command “mvn clean tomcat7:run”.
 	3.	If the mvn command is not detected, then the path to the installed Maven should be specified in Path environment variables, then try to start the project again.
 
-**Accounts for login**
-	User login: user1111 password: user1111
-	Admin login: admin password: admin
+**Accounts for login**  
+	User login: user1111 password: user1111  
+	Admin login: admin password: admin  
 
 
 # Проект “Круизная Компания”
@@ -95,6 +95,6 @@ Install the DBMS **MySQL Server 5.7** and load the sql dump script (**__database
 	2.	Ввести команду “mvn clean tomcat7:run”.
 	3.	Если команды mvn не обнаружено, то следует указать в переменные среды Path путь к установленному Maven, после чего попытаться запустить проект снова.
 	
-**Учетные записи для входа**
-	Пользователь login: user1111 password: user1111
-	Администратор login: admin password: admin
+**Учетные записи для входа**  
+	Пользователь login: user1111 password: user1111  
+	Администратор login: admin password: admin  
