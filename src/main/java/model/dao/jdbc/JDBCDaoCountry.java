@@ -22,14 +22,14 @@ public class JDBCDaoCountry implements CountryDao {
     private Connection connection;
     private SqlReflector sqlReflector = new SqlReflector();
 
-    public JDBCDaoCountry(Connection connection) {
+    JDBCDaoCountry(Connection connection) {
         this.connection = connection;
     }
 
     @Override
     public void create(Country country) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(country.getClass(), SQLOperation.INSERT))) {
+                sqlReflector.process(country.getClass(), SQLOperation.INSERT))) {
             preparedStatement.setString(1, country.getName());
 
             preparedStatement.executeUpdate();
@@ -43,7 +43,7 @@ public class JDBCDaoCountry implements CountryDao {
         Country country = null;
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(Country.class, SQLOperation.FIND_BY_ID))) {
+                sqlReflector.process(Country.class, SQLOperation.FIND_BY_ID))) {
             preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -76,7 +76,7 @@ public class JDBCDaoCountry implements CountryDao {
         List<Country> countries = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(Country.class, SQLOperation.SELECT))) {
+                sqlReflector.process(Country.class, SQLOperation.SELECT))) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -92,7 +92,7 @@ public class JDBCDaoCountry implements CountryDao {
     @Override
     public void update(Country country) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(country.getClass(), SQLOperation.UPDATE))) {
+                sqlReflector.process(country.getClass(), SQLOperation.UPDATE))) {
             preparedStatement.setString(1, country.getName());
             preparedStatement.setInt(2, country.getId());
 
@@ -105,7 +105,7 @@ public class JDBCDaoCountry implements CountryDao {
     @Override
     public void delete(Country country) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(
-                new SqlReflector().process(country.getClass(), SQLOperation.DELETE))) {
+                sqlReflector.process(country.getClass(), SQLOperation.DELETE))) {
             preparedStatement.setInt(1, country.getId());
 
             preparedStatement.executeUpdate();

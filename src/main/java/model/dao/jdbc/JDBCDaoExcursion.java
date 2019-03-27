@@ -26,7 +26,7 @@ public class JDBCDaoExcursion implements ExcursionDao {
     private static final Logger LOG = LogManager.getLogger(JDBCDaoExcursion.class);
     private Connection connection;
 
-    public JDBCDaoExcursion(Connection connection) {
+    JDBCDaoExcursion(Connection connection) {
         this.connection = connection;
     }
 

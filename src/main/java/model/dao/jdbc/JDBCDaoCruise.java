@@ -24,7 +24,7 @@ public class JDBCDaoCruise implements CruiseDao {
     private static final Logger LOG = LogManager.getLogger(JDBCDaoCruise.class);
     private Connection connection;
 
-    public JDBCDaoCruise(Connection connection) {
+    JDBCDaoCruise(Connection connection) {
         this.connection = connection;
     }
 
