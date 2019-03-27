@@ -20,6 +20,9 @@
 	5.	All repository files will be uploaded to the directory that was selected in the previous step.
 	6.	For convenience, you should use the integrated development tool (IDE), for example, Intellij Idea, with which you can manage the project.
 	
+### Mandatory
+Install the DBMS **MySQL Server 5.7** and load the sql dump script (**__database_project_dump.sql__**) into the database.
+
 ### Starting project
 **Startup option 1**
 
@@ -40,6 +43,10 @@
 	1.	Run the command line and go to the project root folder in it.
 	2.	Enter the command “mvn clean tomcat7:run”.
 	3.	If the mvn command is not detected, then the path to the installed Maven should be specified in Path environment variables, then try to start the project again.
+
+**Accounts for login**
+	User login: user1111 password: user1111
+	Admin login: admin password: admin
 
 
 # Проект “Круизная Компания”
@@ -63,6 +70,9 @@
 	4.	В открывшемся окне выбрать путь в локальном хранилище, где будет храниться проект. После этого, нажать Clone.
 	5.	Все файлы репозитория будут загружены в директорию, которая была выбрана на предыдущем этапе.
 	6.	Для удобства следует воспользоваться интегрированным средством разработки (IDE), например, Intellij Idea, с помощью которого можно управлять проектом.
+
+### Обязательно
+Установить СУБД **MySQL Server 5.7** и загрузить sql скрипт дампа (**__database_project_dump.sql__**) в БД.
 	
 ### Запуск
 **Вариант запуска 1**
@@ -84,3 +94,7 @@
 	1.	Запустить командную строку и в ней перейти в корневую папку проекта.
 	2.	Ввести команду “mvn clean tomcat7:run”.
 	3.	Если команды mvn не обнаружено, то следует указать в переменные среды Path путь к установленному Maven, после чего попытаться запустить проект снова.
+	
+**Учетные записи для входа**
+	Пользователь login: user1111 password: user1111
+	Администратор login: admin password: admin
