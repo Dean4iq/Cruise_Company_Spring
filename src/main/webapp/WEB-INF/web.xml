@@ -12,29 +12,18 @@
     </jsp-property-group>
   </jsp-config>
 
-  <servlet>
-    <servlet-name>GlobalServlet</servlet-name>
-    <servlet-class>controller.Servlet</servlet-class>
-  </servlet>
-
   <session-config>
     <session-timeout>10</session-timeout>
   </session-config>
 
-
-  <servlet-mapping>
-    <servlet-name>GlobalServlet</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-
   <listener>
-    <listener-class>controller.listener.ContextListener</listener-class>
-    <listener-class>controller.listener.SessionListener</listener-class>
+    <listener-class>ua.den.controller.listener.ContextListener</listener-class>
+    <listener-class>ua.den.controller.listener.SessionListener</listener-class>
   </listener>
 
   <filter>
     <filter-name>EncodingFilter</filter-name>
-    <filter-class>controller.filter.EncodingFilter</filter-class>
+    <filter-class>ua.den.controller.filter.EncodingFilter</filter-class>
   </filter>
 
   <filter-mapping>
@@ -44,7 +33,7 @@
 
   <filter>
     <filter-name>LanguageFilter</filter-name>
-    <filter-class>controller.filter.LanguageFilter</filter-class>
+    <filter-class>ua.den.controller.filter.LanguageFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>LanguageFilter</filter-name>
@@ -53,7 +42,7 @@
 
   <filter>
     <filter-name>GuestFilter</filter-name>
-    <filter-class>controller.filter.GuestFilter</filter-class>
+    <filter-class>ua.den.controller.filter.GuestFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>GuestFilter</filter-name>
@@ -63,7 +52,7 @@
 
   <filter>
     <filter-name>UserFilter</filter-name>
-    <filter-class>controller.filter.UserFilter</filter-class>
+    <filter-class>ua.den.controller.filter.UserFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>UserFilter</filter-name>
@@ -72,7 +61,7 @@
 
   <filter>
     <filter-name>AdminFilter</filter-name>
-    <filter-class>controller.filter.AdminFilter</filter-class>
+    <filter-class>ua.den.controller.filter.AdminFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>AdminFilter</filter-name>

@@ -1,8 +1,8 @@
-package model.dao.jdbc;
+package ua.den.model.dao.jdbc;
 
-import model.dao.BonuseDao;
-import model.entity.dto.Bonuse;
-import model.exception.NoSuchIdException;
+import ua.den.model.dao.BonuseDao;
+import ua.den.model.entity.dto.Bonuse;
+import ua.den.model.exception.NoSuchIdException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

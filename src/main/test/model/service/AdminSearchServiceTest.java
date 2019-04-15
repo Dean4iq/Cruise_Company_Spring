@@ -1,10 +1,10 @@
-package model.service;
+package ua.den.model.service;
 
-import model.exception.NoSuchIdException;
-import model.entity.dto.Cruise;
-import model.entity.dto.Room;
-import model.entity.dto.Ship;
-import model.entity.dto.Ticket;
+import ua.den.model.exception.NoSuchIdException;
+import ua.den.model.entity.dto.Cruise;
+import ua.den.model.entity.dto.Room;
+import ua.den.model.entity.dto.Ship;
+import ua.den.model.entity.dto.Ticket;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

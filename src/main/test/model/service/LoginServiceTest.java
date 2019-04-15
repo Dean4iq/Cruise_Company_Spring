@@ -1,8 +1,8 @@
-package model.service;
+package ua.den.model.service;
 
-import model.entity.dto.User;
-import model.exception.InvalidLoginOrPasswordException;
-import model.exception.NoSuchIdException;
+import ua.den.model.entity.dto.User;
+import ua.den.model.exception.InvalidLoginOrPasswordException;
+import ua.den.model.exception.NoSuchIdException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

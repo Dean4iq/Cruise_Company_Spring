@@ -1,7 +1,7 @@
-package model.service;
+package ua.den.model.service;
 
-import model.entity.dto.Cruise;
-import model.exception.NoResultException;
+import ua.den.model.entity.dto.Cruise;
+import ua.den.model.exception.NoResultException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

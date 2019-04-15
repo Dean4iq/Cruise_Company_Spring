@@ -1,7 +1,7 @@
-package model.service;
+package ua.den.model.service;
 
-import model.entity.dto.User;
-import model.exception.NotUniqueLoginException;
+import ua.den.model.entity.dto.User;
+import ua.den.model.exception.NotUniqueLoginException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
