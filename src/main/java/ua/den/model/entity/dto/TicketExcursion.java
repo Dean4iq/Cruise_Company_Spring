@@ -10,13 +10,13 @@ public class TicketExcursion implements Serializable {
     @EmbeddedId
     private TicketExcursionKey ticketExcursionKey;
 
-    @MapsId
     @ManyToOne
+    @MapsId("ticket_ti_id")
     @JoinColumn(name = "ticket_ti_id")
     private Ticket ticket;
 
-    @MapsId
     @ManyToOne
+    @MapsId("excursion_exc_id")
     @JoinColumn(name = "excursion_exc_id")
     private Excursion excursion;
 
