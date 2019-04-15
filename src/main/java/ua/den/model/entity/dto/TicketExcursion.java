@@ -7,14 +7,26 @@ import java.util.Objects;
 @Entity
 @Table(name = "ticket_excursion")
 public class TicketExcursion implements Serializable {
-    @Id
+    @EmbeddedId
+    private TicketExcursionKey ticketExcursionKey;
+
+    @MapsId
     @ManyToOne
     @JoinColumn(name = "ticket_ti_id")
     private Ticket ticket;
-    @Id
+
+    @MapsId
     @ManyToOne
     @JoinColumn(name = "excursion_exc_id")
     private Excursion excursion;
+
+    public TicketExcursionKey getTicketExcursionKey() {
+        return ticketExcursionKey;
+    }
+
+    public void setTicketExcursionKey(TicketExcursionKey ticketExcursionKey) {
+        this.ticketExcursionKey = ticketExcursionKey;
+    }
 
     public Ticket getTicket() {
         return ticket;

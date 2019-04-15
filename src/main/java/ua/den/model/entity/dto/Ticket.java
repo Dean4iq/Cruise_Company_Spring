@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "ticket")
@@ -27,6 +28,12 @@ public class Ticket implements Serializable {
     @JoinColumn(name = "cruise_cr_id")
     private Cruise cruise;
 
+    @ManyToMany
+    @JoinTable(name = "ticket_excursion",
+            joinColumns = @JoinColumn(name = "ticket_ti_id"),
+            inverseJoinColumns = @JoinColumn(name = "excursion_exc_id"))
+    private Set<Excursion> excursions;
+
     public Ticket(Builder builder) {
         this.id = builder.id;
         this.purchaseDate = builder.purchaseDate;
@@ -36,7 +43,7 @@ public class Ticket implements Serializable {
         this.cruise = builder.cruise;
     }
 
-    public static class Builder{
+    public static class Builder {
         private Long id;
         private Timestamp purchaseDate;
         private Integer price;
@@ -80,7 +87,7 @@ public class Ticket implements Serializable {
             return this;
         }
 
-        public Ticket build(){
+        public Ticket build() {
             return new Ticket(this);
         }
     }
