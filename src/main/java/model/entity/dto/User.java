@@ -24,6 +24,64 @@ public class User implements Serializable {
     @Column(name = "admin")
     private Boolean admin;
 
+    public User(Builder builder) {
+        this.login = builder.login;
+        this.password = builder.password;
+        this.email = builder.email;
+        this.name = builder.name;
+        this.surname = builder.surname;
+        this.admin = builder.admin;
+    }
+
+    public static class Builder {
+        private String login;
+        private String password;
+        private String email;
+        private String name;
+        private String surname;
+        private Boolean admin;
+
+        public Builder login(String login) {
+            this.login = login;
+
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+
+            return this;
+        }
+
+        public Builder surname(String surname) {
+            this.surname = surname;
+
+            return this;
+        }
+
+        public Builder admin(Boolean admin) {
+            this.admin = admin;
+
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+
     public String getLogin() {
         return login;
     }

@@ -119,11 +119,9 @@ public class CartCommand implements Command {
         room.setPrice(room.getRoomType().getPriceModifier() * cruise.getPrice());
 
         return new Ticket.Builder()
-                .cruiseId(cruise.getId())
-                .roomId(room.getId())
                 .purchaseDate(new Timestamp(new Date().getTime()))
-                .login(userName)
                 .price(room.getPrice())
+                .user((User)session.getAttribute("User"))
                 .room(room)
                 .cruise(cruise)
                 .build();

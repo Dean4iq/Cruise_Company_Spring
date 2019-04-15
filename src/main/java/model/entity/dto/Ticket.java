@@ -2,6 +2,7 @@ package model.entity.dto;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -26,6 +27,64 @@ public class Ticket implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cruise_cr_id")
     private Cruise cruise;
+
+    public Ticket(Builder builder) {
+        this.id = builder.id;
+        this.purchaseDate = builder.purchaseDate;
+        this.price = builder.price;
+        this.user = builder.user;
+        this.room = builder.room;
+        this.cruise = builder.cruise;
+    }
+
+    public static class Builder{
+        private Long id;
+        private Timestamp purchaseDate;
+        private Integer price;
+        private User user;
+        private Room room;
+        private Cruise cruise;
+
+        public Builder id(Long id) {
+            this.id = id;
+
+            return this;
+        }
+
+        public Builder purchaseDate(Timestamp purchaseDate) {
+            this.purchaseDate = purchaseDate;
+
+            return this;
+        }
+
+        public Builder price(Integer price) {
+            this.price = price;
+
+            return this;
+        }
+
+        public Builder user(User user) {
+            this.user = user;
+
+            return this;
+        }
+
+        public Builder room(Room room) {
+            this.room = room;
+
+            return this;
+        }
+
+        public Builder cruise(Cruise cruise) {
+            this.cruise = cruise;
+
+            return this;
+        }
+
+        public Ticket build(){
+            return new Ticket(this);
+        }
+    }
 
     public Long getId() {
         return id;
