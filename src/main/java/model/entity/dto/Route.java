@@ -1,41 +1,25 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@TableName(name = "route")
+@Entity
+@Table(name = "route")
 public class Route implements Serializable {
-    @TableField(name = "cruise_cr_id", primaryKey = true)
-    private int cruiseId;
-    @TableField(name = "harbor_hb_id", primaryKey = true)
-    private int harborId;
-    @TableField(name = "arrival")
-    private Timestamp arrival;
-    @TableField(name = "departure")
-    private Timestamp departure;
-
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "cruise_cr_id")
     private Cruise cruise;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "harbor_hb_id")
     private Harbor harbor;
-
-    public int getCruiseId() {
-        return cruiseId;
-    }
-
-    public void setCruiseId(int cruiseId) {
-        this.cruiseId = cruiseId;
-    }
-
-    public int getHarborId() {
-        return harborId;
-    }
-
-    public void setHarborId(int harborId) {
-        this.harborId = harborId;
-    }
+    @Column(name = "arrival")
+    private Timestamp arrival;
+    @Column(name = "departure")
+    private Timestamp departure;
 
     public Cruise getCruise() {
         return cruise;
@@ -78,22 +62,20 @@ public class Route implements Serializable {
             return false;
         }
         Route route = (Route) object;
-        return getCruiseId() == route.getCruiseId() &&
-                getHarborId() == route.getHarborId() &&
+        return getCruise().equals(route.getCruise()) &&
+                getHarbor().equals(route.getHarbor()) &&
                 Objects.equals(getArrival(), route.getArrival()) &&
                 Objects.equals(getDeparture(), route.getDeparture());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCruiseId(), getHarborId(), getArrival(), getDeparture());
+        return Objects.hash(getCruise(), getHarbor(), getArrival(), getDeparture());
     }
 
     @Override
     public String toString() {
         return "Route{" +
-                "cruiseId=" + cruiseId +
-                ", harborId=" + harborId +
                 ", arrival=" + arrival +
                 ", departure=" + departure +
                 '}';

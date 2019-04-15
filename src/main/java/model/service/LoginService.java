@@ -1,13 +1,12 @@
 package model.service;
 
 import model.exception.InvalidLoginOrPasswordException;
-import model.exception.NoSuchIdException;
-import model.dao.DaoFactory;
-import model.dao.UserDao;
-import model.dao.jdbc.JDBCDaoFactory;
 import model.entity.dto.User;
+import model.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Class {@code LoginService} provides methods to receive data from DB on
@@ -16,22 +15,12 @@ import org.apache.logging.log4j.Logger;
  * @author Dean4iq
  * @version 1.0
  */
+@Service
 public class LoginService {
     private static final Logger LOG = LogManager.getLogger(LoginService.class);
-    private DaoFactory daoFactory;
-    private UserDao userDao;
 
-    private LoginService() {
-        this.daoFactory = JDBCDaoFactory.getInstance();
-    }
-
-    private static class SingletonHolder {
-        private static final LoginService instance = new LoginService();
-    }
-
-    public static LoginService getInstance() {
-        return SingletonHolder.instance;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * checks user data on login process
@@ -39,26 +28,15 @@ public class LoginService {
      * @param user to be checked
      * @return user from DB after successful check
      * @throws InvalidLoginOrPasswordException if passwords from form and DB will be mismatched
-     * @throws NoSuchIdException               if there will be no user with defined login
      */
-    public User checkUserData(User user) throws InvalidLoginOrPasswordException, NoSuchIdException {
+    public User checkUserData(User user) throws InvalidLoginOrPasswordException {
         LOG.trace("checkUserData({})", user.getLogin());
 
-        this.userDao = daoFactory.createUserDao();
+        User userInDB = userRepository.getOne(user.getLogin());
 
-        try {
-            User userInDB = userDao.findById(user.getLogin());
-
-            if (userInDB.getLogin().equals(user.getLogin())
-                    && userInDB.getPassword().equals(user.getPassword())) {
-                return userInDB;
-            }
-        } finally {
-            try {
-                userDao.close();
-            } catch (Exception e) {
-                LOG.error(e);
-            }
+        if (userInDB.getLogin().equals(user.getLogin())
+                && userInDB.getPassword().equals(user.getPassword())) {
+            return userInDB;
         }
 
         throw new InvalidLoginOrPasswordException();

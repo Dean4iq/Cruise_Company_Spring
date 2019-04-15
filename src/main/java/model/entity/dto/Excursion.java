@@ -1,29 +1,30 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@TableName(name = "excursion")
+@Entity
+@Table(name = "excursion")
 public class Excursion implements Serializable {
-    @TableField(name = "exc_id", primaryKey = true)
-    private int id;
-    @TableField(name = "info")
+    @Id
+    @GeneratedValue
+    @Column(name = "exc_id")
+    private Long id;
+    @Column(name = "info")
     private String information;
-    @TableField(name = "price")
-    private int price;
-    @TableField(name = "harbor_hb_id")
-    private int harborId;
+    @Column(name = "price")
+    private Integer price;
 
+    @ManyToOne
+    @JoinColumn(name = "harbor_hb_id")
     private Harbor harbor;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,20 +36,12 @@ public class Excursion implements Serializable {
         this.information = information;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public int getHarborId() {
-        return harborId;
-    }
-
-    public void setHarborId(int harborId) {
-        this.harborId = harborId;
     }
 
     public Harbor getHarbor() {
@@ -68,15 +61,14 @@ public class Excursion implements Serializable {
             return false;
         }
         Excursion excursion = (Excursion) object;
-        return getId() == excursion.getId() &&
-                getPrice() == excursion.getPrice() &&
-                getHarborId() == excursion.getHarborId() &&
+        return getId().equals(excursion.getId()) &&
+                getPrice().equals(excursion.getPrice()) &&
                 Objects.equals(getInformation(), excursion.getInformation());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInformation(), getPrice(), getHarborId());
+        return Objects.hash(getId(), getInformation(), getPrice());
     }
 
     @Override
@@ -85,7 +77,6 @@ public class Excursion implements Serializable {
                 "id=" + id +
                 ", information='" + information + '\'' +
                 ", price=" + price +
-                ", harborId=" + harborId +
                 '}';
     }
 }

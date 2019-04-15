@@ -9,6 +9,7 @@ import model.service.CabinSelectionService;
 import model.service.CartService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import util.PropertiesSource;
 import util.ResourceBundleGetter;
 
@@ -35,7 +36,10 @@ public class CartCommand implements Command {
     private static final String ROOM_ID = "roomId";
     private static final String SESSION_LANGUAGE = "sessionLanguage";
 
-    private CartService cartService = CartService.getInstance();
+    @Autowired
+    private CartService cartService;
+    @Autowired
+    private CabinSelectionService cabinSelectionService;
 
     /**
      * Calls methods to operate with session cart and returns link to the cart page
@@ -159,8 +163,8 @@ public class CartCommand implements Command {
         return sessions.stream().noneMatch(session -> {
             Cart cart = (Cart) session.getAttribute(SESSION_CART);
             if (cart != null && cart.getTicket() != null) {
-                return roomNumber == cart.getTicket().getRoomId()
-                        && cruiseId == cart.getTicket().getCruiseId();
+                return roomNumber == cart.getTicket().getRoom().getId()
+                        && cruiseId == cart.getTicket().getCruise().getId();
             }
             return false;
         });
@@ -174,10 +178,10 @@ public class CartCommand implements Command {
      * @return true if room is available
      */
     private boolean checkAvailabilityInDB(int roomNumber, String cruiseId) {
-        List<Ticket> tickets = CabinSelectionService.getInstance().getTicketsForCruise(cruiseId);
+        List<Ticket> tickets = cabinSelectionService.getTicketsForCruise(cruiseId);
 
         return tickets.stream().noneMatch(ticket ->
-                roomNumber == ticket.getRoomId());
+                roomNumber == ticket.getRoom().getId());
     }
 
     /**
@@ -194,7 +198,7 @@ public class CartCommand implements Command {
         if (cruiseId != null && cart != null) {
             List<Excursion> excursionList = cartService.getExcursionList(cruiseId).stream()
                     .filter(excursion -> cart.getExcursionList().stream().noneMatch(excursionInCart ->
-                            excursion.getId() == excursionInCart.getId())).collect(Collectors.toList());
+                            excursion.getId().equals(excursionInCart.getId()))).collect(Collectors.toList());
             request.setAttribute("excursionList", excursionList);
         }
     }

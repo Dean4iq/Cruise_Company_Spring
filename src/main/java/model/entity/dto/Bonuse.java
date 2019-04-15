@@ -1,23 +1,24 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@TableName(name = "bonuses")
+@Entity
+@Table(name="bonuses")
 public class Bonuse implements Serializable {
-    @TableField(name = "bo_id", primaryKey = true, autoincremented = true)
-    private int id;
-    @TableField(name = "name")
+    @Id
+    @GeneratedValue
+    @Column(name = "bo_id")
+    private Long id;
+    @Column(name = "name")
     private String name;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,7 +39,7 @@ public class Bonuse implements Serializable {
             return false;
         }
         Bonuse bonuse = (Bonuse) object;
-        return getId() == bonuse.getId()
+        return getId().equals(bonuse.getId())
                 && Objects.equals(getName(), bonuse.getName());
     }
 

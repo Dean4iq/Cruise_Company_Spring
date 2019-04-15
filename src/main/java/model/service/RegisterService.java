@@ -1,13 +1,12 @@
 package model.service;
 
-import model.exception.NoSuchIdException;
 import model.exception.NotUniqueLoginException;
-import model.dao.DaoFactory;
-import model.dao.UserDao;
-import model.dao.jdbc.JDBCDaoFactory;
 import model.entity.dto.User;
+import model.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Class {@code RegisterService} provides methods to receive and create data from/to DB on
@@ -16,22 +15,12 @@ import org.apache.logging.log4j.Logger;
  * @author Dean4iq
  * @version 1.0
  */
+@Service
 public class RegisterService {
     private static final Logger LOG = LogManager.getLogger(RegisterService.class);
-    private DaoFactory daoFactory;
-    private UserDao userDao;
 
-    private RegisterService() {
-        this.daoFactory = JDBCDaoFactory.getInstance();
-    }
-
-    private static class SingletonHolder {
-        private static final RegisterService instance = new RegisterService();
-    }
-
-    public static RegisterService getInstance() {
-        return SingletonHolder.instance;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Checks if user with defined login not exists in the system
@@ -43,18 +32,10 @@ public class RegisterService {
     public boolean checkUniqueLogin(String login) throws NotUniqueLoginException {
         LOG.trace("checkUniqueLogin({})", login);
 
-        this.userDao = daoFactory.createUserDao();
+        userRepository.getOne(login);
 
-        try {
-            userDao.findById(login);
-        } catch (NoSuchIdException e) {
+        if (userRepository == null) {
             return true;
-        } finally {
-            try {
-                userDao.close();
-            } catch (Exception e) {
-                LOG.error(e);
-            }
         }
 
         throw new NotUniqueLoginException(login);
@@ -68,14 +49,6 @@ public class RegisterService {
     public void registerNewUser(User user) {
         LOG.trace("checkUniqueLogin({})", user.getLogin());
 
-        this.userDao = daoFactory.createUserDao();
-
-        userDao.create(user);
-
-        try {
-            userDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
+        userRepository.save(user);
     }
 }

@@ -6,6 +6,7 @@ import model.entity.dto.Route;
 import model.service.TourSearchingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import util.PropertiesSource;
 import util.ResourceBundleGetter;
 
@@ -24,7 +25,9 @@ import static java.util.Map.Entry.comparingByValue;
  */
 public class SearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
-    private TourSearchingService tourSearchingService = TourSearchingService.getInstance();
+
+    @Autowired
+    private TourSearchingService tourSearchingService;
 
     /**
      * Calls methods to get cruise info and provides them to the user and returns link to

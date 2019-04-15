@@ -1,23 +1,24 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@TableName(name = "country")
+@Entity
+@Table(name = "country")
 public class Country implements Serializable {
-    @TableField(name = "co_id", primaryKey = true)
-    private int id;
-    @TableField(name = "name")
+    @Id
+    @GeneratedValue
+    @Column(name="co_id")
+    private Long id;
+    @Column(name = "name")
     private String name;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,7 +39,7 @@ public class Country implements Serializable {
             return false;
         }
         Country country = (Country) object;
-        return getId() == country.getId() &&
+        return getId().equals(country.getId()) &&
                 Objects.equals(getName(), country.getName());
     }
 

@@ -1,12 +1,12 @@
 package model.service;
 
 import model.exception.NoResultException;
-import model.dao.CruiseDao;
-import model.dao.DaoFactory;
-import model.dao.jdbc.JDBCDaoFactory;
 import model.entity.dto.Cruise;
+import model.repository.CruiseRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -17,22 +17,12 @@ import java.util.List;
  * @author Dean4iq
  * @version 1.0
  */
+@Service
 public class TourSearchingService {
     private static final Logger LOG = LogManager.getLogger(TourSearchingService.class);
-    private DaoFactory daoFactory;
-    private CruiseDao cruiseDao;
 
-    private TourSearchingService() {
-        daoFactory = JDBCDaoFactory.getInstance();
-    }
-
-    private static class SingletonHolder {
-        private static final TourSearchingService instance = new TourSearchingService();
-    }
-
-    public static TourSearchingService getInstance() {
-        return SingletonHolder.instance;
-    }
+    @Autowired
+    private CruiseRepository cruiseRepository;
 
     /**
      * Receives and provides list of cruises from DB
@@ -43,14 +33,7 @@ public class TourSearchingService {
     public List<Cruise> searchCruisesFullInfo() throws NoResultException {
         LOG.trace("searchCruisesFullInfo()");
 
-        cruiseDao = daoFactory.createCruiseDao();
-
-        List<Cruise> cruiseList = cruiseDao.findFullCruiseInfo();
-        try {
-            cruiseDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
+        List<Cruise> cruiseList = cruiseRepository.findAll();
 
         if (cruiseList.isEmpty()) {
             throw new NoResultException();

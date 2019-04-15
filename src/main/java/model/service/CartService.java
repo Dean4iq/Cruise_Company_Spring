@@ -1,11 +1,12 @@
 package model.service;
 
 import model.exception.NoSuchIdException;
-import model.dao.*;
-import model.dao.jdbc.JDBCDaoFactory;
 import model.entity.dto.*;
+import model.repository.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,26 +18,20 @@ import java.util.List;
  * @author Dean4iq
  * @version 1.0
  */
+@Service
 public class CartService {
     private static final Logger LOG = LogManager.getLogger(CartService.class);
-    private DaoFactory daoFactory;
-    private CruiseDao cruiseDao;
-    private RoomDao roomDao;
-    private ExcursionDao excursionDao;
-    private TicketDao ticketDao;
-    private TicketExcursionDao ticketExcursionDao;
 
-    private CartService() {
-        daoFactory = JDBCDaoFactory.getInstance();
-    }
-
-    private static class SingletonHolder {
-        private static final CartService instance = new CartService();
-    }
-
-    public static CartService getInstance() {
-        return SingletonHolder.instance;
-    }
+    @Autowired
+    private CruiseRepository cruiseRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
+    private ExcursionRepository excursionRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+    private TicketExcursionRepository ticketExcursionRepository;
 
     /**
      * Receives and returns cruise info from DB
@@ -47,18 +42,7 @@ public class CartService {
     public Cruise getCruiseInfo(String cruiseId) {
         LOG.trace("getCruiseInfo({})", cruiseId);
 
-        cruiseDao = daoFactory.createCruiseDao();
-
-        List<Cruise> cruiseList = cruiseDao.findFullCruiseInfo();
-
-        try {
-            cruiseDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
-
-        return cruiseList.stream().filter(cruise ->
-                cruise.getId() == Integer.parseInt(cruiseId)).findFirst().orElse(null);
+        return cruiseRepository.getOne(Integer.parseInt(cruiseId));
     }
 
     /**
@@ -70,16 +54,7 @@ public class CartService {
     public Room getRoomInfo(String roomId) {
         LOG.trace("getRoomInfo({})", roomId);
 
-        roomDao = daoFactory.createRoomDao();
-        Room room = roomDao.getFullInfo(Integer.parseInt(roomId));
-
-        try {
-            roomDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
-
-        return room;
+        return roomRepository.getOne(Integer.parseInt(roomId));
     }
 
     /**
@@ -92,16 +67,7 @@ public class CartService {
     public Excursion getExcursionById(int excursionId) throws NoSuchIdException {
         LOG.trace("getExcursionById({})", excursionId);
 
-        excursionDao = daoFactory.createExcursionDao();
-        try {
-            return excursionDao.findById(excursionId);
-        } finally {
-            try {
-                excursionDao.close();
-            } catch (Exception e) {
-                LOG.error(e);
-            }
-        }
+        return excursionRepository.getOne(excursionId);
     }
 
     /**
@@ -113,16 +79,7 @@ public class CartService {
     public List<Excursion> getExcursionList(String cruiseId) {
         LOG.trace("getExcursionList({})", cruiseId);
 
-        excursionDao = daoFactory.createExcursionDao();
-        List<Excursion> excursionList = excursionDao.getExcursionsForCruise(Integer.parseInt(cruiseId));
-
-        try {
-            excursionDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
-
-        return excursionList;
+        return excursionRepository.getExcursionsForCruise(Integer.parseInt(cruiseId));
     }
 
     /**
@@ -134,10 +91,10 @@ public class CartService {
      */
     public void applyTicketPurchasing(Ticket ticket, List<Excursion> excursions) throws NoSuchIdException {
         LOG.trace("applyTicketPurchasing()");
-        int ticketId = addTicketInDB(ticket);
+        Ticket addedTicket = addTicketInDB(ticket);
 
         if (excursions != null && !excursions.isEmpty()) {
-            addExcursionsInDB(excursions, ticketId);
+            addExcursionsInDB(excursions, addedTicket);
         }
     }
 
@@ -148,53 +105,32 @@ public class CartService {
      * @return id of row in DB after 'Create' ticket
      * @throws NoSuchIdException if created ticket row will be not found
      */
-    private int addTicketInDB(Ticket ticket) throws NoSuchIdException {
+    private Ticket addTicketInDB(Ticket ticket) throws NoSuchIdException {
         LOG.trace("addTicketInDB()");
 
-        ticketDao = daoFactory.createTicketDao();
-        try {
-            int id = ticketDao.createAndReturnId(ticket);
+        return ticketRepository.save(ticket);
 
-            if (id == -1) {
-                throw new NoSuchIdException(Integer.toString(id));
-            }
-
-            return id;
-        } finally {
-            try {
-                ticketDao.close();
-            } catch (Exception e) {
-                LOG.error(e);
-            }
-        }
     }
 
     /**
      * Adds excursion in DB
      *
      * @param excursions from cart to be added
-     * @param ticketId   ticket id to join with Ticket table in DB
+     * @param ticket   ticket to join with Ticket table in DB
      */
-    private void addExcursionsInDB(List<Excursion> excursions, int ticketId) {
+    private void addExcursionsInDB(List<Excursion> excursions, Ticket ticket) {
         LOG.trace("addExcursionsInDB()");
         List<TicketExcursion> ticketExcursionList = new ArrayList<>();
 
         excursions.forEach(excursion -> {
             TicketExcursion ticketExcursion = new TicketExcursion();
 
-            ticketExcursion.setTicketId(ticketId);
-            ticketExcursion.setExcursionId(excursion.getId());
+            ticketExcursion.setTicket(ticket);
+            ticketExcursion.setExcursion(excursion);
 
             ticketExcursionList.add(ticketExcursion);
         });
 
-        ticketExcursionDao = daoFactory.createTicketExcursionDao();
-        ticketExcursionDao.addList(ticketExcursionList);
-
-        try {
-            ticketExcursionDao.close();
-        } catch (Exception e) {
-            LOG.error(e);
-        }
+        ticketExcursionRepository.saveAll(ticketExcursionList);
     }
 }

@@ -1,77 +1,28 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
-@TableName(name = "user")
+@Entity
+@Table(name = "user")
 public class User implements Serializable {
-    @TableField(name = "login", primaryKey = true)
+    @Id
+    @Column(name = "login")
     private String login;
-    @TableField(name = "password")
+    @Column(name = "password")
     private String password;
-    @TableField(name = "email")
+    @Column(name = "email")
     private String email;
-    @TableField(name = "name")
+    @Column(name = "name")
     private String name;
-    @TableField(name = "surname")
+    @Column(name = "surname")
     private String surname;
-    @TableField(name = "admin")
-    private boolean admin;
-
-    public User(Builder builder) {
-        this.login = builder.login;
-        this.password = builder.password;
-        this.email = builder.email;
-        this.name = builder.name;
-        this.surname = builder.surname;
-        this.admin = builder.admin;
-    }
-
-    public static class Builder {
-        private String login;
-        private String password;
-        private String email;
-        private String name;
-        private String surname;
-        private boolean admin;
-
-        public Builder login(String login) {
-            this.login = login;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder surname(String surname) {
-            this.surname = surname;
-            return this;
-        }
-
-        public Builder admin(boolean admin) {
-            this.admin = admin;
-            return this;
-        }
-
-        public User build(){
-            return new User(this);
-        }
-    }
+    @Column(name = "admin")
+    private Boolean admin;
 
     public String getLogin() {
         return login;

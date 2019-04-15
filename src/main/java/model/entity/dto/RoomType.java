@@ -1,37 +1,31 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@TableName(name = "room_type")
+@Entity
+@Table(name = "room_type")
 public class RoomType implements Serializable {
-    @TableField(name = "rt_id", primaryKey = true, autoincremented = true)
-    private int id;
-    @TableField(name = "name")
+    @Id
+    @GeneratedValue
+    @Column(name = "rt_id")
+    private Long id;
+    @Column(name = "name")
     private String name;
-    @TableField(name = "cost_modifier")
-    private int priceModifier;
+    @Column(name = "cost_modifier")
+    private Integer priceModifier;
 
+    @OneToMany(targetEntity = Bonuse.class)
     private List<Bonuse> bonuses = new ArrayList<>();
 
-    public int getPriceModifier() {
-        return priceModifier;
-    }
-
-    public void setPriceModifier(int priceModifier) {
-        this.priceModifier = priceModifier;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -41,6 +35,14 @@ public class RoomType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getPriceModifier() {
+        return priceModifier;
+    }
+
+    public void setPriceModifier(Integer priceModifier) {
+        this.priceModifier = priceModifier;
     }
 
     public List<Bonuse> getBonuses() {
@@ -60,8 +62,8 @@ public class RoomType implements Serializable {
             return false;
         }
         RoomType roomType = (RoomType) object;
-        return getId() == roomType.getId() &&
-                getPriceModifier() == roomType.getPriceModifier() &&
+        return getId().equals(roomType.getId()) &&
+                getPriceModifier().equals(roomType.getPriceModifier()) &&
                 Objects.equals(getName(), roomType.getName());
     }
 

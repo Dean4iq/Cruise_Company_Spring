@@ -1,25 +1,26 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@TableName(name = "ship")
+@Entity
+@Table(name = "ship")
 public class Ship implements Serializable {
-    @TableField(name = "sh_id", primaryKey = true)
-    private int id;
-    @TableField(name = "name")
+    @Id
+    @GeneratedValue
+    @Column(name = "sh_id")
+    private Long id;
+    @Column(name = "name")
     private String name;
-    @TableField(name = "crew_number")
-    private int crewNumber;
+    @Column(name = "crew_number")
+    private Integer crewNumber;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,11 +32,11 @@ public class Ship implements Serializable {
         this.name = name;
     }
 
-    public int getCrewNumber() {
+    public Integer getCrewNumber() {
         return crewNumber;
     }
 
-    public void setCrewNumber(int crewNumber) {
+    public void setCrewNumber(Integer crewNumber) {
         this.crewNumber = crewNumber;
     }
 
@@ -48,9 +49,9 @@ public class Ship implements Serializable {
             return false;
         }
         Ship ship = (Ship) object;
-        return getId() == ship.getId() &&
+        return getId().equals(ship.getId()) &&
                 Objects.equals(getName(), ship.getName()) &&
-                getCrewNumber() == ship.getCrewNumber();
+                getCrewNumber().equals(ship.getCrewNumber());
     }
 
     @Override

@@ -1,81 +1,39 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@TableName(name = "cruise")
+@Entity
+@Table(name = "cruise")
 public class Cruise implements Serializable {
-    @TableField(name = "cr_id", primaryKey = true)
-    private int id;
-    @TableField(name = "name")
+    @Id
+    @GeneratedValue
+    @Column(name = "cr_id")
+    private Long id;
+    @Column(name = "name")
     private String name;
-    @TableField(name = "price")
-    private int price;
-    @TableField(name = "date")
+    @Column(name = "price")
+    private Integer price;
+    @Column(name = "date")
     private Timestamp date;
-    @TableField(name = "ship_sh_id")
-    private int shipId;
+
+    @ManyToOne
+    @JoinColumn(name = "ship_sh_id")
+    private Ship ship;
+
+    @OneToMany(targetEntity = Route.class)
+    private List<Route> routeList;
 
     private int daysInRoute;
-    private Ship ship;
-    private List<Route> routeList = new ArrayList<>();
 
-    public Cruise(Builder builder) {
-        this.id = builder.id;
-        this.name = builder.name;
-        this.price = builder.price;
-        this.date = builder.date;
-        this.shipId = builder.shipId;
-    }
-
-    public static class Builder {
-        private int id;
-        private String name;
-        private int price;
-        private Timestamp date;
-        private int shipId;
-
-        public Builder id(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder price(int price) {
-            this.price = price;
-            return this;
-        }
-
-        public Builder date(Timestamp date) {
-            this.date = date;
-            return this;
-        }
-
-        public Builder shipId(int shipId) {
-            this.shipId = shipId;
-            return this;
-        }
-
-        public Cruise build() {
-            return new Cruise(this);
-        }
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,11 +45,11 @@ public class Cruise implements Serializable {
         this.name = name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -101,14 +59,6 @@ public class Cruise implements Serializable {
 
     public void setDate(Timestamp date) {
         this.date = date;
-    }
-
-    public int getShipId() {
-        return shipId;
-    }
-
-    public void setShipId(int shipId) {
-        this.shipId = shipId;
     }
 
     public Ship getShip() {
@@ -144,16 +94,15 @@ public class Cruise implements Serializable {
             return false;
         }
         Cruise cruise = (Cruise) object;
-        return getId() == cruise.getId() &&
-                getPrice() == cruise.getPrice() &&
-                getShipId() == cruise.getShipId() &&
+        return getId().equals(cruise.getId()) &&
+                getPrice().equals(cruise.getPrice()) &&
                 Objects.equals(getName(), cruise.getName()) &&
                 Objects.equals(getDate(), cruise.getDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPrice(), getDate(), getShipId());
+        return Objects.hash(getId(), getName(), getPrice(), getDate());
     }
 
     @Override
@@ -163,7 +112,6 @@ public class Cruise implements Serializable {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", date=" + date +
-                ", shipId=" + shipId +
                 ", daysInRoute=" + daysInRoute;
     }
 }

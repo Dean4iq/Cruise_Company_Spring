@@ -5,6 +5,7 @@ import model.entity.dto.Ticket;
 import model.service.AdminSearchService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +17,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class AdminSearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AdminSearchCommand.class);
-    private AdminSearchService adminSearchService = AdminSearchService.getInstance();
+
+    @Autowired
+    private AdminSearchService adminSearchService;
 
     /**
      * Returns link to the user search page and provides detailed ticket data on demand
@@ -29,13 +32,8 @@ public class AdminSearchCommand implements Command {
         if (request.getParameter("searchSubmit") != null) {
             int ticketId = Integer.parseInt(request.getParameter("ticketId"));
 
-            try {
-                Ticket ticket = adminSearchService.getTicketInfo(ticketId);
-                request.setAttribute("foundedTicket", ticket);
-            } catch (NoSuchIdException e) {
-                LOG.warn(e);
-                request.setAttribute("ticketNotFound", true);
-            }
+            Ticket ticket = adminSearchService.getTicketInfo(ticketId);
+            request.setAttribute("foundedTicket", ticket);
         }
 
         return "/WEB-INF/admin/search.jsp";

@@ -1,111 +1,37 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@TableName(name = "ticket")
+@Entity
+@Table(name = "ticket")
 public class Ticket implements Serializable {
-    @TableField(name = "ti_id", primaryKey = true, autoincremented = true)
-    private int id;
-    @TableField(name = "purchase_date")
+    @Id
+    @GeneratedValue
+    @Column(name = "ti_id")
+    private Long id;
+    @Column(name = "purchase_date")
     private Timestamp purchaseDate;
-    @TableField(name = "price")
-    private int price;
-    @TableField(name = "user_login")
-    private String login;
-    @TableField(name = "room_ro_id")
-    private int roomId;
-    @TableField(name = "cruise_cr_id")
-    private int cruiseId;
+    @Column(name = "price")
+    private Integer price;
 
+    @ManyToOne
+    @JoinColumn(name = "user_login")
     private User user;
+    @ManyToOne
+    @JoinColumn(name = "room_ro_id")
     private Room room;
+    @ManyToOne
+    @JoinColumn(name = "cruise_cr_id")
     private Cruise cruise;
 
-    public Ticket(Builder builder) {
-        this.id = builder.id;
-        this.purchaseDate = builder.purchaseDate;
-        this.price = builder.price;
-        this.login = builder.login;
-        this.roomId = builder.roomId;
-        this.cruiseId = builder.cruiseId;
-
-        this.user = builder.user;
-        this.room = builder.room;
-        this.cruise = builder.cruise;
-    }
-
-    public static class Builder {
-        private int id;
-        private Timestamp purchaseDate;
-        private int price;
-        private String login;
-        private int roomId;
-        private int cruiseId;
-
-        private User user;
-        private Room room;
-        private Cruise cruise;
-
-        public Builder id(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder purchaseDate(Timestamp purchaseDate) {
-            this.purchaseDate = purchaseDate;
-            return this;
-        }
-
-        public Builder price(int price) {
-            this.price = price;
-            return this;
-        }
-
-        public Builder login(String login) {
-            this.login = login;
-            return this;
-        }
-
-        public Builder roomId(int roomId) {
-            this.roomId = roomId;
-            return this;
-        }
-
-        public Builder cruiseId(int cruiseId) {
-            this.cruiseId = cruiseId;
-            return this;
-        }
-
-        public Builder user(User user) {
-            this.user = user;
-            return this;
-        }
-
-        public Builder room(Room room) {
-            this.room = room;
-            return this;
-        }
-
-        public Builder cruise(Cruise cruise) {
-            this.cruise = cruise;
-            return this;
-        }
-
-        public Ticket build() {
-            return new Ticket(this);
-        }
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -117,36 +43,12 @@ public class Ticket implements Serializable {
         this.purchaseDate = purchaseDate;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public int getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
-
-    public int getCruiseId() {
-        return cruiseId;
-    }
-
-    public void setCruiseId(int cruiseId) {
-        this.cruiseId = cruiseId;
     }
 
     public User getUser() {
@@ -182,17 +84,14 @@ public class Ticket implements Serializable {
             return false;
         }
         Ticket ticket = (Ticket) object;
-        return getId() == ticket.getId() &&
-                getPrice() == ticket.getPrice() &&
-                getRoomId() == ticket.getRoomId() &&
-                getCruiseId() == ticket.getCruiseId() &&
-                Objects.equals(getPurchaseDate(), ticket.getPurchaseDate()) &&
-                Objects.equals(getLogin(), ticket.getLogin());
+        return getId().equals(ticket.getId()) &&
+                getPrice().equals(ticket.getPrice()) &&
+                Objects.equals(getPurchaseDate(), ticket.getPurchaseDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getPurchaseDate(), getPrice(), getLogin(), getRoomId(), getCruiseId());
+        return Objects.hash(getId(), getPurchaseDate(), getPrice());
     }
 
     @Override
@@ -201,9 +100,6 @@ public class Ticket implements Serializable {
                 "id=" + id +
                 ", purchaseDate=" + purchaseDate +
                 ", price=" + price +
-                ", login='" + login + '\'' +
-                ", roomId=" + roomId +
-                ", cruiseId=" + cruiseId +
                 '}';
     }
 }

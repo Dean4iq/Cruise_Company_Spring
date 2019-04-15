@@ -1,6 +1,5 @@
 package controller.listener;
 
-import model.dao.jdbc.ConnectorDB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,7 +29,5 @@ public class ContextListener implements ServletContextListener {
                 .removeAttribute("userList");
         servletContextEvent.getServletContext()
                 .removeAttribute("userSession");
-
-        ConnectorDB.INSTANCE.shutDown();
     }
 }

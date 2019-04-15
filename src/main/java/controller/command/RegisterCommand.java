@@ -6,6 +6,7 @@ import model.entity.enums.UserType;
 import model.service.RegisterService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import util.RegExSources;
 import util.RegExStringsGetter;
 
@@ -21,7 +22,9 @@ import java.util.stream.Collectors;
  */
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
-    private RegisterService registerService = RegisterService.getInstance();
+
+    @Autowired
+    private RegisterService registerService;
 
     /**
      * Calls methods to operate the registration process and returns link to the register page

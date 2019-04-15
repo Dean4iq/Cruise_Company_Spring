@@ -1,47 +1,33 @@
 package model.entity.dto;
 
-import model.annotation.TableField;
-import model.annotation.TableName;
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@TableName(name = "room")
+@Entity
+@Table(name = "room")
 public class Room implements Serializable {
-    @TableField(name = "ro_id", primaryKey = true)
-    private int id;
-    @TableField(name = "room_type_rt_id")
-    private int roomTypeId;
-    @TableField(name = "ship_sh_id")
-    private int shipId;
+    @Id
+    @GeneratedValue
+    @Column(name = "ro_id")
+    private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "room_type_rt_id")
     private RoomType roomType;
+    @ManyToOne
+    @JoinColumn(name = "ship_sh_id")
     private Ship ship;
+
     private int price;
     private boolean available = true;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getRoomTypeId() {
-        return roomTypeId;
-    }
-
-    public void setRoomTypeId(int roomTypeId) {
-        this.roomTypeId = roomTypeId;
-    }
-
-    public int getShipId() {
-        return shipId;
-    }
-
-    public void setShipId(int shipId) {
-        this.shipId = shipId;
     }
 
     public RoomType getRoomType() {
@@ -85,22 +71,18 @@ public class Room implements Serializable {
             return false;
         }
         Room room = (Room) object;
-        return getId() == room.getId() &&
-                getRoomTypeId() == room.getRoomTypeId() &&
-                getShipId() == room.getShipId();
+        return getId().equals(room.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getRoomTypeId(), getShipId());
+        return Objects.hash(getId());
     }
 
     @Override
     public String toString() {
         return "Room{" +
                 "id=" + id +
-                ", roomTypeId=" + roomTypeId +
-                ", shipId=" + shipId +
                 '}';
     }
 }

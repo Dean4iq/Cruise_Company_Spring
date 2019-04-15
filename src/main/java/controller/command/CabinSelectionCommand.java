@@ -9,6 +9,7 @@ import model.entity.dto.Ticket;
 import model.service.CabinSelectionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,7 +26,9 @@ import java.util.Set;
  */
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
-    private CabinSelectionService cabinSelectionService = CabinSelectionService.getInstance();
+
+    @Autowired
+    private CabinSelectionService cabinSelectionService;
 
     /**
      * Returns link to the selection page and provides data about rooms on ship
@@ -83,8 +86,8 @@ public class CabinSelectionCommand implements Command {
             Cart cart = (Cart) session.getAttribute("sessionCart");
             if (cart != null && cart.getTicket() != null) {
                 roomList.forEach(room -> {
-                    if (room.getId() == cart.getTicket().getRoomId()
-                            && Integer.parseInt(cruiseId) == cart.getTicket().getCruiseId()) {
+                    if (room.getId().equals(cart.getTicket().getRoom().getId())
+                            && Integer.parseInt(cruiseId) == cart.getTicket().getCruise().getId()) {
                         room.setAvailable(false);
                     }
                 });
@@ -93,7 +96,7 @@ public class CabinSelectionCommand implements Command {
 
         tickets.forEach(ticket ->
                 roomList.forEach(room -> {
-                    if (room.getId() == ticket.getRoomId()) {
+                    if (room.getId().equals(ticket.getRoom().getId())) {
                         room.setAvailable(false);
                     }
                 }));
