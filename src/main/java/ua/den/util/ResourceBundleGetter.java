@@ -17,7 +17,7 @@ public enum ResourceBundleGetter {
         while (keys.hasMoreElements()) {
             String key = keys.nextElement();
 
-            resultedMap.put(key, encodeString(resourceBundle.getString(key)));
+            resultedMap.put(key, resourceBundle.getString(key));
         }
 
         return resultedMap;
@@ -26,10 +26,6 @@ public enum ResourceBundleGetter {
     public String getResourceString(String source, String locale, String key) {
         resourceBundle = ResourceBundle.getBundle(source, new Locale(locale));
 
-        return encodeString(resourceBundle.getString(key));
-    }
-
-    private String encodeString(String value){
-        return new String(StandardCharsets.ISO_8859_1.encode(value).array());
+        return resourceBundle.getString(key);
     }
 }

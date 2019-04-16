@@ -14,10 +14,6 @@ public final class RegExStringsGetter {
     public String getRegExString(String key) {
         LOG.debug("extracting regEx Strings");
 
-        return formatString(RESOURCE_BUNDLE.getString(key));
-    }
-
-    private String formatString(String value) {
-        return new String(StandardCharsets.ISO_8859_1.encode(value).array());
+        return RESOURCE_BUNDLE.getString(key);
     }
 }
