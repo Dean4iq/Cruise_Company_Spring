@@ -22,7 +22,6 @@ public class LanguageFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        System.out.println("lang");
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpSession session = request.getSession();
 
