@@ -2,6 +2,7 @@ package ua.den.controller.command;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class UserCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(UserCommand.class);
 
@@ -24,6 +26,6 @@ public class UserCommand implements Command {
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
 
-        return "/WEB-INF/user/home.jsp";
+        return "user/home";
     }
 }
