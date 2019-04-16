@@ -5,10 +5,12 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.Set;
 
+@WebListener
 public class ContextListener implements ServletContextListener {
     public static final Logger LOG = LogManager.getLogger(ContextListener.class);
 

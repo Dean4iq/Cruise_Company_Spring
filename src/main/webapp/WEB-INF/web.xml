@@ -16,8 +16,20 @@
     <session-timeout>10</session-timeout>
   </session-config>
 
+  <servlet>
+    <servlet-name>GlobalServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GlobalServlet</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
   <listener>
     <listener-class>ua.den.controller.listener.ContextListener</listener-class>
+  </listener>
+  <listener>
     <listener-class>ua.den.controller.listener.SessionListener</listener-class>
   </listener>
 

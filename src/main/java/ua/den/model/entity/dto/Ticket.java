@@ -34,6 +34,9 @@ public class Ticket implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "excursion_exc_id"))
     private Set<Excursion> excursions;
 
+    public Ticket() {
+    }
+
     public Ticket(Builder builder) {
         this.id = builder.id;
         this.purchaseDate = builder.purchaseDate;

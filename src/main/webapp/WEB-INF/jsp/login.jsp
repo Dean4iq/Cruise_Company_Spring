@@ -1,14 +1,13 @@
 <%@ page pageEncoding="utf-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <META http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <html>
     <head>
         <title>${sessionLocalization['login.sign_in']}</title>
-        <style>
-            <jsp:directive.include file="/styles/css/bootstrap.min.css" />
-            <jsp:directive.include file="/styles/css/signin.css" />
-        </style>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="css/signin.css" />
     </head>
 
     <body class="text-center">

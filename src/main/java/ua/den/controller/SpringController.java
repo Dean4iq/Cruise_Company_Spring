@@ -1,8 +1,11 @@
 package ua.den.controller;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ua.den.controller.command.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.PostConstruct;
@@ -14,13 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class SpringController {
+public class SpringController implements ApplicationContextAware {
     private static final Map<String, Command> commandMap = new HashMap<>();
+    private ApplicationContext applicationContext;
 
     @PostConstruct
     public void init() {
-        commandMap.put("exception", new ExceptionCommand());
-        commandMap.put("login", new LoginCommand());
+        commandMap.put("error", new ExceptionCommand());
+        commandMap.put("login", applicationContext.getBean(LoginCommand.class));
         commandMap.put("user", new UserCommand());
         commandMap.put("admin", new AdminCommand());
         commandMap.put("logout", new LogoutCommand());
@@ -31,16 +35,23 @@ public class SpringController {
         commandMap.put("user/cart", new CartCommand());
     }
 
-    @GetMapping("/{link}")
-    public void processRequest(@PathVariable("link") String link, HttpServletRequest request,
+    @RequestMapping(value = {"/{path}"})
+    public String processRequest(@PathVariable("path") String path, HttpServletRequest request,
                                HttpServletResponse response)
             throws ServletException, IOException {
-        String action = commandMap.getOrDefault(link, new LoginCommand()).execute(request);
+        String action = commandMap.getOrDefault(path, (req) -> "redirect: /login").execute(request);
 
-        if (action.contains("redirect: ")) {
+        /*if (action.contains("redirect: ")) {
             response.sendRedirect(request.getContextPath() + action.replaceAll("redirect: ", ""));
         } else {
             request.getRequestDispatcher(action).forward(request, response);
-        }
+        }*/
+
+        return action;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

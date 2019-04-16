@@ -7,13 +7,8 @@
     <head>
         <title>${sessionLocalization['cart.head']}</title>
 
-        <style>
-            <jsp:directive.include file="/styles/css/bootstrap.min.css"/>
-        </style>
-
-        <script>
-            <jsp:directive.include file="/styles/js/bootstrap.min.js"/>
-        </script>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        <script type = "text/javascript" src = "js/bootstrap.min.js" ></script>
     </head>
 
     <body>

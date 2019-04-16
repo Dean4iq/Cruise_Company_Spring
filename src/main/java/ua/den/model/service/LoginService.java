@@ -32,7 +32,7 @@ public class LoginService {
     public User checkUserData(User user) throws InvalidLoginOrPasswordException {
         LOG.trace("checkUserData({})", user.getLogin());
 
-        User userInDB = userRepository.getOne(user.getLogin());
+        User userInDB = userRepository.findById(user.getLogin()).orElse(new User());
 
         if (userInDB.getLogin().equals(user.getLogin())
                 && userInDB.getPassword().equals(user.getPassword())) {

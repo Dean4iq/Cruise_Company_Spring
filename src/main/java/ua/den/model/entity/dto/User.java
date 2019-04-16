@@ -24,6 +24,10 @@ public class User implements Serializable {
     @Column(name = "admin")
     private Boolean admin;
 
+
+    public User() {
+    }
+
     public User(Builder builder) {
         this.login = builder.login;
         this.password = builder.password;
