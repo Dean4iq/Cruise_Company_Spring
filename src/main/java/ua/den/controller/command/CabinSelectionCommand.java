@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.stereotype.Component;
 import ua.den.controller.util.Pagination;
 import ua.den.model.entity.dto.Cart;
 import ua.den.model.exception.NoSuchIdException;
@@ -24,6 +25,7 @@ import java.util.Set;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
 
@@ -43,13 +45,13 @@ public class CabinSelectionCommand implements Command {
         String roomId = request.getParameter("roomId");
 
         if (session.getAttribute("sessionCart") != null) {
-            return "redirect: /user/cart";
+            return "redirect:/user/cart";
         }
 
         if (roomId != null) {
             session.setAttribute("roomId", roomId);
             session.setAttribute("shipRoomNumber", request.getParameter("shipRoomId"));
-            return "redirect: /user/cart";
+            return "redirect:/user/cart";
         }
 
         List<Room> roomList = setUpPages(request, cabinSelectionService.getCruiseLoadInfo(cruiseId));
@@ -58,12 +60,12 @@ public class CabinSelectionCommand implements Command {
             setUpRoomList(request, roomList, cruiseId);
         } catch (NoSuchIdException e) {
             LOG.warn(e);
-            return "redirect: /error";
+            return "redirect:/error";
         }
 
         request.setAttribute("roomList", roomList);
 
-        return "/WEB-INF/user/tickets.jsp";
+        return "user/tickets";
     }
 
     /**

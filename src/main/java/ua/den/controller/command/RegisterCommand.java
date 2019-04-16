@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.stereotype.Component;
 import ua.den.model.exception.NotUniqueLoginException;
 import ua.den.model.entity.dto.User;
 import ua.den.model.entity.enums.UserType;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
 
@@ -49,7 +51,7 @@ public class RegisterCommand implements Command {
             request.setAttribute("notUniqueLogin", true);
             LOG.warn("Login {} already taken", e);
         }
-        return "/register.jsp";
+        return "register";
     }
 
     /**
@@ -142,6 +144,6 @@ public class RegisterCommand implements Command {
         request.getSession().setAttribute("User", user);
 
         request.getSession().setAttribute("Role", UserType.USER);
-        return "redirect: /user";
+        return "redirect:/user";
     }
 }

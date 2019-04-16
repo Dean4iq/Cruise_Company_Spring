@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <jsp:include page="/styles/pages/navbar.jsp"/>
+        <jsp:include page="../../pages/navbar.jsp"/>
 
         <div style="margin:10px 20px;">
             ${sessionLocalization['admin.search.hint']}

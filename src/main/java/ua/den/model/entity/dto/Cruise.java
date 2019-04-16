@@ -24,9 +24,10 @@ public class Cruise implements Serializable {
     @JoinColumn(name = "ship_sh_id")
     private Ship ship;
 
-    @OneToMany(targetEntity = Route.class)
+    @OneToMany(mappedBy = "cruise")
     private List<Route> routeList;
 
+    @Transient
     private int daysInRoute;
 
     public Long getId() {

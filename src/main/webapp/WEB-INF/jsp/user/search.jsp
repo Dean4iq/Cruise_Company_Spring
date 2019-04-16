@@ -12,7 +12,7 @@
     </head>
 
     <body>
-        <jsp:include page="/styles/pages/navbar.jsp"/>
+        <jsp:include page="../../pages/navbar.jsp"/>
 
         <form style="margin-left:100px;" method="post">
             <table>

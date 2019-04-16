@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.stereotype.Component;
 import ua.den.model.exception.NoResultException;
 import ua.den.model.entity.dto.Cruise;
 import ua.den.model.entity.dto.Route;
@@ -23,6 +24,7 @@ import static java.util.Map.Entry.comparingByValue;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class SearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
 
@@ -56,13 +58,13 @@ public class SearchCommand implements Command {
             }
         } else if (request.getParameter("cruiseId") != null) {
             request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
-            return "redirect: /user/tickets";
+            return "redirect:/user/tickets";
         }
 
         setCountryMap(request);
         setHarborMap(request);
 
-        return "/WEB-INF/user/search.jsp";
+        return "user/search";
     }
 
     /**

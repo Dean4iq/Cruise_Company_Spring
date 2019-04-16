@@ -6,8 +6,8 @@
 <html>
     <head>
         <title>${sessionLocalization['login.sign_in']}</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="css/signin.css" />
+        <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/signin.custom.css"/>
     </head>
 
     <body class="text-center">

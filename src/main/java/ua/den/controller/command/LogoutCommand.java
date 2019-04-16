@@ -2,6 +2,7 @@ package ua.den.controller.command;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class LogoutCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LogoutCommand.class);
 
@@ -28,6 +30,6 @@ public class LogoutCommand implements Command {
         HttpSession session = request.getSession();
 
         session.invalidate();
-        return "redirect: /login";
+        return "redirect:/login";
     }
 }

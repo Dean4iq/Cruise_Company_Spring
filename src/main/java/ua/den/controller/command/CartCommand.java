@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.stereotype.Component;
 import ua.den.model.exception.AlreadyReservedException;
 import ua.den.model.exception.NoResultException;
 import ua.den.model.exception.NoSuchIdException;
@@ -27,10 +28,11 @@ import static java.util.Map.Entry.comparingByValue;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class CartCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CartCommand.class);
 
-    private static final String CART_LINK = "/WEB-INF/user/cart.jsp";
+    private static final String CART_LINK = "user/cart";
     private static final String SESSION_CART = "sessionCart";
     private static final String SELECTED_CRUISE_ID = "selectedCruiseId";
     private static final String ROOM_ID = "roomId";
@@ -80,10 +82,10 @@ public class CartCommand implements Command {
             return CART_LINK;
         } else if (request.getParameter("removeExcursion") != null) {
             removeExcursionFromCart(request);
-            return "redirect: /user/cart";
+            return "redirect:/user/cart";
         } else if (request.getParameter("addNewExcursion") != null) {
             addExcursionToCart(request);
-            return "redirect: /user/cart";
+            return "redirect:/user/cart";
         }
 
         setExcursionList(request);

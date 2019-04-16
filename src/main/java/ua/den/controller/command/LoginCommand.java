@@ -94,10 +94,10 @@ public class LoginCommand implements Command {
 
         if (user.isAdmin()) {
             request.getSession().setAttribute("Role", UserType.ADMIN);
-            return "admin";
+            return "redirect:/admin";
         } else {
             request.getSession().setAttribute("Role", UserType.USER);
-            return "user";
+            return "redirect:/user";
         }
     }
 }

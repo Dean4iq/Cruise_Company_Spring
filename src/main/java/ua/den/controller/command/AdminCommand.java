@@ -2,6 +2,7 @@ package ua.den.controller.command;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class AdminCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AdminCommand.class);
 
@@ -23,6 +25,6 @@ public class AdminCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
-        return "/WEB-INF/admin/admin_homepage.jsp";
+        return "admin/admin_homepage";
     }
 }

@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.stereotype.Component;
 import ua.den.model.entity.dto.Ticket;
 import ua.den.model.service.AdminSearchService;
 import org.apache.logging.log4j.LogManager;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Dean4iq
  * @version 1.0
  */
+@Component
 public class AdminSearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AdminSearchCommand.class);
 
@@ -35,6 +37,6 @@ public class AdminSearchCommand implements Command {
             request.setAttribute("foundedTicket", ticket);
         }
 
-        return "/WEB-INF/admin/search.jsp";
+        return "admin/search";
     }
 }

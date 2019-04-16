@@ -12,7 +12,7 @@
     </head>
 
     <body>
-        <jsp:include page="/styles/pages/navbar.jsp"/>
+        <jsp:include page="../../pages/navbar.jsp"/>
 
         <c:if test="${paymentAccepted}">
             <div class="alert alert-success" role="alert">

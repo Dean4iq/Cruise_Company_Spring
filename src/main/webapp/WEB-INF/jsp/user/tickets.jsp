@@ -13,7 +13,7 @@
     </head>
 
     <body>
-        <jsp:include page="/styles/pages/navbar.jsp"/>
+        <jsp:include page="../../pages/navbar.jsp"/>
 
         <table align="center" style="width:80%" class="table">
             <caption style="caption-side:top;"><b>${room.ship.name}</b></caption>

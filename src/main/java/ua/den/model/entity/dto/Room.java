@@ -19,7 +19,9 @@ public class Room implements Serializable {
     @JoinColumn(name = "ship_sh_id")
     private Ship ship;
 
+    @Transient
     private int price;
+    @Transient
     private boolean available = true;
 
     public Long getId() {

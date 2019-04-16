@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,30 +20,37 @@ public class SpringController implements ApplicationContextAware {
 
     @PostConstruct
     public void init() {
-        commandMap.put("error", new ExceptionCommand());
+        commandMap.put("error", applicationContext.getBean(ExceptionCommand.class));
         commandMap.put("login", applicationContext.getBean(LoginCommand.class));
         commandMap.put("user", applicationContext.getBean(UserCommand.class));
-        commandMap.put("admin", new AdminCommand());
-        commandMap.put("logout", new LogoutCommand());
-        commandMap.put("register", new RegisterCommand());
-        commandMap.put("user/search", new SearchCommand());
-        commandMap.put("admin/search/users", new AdminSearchCommand());
-        commandMap.put("user/tickets", new CabinSelectionCommand());
-        commandMap.put("user/cart", new CartCommand());
+        commandMap.put("admin", applicationContext.getBean(AdminCommand.class));
+        commandMap.put("logout", applicationContext.getBean(LogoutCommand.class));
+        commandMap.put("register", applicationContext.getBean(RegisterCommand.class));
+        commandMap.put("user/search", applicationContext.getBean(SearchCommand.class));
+        commandMap.put("admin/search/users", applicationContext.getBean(AdminSearchCommand.class));
+        commandMap.put("user/tickets", applicationContext.getBean(CabinSelectionCommand.class));
+        commandMap.put("user/cart", applicationContext.getBean(CartCommand.class));
+    }
+
+    @RequestMapping("/")
+    public String processEmptyRequest() {
+        return "redirect:/login";
     }
 
     @RequestMapping(value = {"/{path}"})
-    public String processRequest(@PathVariable("path") String path, HttpServletRequest request,
-                               HttpServletResponse response)
-            throws ServletException, IOException {
-        String action = commandMap.getOrDefault(path, (req) -> "redirect: /login").execute(request);
+    public String processRequest(@PathVariable("path") String path, HttpServletRequest request) {
+        System.out.println("1" + path);
+        String action = commandMap.getOrDefault(path, req -> "redirect:/login").execute(request);
+        System.out.println("2" + action);
+        return action;
+    }
 
-        /*if (action.contains("redirect: ")) {
-            response.sendRedirect(request.getContextPath() + action.replaceAll("redirect: ", ""));
-        } else {
-            request.getRequestDispatcher(action).forward(request, response);
-        }*/
-
+    @RequestMapping(value = {"/{path1}/{path2}"})
+    public String processRequest(@PathVariable("path1") String path1, @PathVariable("path2") String path2,
+                                 HttpServletRequest request) {
+        System.out.println("1" + path1 + "/" + path2);
+        String action = commandMap.getOrDefault(path1 + "/" + path2, req -> "redirect:/login").execute(request);
+        System.out.println("2" + action);
         return action;
     }
 

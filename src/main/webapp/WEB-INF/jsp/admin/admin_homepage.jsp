@@ -9,7 +9,7 @@
     </head>
 
     <body>
-        <jsp:include page="/styles/pages/navbar.jsp"/>
+        <jsp:include page="../../pages/navbar.jsp"/>
         <h1>${sessionLocalization['main.admin.descr']}</h1>
     </body>
 </html>

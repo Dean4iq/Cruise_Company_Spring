@@ -15,7 +15,7 @@
                     </li>
                     <c:forEach items="${Role.menuBarLinks}" var="keyValue">
                         <li class="nav-item active">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/${keyValue.key}">
+                            <a class="nav-link" href="${keyValue.key}">
                                 <c:out value="${sessionLocalization[keyValue.value]}"/>
                             </a>
                         </li>
@@ -24,12 +24,12 @@
                 <ul class="navbar-nav">
                     <c:if test="${Role.type == 'USER'}">
                         <c:if test="${not empty sessionCart}">
-                            <a class="nav-link" style="color:#FFF;" href="${pageContext.request.contextPath}/user/cart">
+                            <a class="nav-link" style="color:#FFF;" href="user/cart">
                                 ${sessionLocalization['cart.head']}
                                 (1)
                         </c:if>
                         <c:if test="${empty sessionCart}">
-                            <a class="nav-link" href="${pageContext.request.contextPath}/user/cart">
+                            <a class="nav-link" href="user/cart">
                                 ${sessionLocalization['cart.head']}
                                 (0)
                         </c:if>
@@ -39,7 +39,7 @@
                         <h5 style="padding:8px; color:#ffff00;">${User.login}</h5>
                     </li>
                     <li class="nav-item active" style="margin-right:35px;">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">
+                        <a class="nav-link" href="logout">
                             ${sessionLocalization['menu.logout']}
                         </a>
                     </li>
