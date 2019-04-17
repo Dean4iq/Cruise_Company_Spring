@@ -42,7 +42,7 @@ public class CartService {
     public Cruise getCruiseInfo(String cruiseId) {
         LOG.trace("getCruiseInfo({})", cruiseId);
 
-        return cruiseRepository.getOne(Integer.parseInt(cruiseId));
+        return cruiseRepository.getOne(Long.parseLong(cruiseId));
     }
 
     /**
@@ -54,7 +54,7 @@ public class CartService {
     public Room getRoomInfo(String roomId) {
         LOG.trace("getRoomInfo({})", roomId);
 
-        return roomRepository.getOne(Integer.parseInt(roomId));
+        return roomRepository.getOne(Long.parseLong(roomId));
     }
 
     /**
@@ -64,7 +64,7 @@ public class CartService {
      * @return excursion from DB
      * @throws NoSuchIdException if excursion will not be found
      */
-    public Excursion getExcursionById(int excursionId) throws NoSuchIdException {
+    public Excursion getExcursionById(Long excursionId) throws NoSuchIdException {
         LOG.trace("getExcursionById({})", excursionId);
 
         return excursionRepository.getOne(excursionId);
@@ -79,7 +79,7 @@ public class CartService {
     public List<Excursion> getExcursionList(String cruiseId) {
         LOG.trace("getExcursionList({})", cruiseId);
 
-        return excursionRepository.getExcursionsForCruise(Integer.parseInt(cruiseId));
+        return excursionRepository.getExcursionsForCruise(Long.parseLong(cruiseId));
     }
 
     /**

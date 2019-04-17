@@ -31,7 +31,7 @@ public class AdminSearchCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         if (request.getParameter("searchSubmit") != null) {
-            int ticketId = Integer.parseInt(request.getParameter("ticketId"));
+            Long ticketId = Long.parseLong(request.getParameter("ticketId"));
 
             Ticket ticket = adminSearchService.getTicketInfo(ticketId);
             request.setAttribute("foundedTicket", ticket);

@@ -8,18 +8,29 @@ import java.util.Objects;
 @Entity
 @Table(name = "route")
 public class Route implements Serializable {
-    @Id
+    @EmbeddedId
+    private RouteKey routeKey;
+
     @ManyToOne
+    @MapsId("cruise_cr_id")
     @JoinColumn(name = "cruise_cr_id")
     private Cruise cruise;
-    @Id
     @ManyToOne
+    @MapsId("harbor_hb_id")
     @JoinColumn(name = "harbor_hb_id")
     private Harbor harbor;
     @Column(name = "arrival")
     private Timestamp arrival;
     @Column(name = "departure")
     private Timestamp departure;
+
+    public RouteKey getRouteKey() {
+        return routeKey;
+    }
+
+    public void setRouteKey(RouteKey routeKey) {
+        this.routeKey = routeKey;
+    }
 
     public Cruise getCruise() {
         return cruise;

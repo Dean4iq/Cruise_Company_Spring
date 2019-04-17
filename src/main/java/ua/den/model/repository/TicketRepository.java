@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface TicketRepository extends JpaRepository<Ticket, Integer> {
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query(value = "SELECT * FROM ticket WHERE cruise_cr_id = :cruiseId", nativeQuery = true)
-    public List<Ticket> findAllByCruiseId(@Param(value = "cruiseId") Integer cruiseId);
+    public List<Ticket> findAllByCruiseId(@Param(value = "cruiseId") Long cruiseId);
 }

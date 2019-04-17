@@ -39,19 +39,14 @@ public class SpringController implements ApplicationContextAware {
 
     @RequestMapping(value = {"/{path}"})
     public String processRequest(@PathVariable("path") String path, HttpServletRequest request) {
-        System.out.println("1" + path);
-        String action = commandMap.getOrDefault(path, req -> "redirect:/login").execute(request);
-        System.out.println("2" + action);
-        return action;
+        return commandMap.getOrDefault(path, req -> "redirect:/login").execute(request);
     }
 
     @RequestMapping(value = {"/{path1}/{path2}"})
     public String processRequest(@PathVariable("path1") String path1, @PathVariable("path2") String path2,
                                  HttpServletRequest request) {
-        System.out.println("1" + path1 + "/" + path2);
-        String action = commandMap.getOrDefault(path1 + "/" + path2, req -> "redirect:/login").execute(request);
-        System.out.println("2" + action);
-        return action;
+        String path = path1 + "/" + path2;
+        return commandMap.getOrDefault(path, req -> "redirect:/login").execute(request);
     }
 
     @Override

@@ -8,8 +8,8 @@
     <head>
         <title>${sessionLocalization['tickets.head']}</title>
 
-        <link rel="stylesheet" href="css/bootstrap.min.css"/>
-        <script type = "text/javascript" src = "js/bootstrap.min.js" ></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/css/bootstrap.min.css"/>
+        <script type = "text/javascript" src = "${pageContext.request.contextPath}/styles/js/bootstrap.min.js" ></script>
     </head>
 
     <body>

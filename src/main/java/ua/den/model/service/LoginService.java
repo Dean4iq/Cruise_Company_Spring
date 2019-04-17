@@ -2,6 +2,7 @@ package ua.den.model.service;
 
 import ua.den.model.exception.InvalidLoginOrPasswordException;
 import ua.den.model.entity.dto.User;
+import ua.den.model.exception.NotExistedLoginException;
 import ua.den.model.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,10 +30,14 @@ public class LoginService {
      * @return user from DB after successful check
      * @throws InvalidLoginOrPasswordException if passwords from form and DB will be mismatched
      */
-    public User checkUserData(User user) throws InvalidLoginOrPasswordException {
+    public User checkUserData(User user) throws InvalidLoginOrPasswordException, NotExistedLoginException {
         LOG.trace("checkUserData({})", user.getLogin());
 
-        User userInDB = userRepository.findById(user.getLogin()).orElse(new User());
+        User userInDB = userRepository.getUserByLogin(user.getLogin());
+
+        if (userInDB == null) {
+            throw new NotExistedLoginException();
+        }
 
         if (userInDB.getLogin().equals(user.getLogin())
                 && userInDB.getPassword().equals(user.getPassword())) {

@@ -7,8 +7,8 @@
     <head>
         <title>${sessionLocalization['search.head']}</title>
 
-        <link rel="stylesheet" href="css/bootstrap.min.css"/>
-        <script type = "text/javascript" src = "js/bootstrap.min.js" ></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/css/bootstrap.min.css"/>
+        <script type = "text/javascript" src = "${pageContext.request.contextPath}/styles/js/bootstrap.min.js" ></script>
     </head>
 
     <body>
@@ -39,7 +39,7 @@
                 <h2 align="center">${sessionLocalization['search.empty_result']}</h2>
             </c:when>
             <c:when test="${searchCommitted && (not empty cruiseList)}">
-                <fmt:setLocale value="${sessionLanguage}"/>
+                <fmt:setLocale value="${sessionLanguage}" scope="session"/>
                 <table class="table table-striped" align="center" style="width:90%;">
                     <caption style="caption-side:top;">${sessionLocalization['search.result']}</caption>
                     <thead>

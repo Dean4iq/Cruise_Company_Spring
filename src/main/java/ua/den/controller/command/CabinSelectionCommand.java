@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import ua.den.controller.util.Pagination;
 import ua.den.model.entity.dto.Cart;
@@ -12,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
@@ -28,6 +30,7 @@ import java.util.Set;
 @Component
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
+    private final int ELEMENTS_ON_PAGE = 10;
 
     @Autowired
     private CabinSelectionService cabinSelectionService;
@@ -54,18 +57,21 @@ public class CabinSelectionCommand implements Command {
             return "redirect:/user/cart";
         }
 
-        List<Room> roomList = setUpPages(request, cabinSelectionService.getCruiseLoadInfo(cruiseId));
-
-        try {
-            setUpRoomList(request, roomList, cruiseId);
-        } catch (NoSuchIdException e) {
-            LOG.warn(e);
-            return "redirect:/error";
-        }
+        List<Room> roomList = setUpList(request);
 
         request.setAttribute("roomList", roomList);
 
         return "user/tickets";
+    }
+
+    private List<Room> setUpList(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String cruiseId = (String) session.getAttribute("selectedCruiseId");
+
+        List<Room> roomList = setUpPages(request,cruiseId);
+        setUpRoomList(request, roomList, cruiseId);
+
+        return roomList;
     }
 
     /**
@@ -76,8 +82,7 @@ public class CabinSelectionCommand implements Command {
      * @param cruiseId id of cruise to differ rooms in list
      * @throws NoSuchIdException if there will be no tickets for cruise
      */
-    private void setUpRoomList(HttpServletRequest request, List<Room> roomList, String cruiseId)
-            throws NoSuchIdException {
+    private void setUpRoomList(HttpServletRequest request, List<Room> roomList, String cruiseId) {
         Set<HttpSession> sessions = (HashSet<HttpSession>) request.getServletContext()
                 .getAttribute("userSession");
         Cruise cruise = cabinSelectionService.getSearchedCruiseInfo(cruiseId);
@@ -108,21 +113,22 @@ public class CabinSelectionCommand implements Command {
      * Calculates and records page numbers to jsp page and returns list of rooms for selected page
      *
      * @param request  stores and provides user data to process and link to session and context
-     * @param roomList list of rooms on ship from DB
+     * @param cruiseId id of cruise to get rooms from DB
      * @return list of rooms on ship for the selection page
      * @see Pagination
      */
-    private List<Room> setUpPages(HttpServletRequest request, List<Room> roomList) {
-        Pagination<Room> pagination = new Pagination<>();
+    private List<Room> setUpPages(HttpServletRequest request, String cruiseId) {
         String pageNumber = request.getParameter("page");
+        int page = (pageNumber != null && !pageNumber.equals("")) ? Integer.parseInt(pageNumber) : 0;
 
-        int page = (pageNumber != null && !pageNumber.equals("")) ? Integer.parseInt(pageNumber) : 1;
+        Page<Room> roomList = cabinSelectionService.getCruiseLoadInfo(cruiseId, page, ELEMENTS_ON_PAGE);
+
         request.setAttribute("currentPage", page);
 
         request.setAttribute("pageNumber", getPageNumber(roomList));
-        request.setAttribute("countModifier", pagination.getPageCountModifier(page));
+        request.setAttribute("countModifier", page * ELEMENTS_ON_PAGE);
 
-        return pagination.getPageList(roomList, page);
+        return roomList.getContent();
     }
 
     /**
@@ -131,8 +137,7 @@ public class CabinSelectionCommand implements Command {
      * @param roomList list of rooms to process
      * @return total number of pages
      */
-    private int getPageNumber(List<Room> roomList) {
-        Pagination<Room> pagination = new Pagination<>();
-        return pagination.getPageNumber(roomList);
+    private long getPageNumber(Page<Room> roomList) {
+        return (long) Math.ceil((double) roomList.getTotalElements() / ELEMENTS_ON_PAGE);
     }
 }

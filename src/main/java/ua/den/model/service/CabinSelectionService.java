@@ -1,5 +1,8 @@
 package ua.den.model.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ua.den.model.entity.dto.Cruise;
 import ua.den.model.entity.dto.Room;
 import ua.den.model.entity.dto.Ticket;
@@ -36,10 +39,11 @@ public class CabinSelectionService {
      * @param cruiseId id of cruise to find ship with rooms
      * @return list of rooms on ship
      */
-    public List<Room> getCruiseLoadInfo(String cruiseId) {
+    public Page<Room> getCruiseLoadInfo(String cruiseId, int page, int elementsOnPage) {
         LOG.trace("getCruiseInfo({})", cruiseId);
 
-        return roomRepository.findByCruise(Integer.parseInt(cruiseId));
+        Pageable pageable = PageRequest.of(page, elementsOnPage);
+        return roomRepository.findByCruise(Long.parseLong(cruiseId), pageable);
     }
 
     /**
@@ -51,7 +55,7 @@ public class CabinSelectionService {
     public Cruise getSearchedCruiseInfo(String cruiseId) {
         LOG.trace("getSearchedCruiseInfo({})", cruiseId);
 
-        return cruiseRepository.getOne(Integer.parseInt(cruiseId));
+        return cruiseRepository.getOne(Long.parseLong(cruiseId));
     }
 
     /**
@@ -63,6 +67,6 @@ public class CabinSelectionService {
     public List<Ticket> getTicketsForCruise(String cruiseId) {
         LOG.trace("getTicketsForCruise({})", cruiseId);
 
-        return ticketRepository.findAllByCruiseId(Integer.parseInt(cruiseId));
+        return ticketRepository.findAllByCruiseId(Long.parseLong(cruiseId));
     }
 }

@@ -44,9 +44,7 @@ public class SearchCommand implements Command {
             String countryToVisit = request.getParameter("countryToVisit");
 
             try {
-                List<Cruise> cruiseList = tourSearchingService.searchCruisesFullInfo();
-
-                cruiseList = filterCruiseListByCountry(cruiseList, countryToVisit);
+                List<Cruise> cruiseList = tourSearchingService.searchCruiseByCountry(countryToVisit);
 
                 setCruiseDuration(cruiseList);
 
@@ -68,25 +66,16 @@ public class SearchCommand implements Command {
     }
 
     /**
-     * Filters list of cruise by country
-     *
-     * @param cruiseList list to filter
-     * @param country    name of country for filter
-     * @return filtered list of cruise
-     */
-    private List<Cruise> filterCruiseListByCountry(List<Cruise> cruiseList, String country) {
-        return cruiseList.stream().filter(cruise ->
-                cruise.getRouteList().stream().anyMatch(route ->
-                        route.getHarbor().getCountry().getName().equals(country)))
-                .collect(Collectors.toList());
-    }
-
-    /**
      * Initializes duration field of cruise
      *
      * @param cruiseList list of cruises
      */
     private void setCruiseDuration(List<Cruise> cruiseList) {
+        Comparator<Route> routeComparator = Comparator.comparingLong(o -> o.getArrival().getTime());
+        cruiseList.forEach(cruise ->
+                cruise.getRouteList().sort(routeComparator)
+        );
+
         cruiseList.forEach(cruise -> {
             Route routeFrom = cruise.getRouteList().get(0);
             Route routeTo = cruise.getRouteList().get(cruise.getRouteList().size() - 1);

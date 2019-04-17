@@ -26,7 +26,7 @@ public class AdminSearchService {
      * @param ticketId id of searched ticket
      * @return ticket with filled data from DB
      */
-    public Ticket getTicketInfo(int ticketId) {
+    public Ticket getTicketInfo(Long ticketId) {
         LOG.trace("getTicketInfo({})", ticketId);
 
         return ticketRepository.getOne(ticketId);

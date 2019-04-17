@@ -15,7 +15,7 @@
                     </li>
                     <c:forEach items="${Role.menuBarLinks}" var="keyValue">
                         <li class="nav-item active">
-                            <a class="nav-link" href="${keyValue.key}">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/${keyValue.key}">
                                 <c:out value="${sessionLocalization[keyValue.value]}"/>
                             </a>
                         </li>
@@ -24,12 +24,12 @@
                 <ul class="navbar-nav">
                     <c:if test="${Role.type == 'USER'}">
                         <c:if test="${not empty sessionCart}">
-                            <a class="nav-link" style="color:#FFF;" href="user/cart">
+                            <a class="nav-link" style="color:#FFF;" href="${pageContext.request.contextPath}/user/cart">
                                 ${sessionLocalization['cart.head']}
                                 (1)
                         </c:if>
                         <c:if test="${empty sessionCart}">
-                            <a class="nav-link" href="user/cart">
+                            <a class="nav-link" href="${pageContext.request.contextPath}/user/cart">
                                 ${sessionLocalization['cart.head']}
                                 (0)
                         </c:if>
@@ -39,15 +39,13 @@
                         <h5 style="padding:8px; color:#ffff00;">${User.login}</h5>
                     </li>
                     <li class="nav-item active" style="margin-right:35px;">
-                        <a class="nav-link" href="logout">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/logout">
                             ${sessionLocalization['menu.logout']}
                         </a>
                     </li>
-                    <form name="langForm" method="post" align="right">
-                        <select name="preferredLanguage" onchange="document.langForm.submit();">
-                            <option ${sessionLanguage=="en"?"selected":""} value="en">English</option>
-                            <option ${sessionLanguage=="uk"?"selected":""} value="uk">Українська</option>
-                        </select>
+                    <form method="POST" align="right">
+                        <button style="background:transparent;border:none;display:block;" type="submit" name="preferredLanguage" value="en"><img src="${pageContext.request.contextPath}/styles/img/icon_US.png"/></button>
+                        <button style="background:transparent;border:none;display:block;" type="submit" name="preferredLanguage" value="uk"><img src="${pageContext.request.contextPath}/styles/img/icon_UA.png"/></button>
                     </form>
                 </ul>
             </div>

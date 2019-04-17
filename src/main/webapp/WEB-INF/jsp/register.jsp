@@ -6,16 +6,14 @@
     <head>
         <title>${sessionLocalization['register.sign_up']}</title>
 
-        <link rel="stylesheet" href="css/bootstrap.min.css"/>
-        <script type = "text/javascript" src = "js/bootstrap.min.js" ></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/css/bootstrap.min.css"/>
+        <script type = "text/javascript" src = "${pageContext.request.contextPath}/styles/js/bootstrap.min.js" ></script>
     </head>
 
     <body>
-        <form name="language" method="post">
-            <select style="position:fixed; top:5px; left:5px;" name="preferredLanguage" onchange="document.language.submit();">
-                <option ${sessionLanguage=="en"?"selected":""} value="en">English</option>
-                <option ${sessionLanguage=="uk"?"selected":""} value="uk">Українська</option>
-            </select>
+        <form method="POST">
+            <button type="submit" name="preferredLanguage" value="en"><img src="${pageContext.request.contextPath}/styles/img/icon_US.png"/></button>
+            <button type="submit" name="preferredLanguage" value="uk"><img src="${pageContext.request.contextPath}/styles/img/icon_UA.png"/></button>
         </form>
         <div class="container" style="margin:20px 100px 0 100px;">
             <h4 class="mb-3">${sessionLocalization['register.sign_up']}</h4>
@@ -39,7 +37,7 @@
                         <div class="invalid-feedback">
                             ${sessionLocalization['form.empty_field']}
                         </div>
-                        <c:if test="${lastNameInvalid}">
+                        <c:if test="${surnameInvalid}">
                             <div class="alert alert-danger" role="alert">
                                 ${sessionLocalization['register.hint.surname']}
                             </div>

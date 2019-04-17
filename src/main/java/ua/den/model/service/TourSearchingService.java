@@ -30,10 +30,10 @@ public class TourSearchingService {
      * @return list of cruises
      * @throws NoResultException if there will be no cruise in DB
      */
-    public List<Cruise> searchCruisesFullInfo() throws NoResultException {
+    public List<Cruise> searchCruiseByCountry(String country) throws NoResultException {
         LOG.trace("searchCruisesFullInfo()");
 
-        List<Cruise> cruiseList = cruiseRepository.findAll();
+        List<Cruise> cruiseList = cruiseRepository.getCruiseByCountry(country);
 
         if (cruiseList.isEmpty()) {
             throw new NoResultException();

@@ -247,7 +247,7 @@ public class CartCommand implements Command {
         String excursionId = request.getParameter("excursionId");
 
         try {
-            Excursion excursionToDelete = cartService.getExcursionById(Integer.parseInt(excursionId));
+            Excursion excursionToDelete = cartService.getExcursionById(Long.parseLong(excursionId));
             cart.getTicket().setPrice(cart.getTicket().getPrice() - excursionToDelete.getPrice());
         } catch (NoSuchIdException e) {
             LOG.error(e);

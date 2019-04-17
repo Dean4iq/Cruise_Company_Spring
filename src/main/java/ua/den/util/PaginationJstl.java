@@ -30,7 +30,7 @@ public class PaginationJstl extends TagSupport {
             out.write("<nav style='margin-top: 20px;' aria-label='Page navigation'>");
             out.write("<ul class='pagination justify-content-center'>");
 
-            if (currentPage != 1) {
+            if (currentPage != 0) {
                 out.write("<li class='page-item'>");
                 out.write("<a class='page-link' href='#' aria-label='Previous' style='padding:0;'>");
                 out.write("<form method='post' style='margin:0;'>");
@@ -41,11 +41,11 @@ public class PaginationJstl extends TagSupport {
                 out.write("</li>");
             }
 
-            for (int i = 1; i <= pageNumber; i++) {
+            for (int i = 0; i < pageNumber; i++) {
                 if (i == currentPage) {
                     out.write("<li class='page-item active' aria-current='page'>");
                     out.write("<a class='page-link' href='#'>");
-                    out.write(Integer.toString(i));
+                    out.write(Integer.toString(i + 1));
                     out.write("<span class='sr-only'>(current)</span>");
                     out.write("</a>");
                     out.write("</li>");
@@ -57,7 +57,7 @@ public class PaginationJstl extends TagSupport {
                 out.write("<a class='page-link' href='#' style='padding:0;'>");
                 out.write("<form method='post' style='margin:0;'>");
                 out.write("<input type='hidden' name='page' value='" + i + "'/>");
-                out.write("<input type='submit' value='" + i + "' style='padding: .5rem .75rem; color: #007bff; background-color: #fff; border:0;'/>");
+                out.write("<input type='submit' value='" + (i + 1) + "' style='padding: .5rem .75rem; color: #007bff; background-color: #fff; border:0;'/>");
                 out.write("</form>");
                 out.write("</a>");
                 out.write("</li>");

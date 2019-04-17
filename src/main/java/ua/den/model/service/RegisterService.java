@@ -32,9 +32,9 @@ public class RegisterService {
     public boolean checkUniqueLogin(String login) throws NotUniqueLoginException {
         LOG.trace("checkUniqueLogin({})", login);
 
-        userRepository.getOne(login);
+       User user =  userRepository.getUserByLogin(login);
 
-        if (userRepository == null) {
+        if (user == null) {
             return true;
         }
 

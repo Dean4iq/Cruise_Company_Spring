@@ -5,6 +5,7 @@ import ua.den.model.exception.AlreadyLoggedInException;
 import ua.den.model.exception.InvalidLoginOrPasswordException;
 import ua.den.model.entity.dto.User;
 import ua.den.model.entity.enums.UserType;
+import ua.den.model.exception.NotExistedLoginException;
 import ua.den.model.service.LoginService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,6 +53,9 @@ public class LoginCommand implements Command {
                 }
 
                 throw new AlreadyLoggedInException();
+            } catch (NotExistedLoginException e) {
+                request.setAttribute("noSuchId", true);
+                LOG.warn("Someone tried to log in the system using user login: {}", user.getLogin());
             } catch (InvalidLoginOrPasswordException e) {
                 request.setAttribute("invalidLoginOrPassword", true);
                 LOG.warn("User with login {} tried to log in the system", user.getLogin());
