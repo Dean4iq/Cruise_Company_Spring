@@ -2,6 +2,7 @@ package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
 import ua.den.model.entity.dto.Ticket;
+import ua.den.model.exception.NoSuchIdException;
 import ua.den.model.service.AdminSearchService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,8 +34,14 @@ public class AdminSearchCommand implements Command {
         if (request.getParameter("searchSubmit") != null) {
             Long ticketId = Long.parseLong(request.getParameter("ticketId"));
 
-            Ticket ticket = adminSearchService.getTicketInfo(ticketId);
-            request.setAttribute("foundedTicket", ticket);
+            Ticket ticket = null;
+            try {
+                ticket = adminSearchService.getTicketInfo(ticketId);
+                request.setAttribute("foundedTicket", ticket);
+            } catch (NoSuchIdException e) {
+                LOG.error(e);
+                request.setAttribute("ticketNotFound",true);
+            }
         }
 
         return "admin/search";
