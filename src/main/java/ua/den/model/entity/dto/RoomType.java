@@ -18,7 +18,10 @@ public class RoomType implements Serializable {
     @Column(name = "cost_modifier")
     private Integer priceModifier;
 
-    @OneToMany(targetEntity = Bonuse.class)
+    @ManyToMany
+    @JoinTable(name = "room_bonuses",
+            joinColumns = @JoinColumn(name = "room_type_rt_id"),
+            inverseJoinColumns = @JoinColumn(name = "bonuses_bo_id"))
     private List<Bonuse> bonuses = new ArrayList<>();
 
     public Long getId() {

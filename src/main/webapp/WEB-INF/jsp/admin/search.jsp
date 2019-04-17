@@ -26,7 +26,7 @@
             </div>
         </c:if>
         <c:if test="${not empty foundedTicket}">
-            <fmt:setLocale value="${sessionLanguage}"/>
+            <fmt:setLocale value="${sessionLanguage}" scope="session"/>
             <table class="table">
                 <thead>
                     <tr>

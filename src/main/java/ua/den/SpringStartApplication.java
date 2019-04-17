@@ -27,7 +27,7 @@ public class SpringStartApplication extends SpringBootServletInitializer {
 
     @Bean
     public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
-        return new ServletListenerRegistrationBean<HttpSessionListener>(new SessionListener());
+        return new ServletListenerRegistrationBean<>(new SessionListener());
     }
 
     @Bean
@@ -88,6 +88,6 @@ public class SpringStartApplication extends SpringBootServletInitializer {
 
     @Bean
     public ServletListenerRegistrationBean<ServletContextListener> contextListener() {
-        return new ServletListenerRegistrationBean<ServletContextListener>(new ContextListener());
+        return new ServletListenerRegistrationBean<>(new ContextListener());
     }
 }

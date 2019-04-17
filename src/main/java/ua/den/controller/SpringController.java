@@ -27,7 +27,7 @@ public class SpringController implements ApplicationContextAware {
         commandMap.put("logout", applicationContext.getBean(LogoutCommand.class));
         commandMap.put("register", applicationContext.getBean(RegisterCommand.class));
         commandMap.put("user/search", applicationContext.getBean(SearchCommand.class));
-        commandMap.put("admin/search/users", applicationContext.getBean(AdminSearchCommand.class));
+        commandMap.put("admin/users", applicationContext.getBean(AdminSearchCommand.class));
         commandMap.put("user/tickets", applicationContext.getBean(CabinSelectionCommand.class));
         commandMap.put("user/cart", applicationContext.getBean(CartCommand.class));
     }

@@ -32,7 +32,7 @@
 
         <c:choose>
             <c:when test="${not empty sessionCart.ticket}">
-                <fmt:setLocale value="${sessionLanguage}"/>
+                <fmt:setLocale value="${sessionLanguage}" scope="session"/>
                 <table class="table" style="margin-left:20px;width:95%">
                     <tr>
                         <td scope="row">${sessionLocalization['cart.cruise_name']}:</td>
