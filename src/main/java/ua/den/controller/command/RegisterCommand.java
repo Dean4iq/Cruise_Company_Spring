@@ -1,6 +1,7 @@
 package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NotUniqueLoginException;
 import ua.den.model.entity.dto.User;
 import ua.den.model.entity.enums.UserType;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
 

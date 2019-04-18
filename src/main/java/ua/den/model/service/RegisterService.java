@@ -1,5 +1,6 @@
 package ua.den.model.service;
 
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NotUniqueLoginException;
 import ua.den.model.entity.dto.User;
 import ua.den.model.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
+@SessionScope
 public class RegisterService {
     private static final Logger LOG = LogManager.getLogger(RegisterService.class);
 

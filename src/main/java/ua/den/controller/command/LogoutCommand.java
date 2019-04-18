@@ -3,6 +3,7 @@ package ua.den.controller.command;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpSession;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class LogoutCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LogoutCommand.class);
 

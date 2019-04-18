@@ -1,6 +1,7 @@
 package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.AlreadyLoggedInException;
 import ua.den.model.exception.InvalidLoginOrPasswordException;
 import ua.den.model.entity.dto.User;
@@ -22,6 +23,7 @@ import java.util.Set;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class LoginCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
 
@@ -38,6 +40,8 @@ public class LoginCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
+        System.out.println(loginService);
+        System.out.println(this);
 
         User user = new User.Builder()
                 .login(request.getParameter("loginUser"))

@@ -1,5 +1,6 @@
 package ua.den.model.service;
 
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NoResultException;
 import ua.den.model.entity.dto.Cruise;
 import ua.den.model.repository.CruiseRepository;
@@ -18,6 +19,7 @@ import java.util.List;
  * @version 1.0
  */
 @Service
+@SessionScope
 public class TourSearchingService {
     private static final Logger LOG = LogManager.getLogger(TourSearchingService.class);
 

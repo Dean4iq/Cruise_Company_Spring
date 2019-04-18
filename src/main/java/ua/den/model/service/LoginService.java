@@ -1,5 +1,6 @@
 package ua.den.model.service;
 
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.InvalidLoginOrPasswordException;
 import ua.den.model.entity.dto.User;
 import ua.den.model.exception.NotExistedLoginException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
+@SessionScope
 public class LoginService {
     private static final Logger LOG = LogManager.getLogger(LoginService.class);
 

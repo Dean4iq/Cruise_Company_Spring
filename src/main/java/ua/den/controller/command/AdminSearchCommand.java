@@ -1,6 +1,7 @@
 package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.entity.dto.Ticket;
 import ua.den.model.exception.NoSuchIdException;
 import ua.den.model.service.AdminSearchService;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class AdminSearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AdminSearchCommand.class);
 

@@ -3,6 +3,7 @@ package ua.den.model.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.entity.dto.Cruise;
 import ua.den.model.entity.dto.Room;
 import ua.den.model.entity.dto.Ticket;
@@ -23,6 +24,7 @@ import java.util.List;
  * @version 1.0
  */
 @Service
+@SessionScope
 public class CabinSelectionService {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionService.class);
 

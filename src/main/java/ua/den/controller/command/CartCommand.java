@@ -1,6 +1,7 @@
 package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.AlreadyReservedException;
 import ua.den.model.exception.NoResultException;
 import ua.den.model.exception.NoSuchIdException;
@@ -29,6 +30,7 @@ import static java.util.Map.Entry.comparingByValue;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class CartCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CartCommand.class);
 

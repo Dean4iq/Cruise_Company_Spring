@@ -2,6 +2,7 @@ package ua.den.controller.command;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.controller.util.Pagination;
 import ua.den.model.entity.dto.Cart;
 import ua.den.model.exception.NoSuchIdException;
@@ -28,6 +29,7 @@ import java.util.Set;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
     private final int ELEMENTS_ON_PAGE = 10;

@@ -1,5 +1,6 @@
 package ua.den.model.service;
 
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NoSuchIdException;
 import ua.den.model.entity.dto.*;
 import ua.den.model.repository.*;
@@ -19,6 +20,7 @@ import java.util.List;
  * @version 1.0
  */
 @Service
+@SessionScope
 public class CartService {
     private static final Logger LOG = LogManager.getLogger(CartService.class);
 

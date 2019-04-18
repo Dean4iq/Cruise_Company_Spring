@@ -1,6 +1,7 @@
 package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NoResultException;
 import ua.den.model.entity.dto.Cruise;
 import ua.den.model.entity.dto.Route;
@@ -25,6 +26,7 @@ import static java.util.Map.Entry.comparingByValue;
  * @version 1.0
  */
 @Component
+@SessionScope
 public class SearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
 
