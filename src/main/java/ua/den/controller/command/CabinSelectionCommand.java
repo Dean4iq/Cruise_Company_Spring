@@ -32,6 +32,9 @@ import java.util.Set;
 @SessionScope
 public class CabinSelectionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CabinSelectionCommand.class);
+    private static final String USER_TICKET_PAGE_JSP = "user/tickets";
+    private static final String USER_CART_REDIRECT = "redirect:/user/cart";
+
     private final int ELEMENTS_ON_PAGE = 10;
 
     @Autowired
@@ -46,24 +49,23 @@ public class CabinSelectionCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String cruiseId = (String) session.getAttribute("selectedCruiseId");
         String roomId = request.getParameter("roomId");
 
         if (session.getAttribute("sessionCart") != null) {
-            return "redirect:/user/cart";
+            return USER_CART_REDIRECT;
         }
 
         if (roomId != null) {
             session.setAttribute("roomId", roomId);
             session.setAttribute("shipRoomNumber", request.getParameter("shipRoomId"));
-            return "redirect:/user/cart";
+            return USER_CART_REDIRECT;
         }
 
         List<Room> roomList = setUpList(request);
 
         request.setAttribute("roomList", roomList);
 
-        return "user/tickets";
+        return USER_TICKET_PAGE_JSP;
     }
 
     private List<Room> setUpList(HttpServletRequest request) {

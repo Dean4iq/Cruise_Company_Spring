@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScope
 public class ExceptionCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(ExceptionCommand.class);
+    private static final String ERROR_LINK_JSP = "error";
 
     /**
      * Returns link to the error page
@@ -27,6 +28,6 @@ public class ExceptionCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
-        return "error";
+        return ERROR_LINK_JSP;
     }
 }

@@ -29,6 +29,8 @@ import static java.util.Map.Entry.comparingByValue;
 @SessionScope
 public class SearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
+    private static final String USER_SEARCH_PAGE_JSP = "user/search";
+    private static final String TICKETS_PAGE_REDIRECT = "redirect:/user/tickets";
 
     @Autowired
     private TourSearchingService tourSearchingService;
@@ -58,13 +60,13 @@ public class SearchCommand implements Command {
             }
         } else if (request.getParameter("cruiseId") != null) {
             request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
-            return "redirect:/user/tickets";
+            return TICKETS_PAGE_REDIRECT;
         }
 
         setCountryMap(request);
         setHarborMap(request);
 
-        return "user/search";
+        return USER_SEARCH_PAGE_JSP;
     }
 
     /**

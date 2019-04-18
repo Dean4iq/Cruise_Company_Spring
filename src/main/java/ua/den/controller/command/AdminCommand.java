@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScope
 public class AdminCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AdminCommand.class);
+    private static final String ADMIN_HOMEPAGE_JSP = "admin/admin_homepage";
 
     /**
      * Returns link to the admin home page
@@ -27,6 +28,6 @@ public class AdminCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
-        return "admin/admin_homepage";
+        return ADMIN_HOMEPAGE_JSP;
     }
 }

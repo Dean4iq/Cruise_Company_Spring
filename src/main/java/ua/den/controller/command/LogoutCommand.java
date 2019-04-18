@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 @SessionScope
 public class LogoutCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LogoutCommand.class);
+    private static final String LOGIN_PAGE_REDIRECT = "redirect:/login";
 
     /**
      * Process user request to logout
@@ -32,6 +33,6 @@ public class LogoutCommand implements Command {
         HttpSession session = request.getSession();
 
         session.invalidate();
-        return "redirect:/login";
+        return LOGIN_PAGE_REDIRECT;
     }
 }

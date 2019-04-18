@@ -35,6 +35,7 @@ public class CartCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(CartCommand.class);
 
     private static final String CART_LINK = "user/cart";
+    private static final String CART_LINK_REDIRECT = "redirect:/user/cart";
     private static final String SESSION_CART = "sessionCart";
     private static final String SELECTED_CRUISE_ID = "selectedCruiseId";
     private static final String ROOM_ID = "roomId";
@@ -84,10 +85,10 @@ public class CartCommand implements Command {
             return CART_LINK;
         } else if (request.getParameter("removeExcursion") != null) {
             removeExcursionFromCart(request);
-            return "redirect:/user/cart";
+            return CART_LINK_REDIRECT;
         } else if (request.getParameter("addNewExcursion") != null) {
             addExcursionToCart(request);
-            return "redirect:/user/cart";
+            return CART_LINK_REDIRECT;
         }
 
         setExcursionList(request);
@@ -110,7 +111,6 @@ public class CartCommand implements Command {
         HttpSession session = request.getSession();
         String cruiseId = (String) session.getAttribute(SELECTED_CRUISE_ID);
         String roomId = (String) session.getAttribute(ROOM_ID);
-        String userName = ((User) session.getAttribute("User")).getLogin();
 
         if (cruiseId == null || roomId == null) {
             throw new NoResultException();

@@ -26,6 +26,9 @@ import java.util.Set;
 @SessionScope
 public class LoginCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(LoginCommand.class);
+    private static final String LOGIN_LINK_JSP = "login";
+    private static final String ADMIN_PAGE_REDIRECT = "redirect:/admin";
+    private static final String USER_PAGE_REDIRECT = "redirect:/user";
 
     @Autowired
     private LoginService loginService;
@@ -67,7 +70,7 @@ public class LoginCommand implements Command {
             }
         }
 
-        return "login";
+        return LOGIN_LINK_JSP;
     }
 
     /**
@@ -100,10 +103,10 @@ public class LoginCommand implements Command {
 
         if (user.isAdmin()) {
             request.getSession().setAttribute("Role", UserType.ADMIN);
-            return "redirect:/admin";
+            return ADMIN_PAGE_REDIRECT;
         } else {
             request.getSession().setAttribute("Role", UserType.USER);
-            return "redirect:/user";
+            return USER_PAGE_REDIRECT;
         }
     }
 }

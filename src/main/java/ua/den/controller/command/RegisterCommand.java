@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 @SessionScope
 public class RegisterCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(RegisterCommand.class);
+    private static final String REGISTER_PAGE_JSP = "register";
+    private static final String USER_PAGE_REDIRECT = "redirect:/user";
 
     @Autowired
     private RegisterService registerService;
@@ -53,7 +55,7 @@ public class RegisterCommand implements Command {
             request.setAttribute("notUniqueLogin", true);
             LOG.warn("Login {} already taken", e);
         }
-        return "register";
+        return REGISTER_PAGE_JSP;
     }
 
     /**
@@ -146,6 +148,6 @@ public class RegisterCommand implements Command {
         request.getSession().setAttribute("User", user);
 
         request.getSession().setAttribute("Role", UserType.USER);
-        return "redirect:/user";
+        return USER_PAGE_REDIRECT;
     }
 }

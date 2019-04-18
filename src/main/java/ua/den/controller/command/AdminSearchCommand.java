@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScope
 public class AdminSearchCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(AdminSearchCommand.class);
+    private static final String ADMIN_SEARCH_PAGE_JSP = "admin/search";
 
     @Autowired
     private AdminSearchService adminSearchService;
@@ -46,6 +47,10 @@ public class AdminSearchCommand implements Command {
             }
         }
 
-        return "admin/search";
+        return ADMIN_SEARCH_PAGE_JSP;
+    }
+
+    public void setAdminSearchService(AdminSearchService adminSearchService) {
+        this.adminSearchService = adminSearchService;
     }
 }

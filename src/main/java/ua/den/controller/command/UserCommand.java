@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @SessionScope
 public class UserCommand implements Command {
     private static final Logger LOG = LogManager.getLogger(UserCommand.class);
+    private static final String USER_HOMEPAGE_JSP = "user/home";
 
     /**
      * Returns link to the user home page
@@ -28,6 +29,6 @@ public class UserCommand implements Command {
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
 
-        return "user/home";
+        return USER_HOMEPAGE_JSP;
     }
 }
