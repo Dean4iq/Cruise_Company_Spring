@@ -40,8 +40,6 @@ public class LoginCommand implements Command {
     @Override
     public String execute(HttpServletRequest request) {
         LOG.trace("Execute()");
-        System.out.println(loginService);
-        System.out.println(this);
 
         User user = new User.Builder()
                 .login(request.getParameter("loginUser"))
