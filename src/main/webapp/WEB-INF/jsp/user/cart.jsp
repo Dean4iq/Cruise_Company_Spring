@@ -77,10 +77,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">${sessionLocalization['cart.excursion.col.descr']}</th>
-                                <th scope="col">${sessionLocalization['cart.excursion.col.harbor']}</th>
-                                <th scope="col">${sessionLocalization['cart.excursion.col.price']}</th>
-                                <th></th>
+                                <th scope="col" width="50%">${sessionLocalization['cart.excursion.col.descr']}</th>
+                                <th scope="col" width="30%">${sessionLocalization['cart.excursion.col.harbor']}</th>
+                                <th scope="col" width="10%">${sessionLocalization['cart.excursion.col.price']}</th>
+                                <th width="10%"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -109,10 +109,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">${sessionLocalization['cart.excursion.col.descr']}</th>
-                                <th scope="col">${sessionLocalization['cart.excursion.col.harbor']}</th>
-                                <th scope="col">${sessionLocalization['cart.excursion.col.price']}</th>
-                                <th></th>
+                                <th scope="col" width="50%">${sessionLocalization['cart.excursion.col.descr']}</th>
+                                <th scope="col" width="30%">${sessionLocalization['cart.excursion.col.harbor']}</th>
+                                <th scope="col" width="10%">${sessionLocalization['cart.excursion.col.price']}</th>
+                                <th width="10%"></th>
                             </tr>
                         </thead>
                         <tbody>
