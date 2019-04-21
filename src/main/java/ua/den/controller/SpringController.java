@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
-public class SpringController implements ApplicationContextAware {
+public class SpringController {
     private static final Map<String, Command> commandMap = new HashMap<>();
     private ApplicationContext applicationContext;
 
     @PostConstruct
     public void init() {
+        System.out.println("aa");
         commandMap.put("error", applicationContext.getBean(ExceptionCommand.class));
         commandMap.put("login", applicationContext.getBean(LoginCommand.class));
         commandMap.put("user", applicationContext.getBean(UserCommand.class));
@@ -32,25 +32,5 @@ public class SpringController implements ApplicationContextAware {
         commandMap.put("user/cart", applicationContext.getBean(CartCommand.class));
     }
 
-    @RequestMapping("/")
-    public String processEmptyRequest() {
-        return "redirect:/login";
-    }
 
-    @RequestMapping(value = {"/{path}"})
-    public String processRequest(@PathVariable("path") String path, HttpServletRequest request) {
-        return commandMap.getOrDefault(path, req -> "redirect:/login").execute(request);
-    }
-
-    @RequestMapping(value = {"/{path1}/{path2}"})
-    public String processRequest(@PathVariable("path1") String path1, @PathVariable("path2") String path2,
-                                 HttpServletRequest request) {
-        String path = path1 + "/" + path2;
-        return commandMap.getOrDefault(path, req -> "redirect:/login").execute(request);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
 }
