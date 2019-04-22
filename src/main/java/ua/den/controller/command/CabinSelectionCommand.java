@@ -3,18 +3,16 @@ package ua.den.controller.command;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
-import ua.den.controller.util.Pagination;
-import ua.den.model.entity.dto.Cart;
+import ua.den.model.entity.tables.Cart;
 import ua.den.model.exception.NoSuchIdException;
-import ua.den.model.entity.dto.Cruise;
-import ua.den.model.entity.dto.Room;
-import ua.den.model.entity.dto.Ticket;
+import ua.den.model.entity.tables.Cruise;
+import ua.den.model.entity.tables.Room;
+import ua.den.model.entity.tables.Ticket;
 import ua.den.model.service.CabinSelectionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
@@ -119,7 +117,6 @@ public class CabinSelectionCommand implements Command {
      * @param request  stores and provides user data to process and link to session and context
      * @param cruiseId id of cruise to get rooms from DB
      * @return list of rooms on ship for the selection page
-     * @see Pagination
      */
     private List<Room> setUpPages(HttpServletRequest request, String cruiseId) {
         String pageNumber = request.getParameter("page");

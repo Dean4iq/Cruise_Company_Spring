@@ -1,7 +1,7 @@
 package ua.den.model.dao.jdbc;
 
 import ua.den.model.dao.BonuseDao;
-import ua.den.model.entity.dto.Bonuse;
+import ua.den.model.entity.tables.Bonuse;
 import ua.den.model.exception.NoSuchIdException;
 import org.junit.Before;
 import org.junit.Test;

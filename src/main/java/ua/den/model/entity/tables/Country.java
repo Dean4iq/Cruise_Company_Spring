@@ -1,15 +1,15 @@
-package ua.den.model.entity.dto;
+package ua.den.model.entity.tables;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name="bonuses")
-public class Bonuse implements Serializable {
+@Table(name = "country")
+public class Country implements Serializable {
     @Id
     @GeneratedValue
-    @Column(name = "bo_id")
+    @Column(name="co_id")
     private Long id;
     @Column(name = "name")
     private String name;
@@ -38,9 +38,9 @@ public class Bonuse implements Serializable {
         if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
-        Bonuse bonuse = (Bonuse) object;
-        return getId().equals(bonuse.getId())
-                && Objects.equals(getName(), bonuse.getName());
+        Country country = (Country) object;
+        return getId().equals(country.getId()) &&
+                Objects.equals(getName(), country.getName());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Bonuse implements Serializable {
 
     @Override
     public String toString() {
-        return "Bonuse{" +
+        return "Country{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

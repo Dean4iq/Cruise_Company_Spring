@@ -2,7 +2,7 @@ package ua.den.model.service;
 
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NoSuchIdException;
-import ua.den.model.entity.dto.*;
+import ua.den.model.entity.tables.*;
 import ua.den.model.repository.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

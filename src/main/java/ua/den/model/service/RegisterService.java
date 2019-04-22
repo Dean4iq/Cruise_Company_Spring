@@ -2,7 +2,7 @@ package ua.den.model.service;
 
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NotUniqueLoginException;
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import ua.den.model.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

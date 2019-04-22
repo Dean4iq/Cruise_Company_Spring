@@ -2,7 +2,7 @@ package ua.den.model.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, String> {

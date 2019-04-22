@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.AlreadyLoggedInException;
 import ua.den.model.exception.InvalidLoginOrPasswordException;
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import ua.den.model.entity.enums.UserType;
 import ua.den.model.exception.NotExistedLoginException;
 import ua.den.model.service.LoginService;
@@ -101,7 +101,7 @@ public class LoginCommand implements Command {
 
         LOG.info("User {} successfully logged in the system", user.getLogin());
 
-        if (user.isAdmin()) {
+        if (user.getAuthority().getRole().toString().equals("ROLE_ADMIN")) {
             request.getSession().setAttribute("Role", UserType.ADMIN);
             return ADMIN_PAGE_REDIRECT;
         } else {

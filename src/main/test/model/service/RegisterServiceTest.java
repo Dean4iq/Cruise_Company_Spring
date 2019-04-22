@@ -1,6 +1,6 @@
 package ua.den.model.service;
 
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import ua.den.model.exception.NotUniqueLoginException;
 import org.junit.Before;
 import org.junit.Test;

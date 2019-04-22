@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import ua.den.model.entity.tables.UserDetailsServiceImpl;
 
 import javax.sql.DataSource;
 
@@ -17,7 +19,10 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SpringSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
-    DataSource dataSource;
+    private DataSource dataSource;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
 
     private static final String[] RESOURCES_PATH_LIST = {
             "/resources/**",
@@ -29,10 +34,14 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("SELECT * FROM user")
-                .authoritiesByUsernameQuery("SELECT * FROM user");
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new AuthSuccessHandler();
     }
 
     @Override
@@ -43,8 +52,6 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(RESOURCES_PATH_LIST).permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/anonymous*").anonymous()
-                .antMatchers("/login*").permitAll()
                 .antMatchers("/register*").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -52,8 +59,10 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/j_spring_security_check")
                 .failureUrl("/login?error")
+                .successHandler(authenticationSuccessHandler())
                 .usernameParameter("loginUser")
                 .passwordParameter("passwordUser")
+                .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")

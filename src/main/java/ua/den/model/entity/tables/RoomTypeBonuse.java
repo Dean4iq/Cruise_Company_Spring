@@ -1,4 +1,4 @@
-package ua.den.model.entity.dto;
+package ua.den.model.entity.tables;
 
 import javax.persistence.*;
 import java.io.Serializable;

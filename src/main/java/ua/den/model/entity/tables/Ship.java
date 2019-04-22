@@ -1,22 +1,20 @@
-package ua.den.model.entity.dto;
+package ua.den.model.entity.tables;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name = "harbor")
-public class Harbor implements Serializable {
+@Table(name = "ship")
+public class Ship implements Serializable {
     @Id
     @GeneratedValue
-    @Column(name = "hb_id")
+    @Column(name = "sh_id")
     private Long id;
     @Column(name = "name")
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "country_co_id")
-    private Country country;
+    @Column(name = "crew_number")
+    private Integer crewNumber;
 
     public Long getId() {
         return id;
@@ -34,12 +32,12 @@ public class Harbor implements Serializable {
         this.name = name;
     }
 
-    public Country getCountry() {
-        return country;
+    public Integer getCrewNumber() {
+        return crewNumber;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setCrewNumber(Integer crewNumber) {
+        this.crewNumber = crewNumber;
     }
 
     @Override
@@ -50,21 +48,23 @@ public class Harbor implements Serializable {
         if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
-        Harbor harbor = (Harbor) object;
-        return getId().equals(harbor.getId()) &&
-                Objects.equals(getName(), harbor.getName());
+        Ship ship = (Ship) object;
+        return getId().equals(ship.getId()) &&
+                Objects.equals(getName(), ship.getName()) &&
+                getCrewNumber().equals(ship.getCrewNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName());
+        return Objects.hash(getId(), getName(), getCrewNumber());
     }
 
     @Override
     public String toString() {
-        return "Harbor{" +
+        return "Ship{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", crewNumber=" + crewNumber +
                 '}';
     }
 }

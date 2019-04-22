@@ -1,11 +1,10 @@
-package ua.den.model.entity.dto;
+package ua.den.model.entity.tables;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -21,9 +20,10 @@ public class User implements Serializable {
     private String name;
     @Column(name = "surname")
     private String surname;
-    @Column(name = "admin")
-    private Boolean admin;
 
+    @ManyToOne
+    @JoinColumn(name = "authority")
+    private Authority authority;
 
     public User() {
     }
@@ -34,7 +34,6 @@ public class User implements Serializable {
         this.email = builder.email;
         this.name = builder.name;
         this.surname = builder.surname;
-        this.admin = builder.admin;
     }
 
     public static class Builder {
@@ -43,7 +42,6 @@ public class User implements Serializable {
         private String email;
         private String name;
         private String surname;
-        private Boolean admin;
 
         public Builder login(String login) {
             this.login = login;
@@ -71,12 +69,6 @@ public class User implements Serializable {
 
         public Builder surname(String surname) {
             this.surname = surname;
-
-            return this;
-        }
-
-        public Builder admin(Boolean admin) {
-            this.admin = admin;
 
             return this;
         }
@@ -126,12 +118,12 @@ public class User implements Serializable {
         this.surname = surname;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public Authority getAuthority() {
+        return authority;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 
     @Override
@@ -143,8 +135,7 @@ public class User implements Serializable {
             return false;
         }
         User user = (User) object;
-        return isAdmin() == user.isAdmin() &&
-                Objects.equals(getLogin(), user.getLogin()) &&
+        return Objects.equals(getLogin(), user.getLogin()) &&
                 Objects.equals(getPassword(), user.getPassword()) &&
                 Objects.equals(getEmail(), user.getEmail()) &&
                 Objects.equals(getName(), user.getName()) &&
@@ -153,7 +144,7 @@ public class User implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLogin(), getPassword(), getEmail(), getName(), getSurname(), isAdmin());
+        return Objects.hash(getLogin(), getPassword(), getEmail(), getName(), getSurname());
     }
 
     @Override
@@ -164,7 +155,6 @@ public class User implements Serializable {
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", admin=" + admin +
                 '}';
     }
 }

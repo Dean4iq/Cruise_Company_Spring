@@ -1,6 +1,6 @@
 package ua.den.controller.listener;
 
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

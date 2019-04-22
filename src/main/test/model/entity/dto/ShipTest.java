@@ -1,4 +1,4 @@
-package ua.den.model.entity.dto;
+package ua.den.model.entity.tables;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -2,7 +2,7 @@ package ua.den.model.service;
 
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NoResultException;
-import ua.den.model.entity.dto.Cruise;
+import ua.den.model.entity.tables.Cruise;
 import ua.den.model.repository.CruiseRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

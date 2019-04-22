@@ -2,7 +2,7 @@ package ua.den.model.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ua.den.model.entity.dto.Cruise;
+import ua.den.model.entity.tables.Cruise;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

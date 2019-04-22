@@ -2,7 +2,7 @@ package ua.den.model.service;
 
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.InvalidLoginOrPasswordException;
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import ua.den.model.exception.NotExistedLoginException;
 import ua.den.model.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;

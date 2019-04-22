@@ -1,4 +1,4 @@
-package ua.den.model.entity.dto;
+package ua.den.model.entity.tables;
 
 import java.io.Serializable;
 import java.util.ArrayList;

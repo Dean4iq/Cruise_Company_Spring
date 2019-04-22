@@ -2,7 +2,7 @@ package ua.den.controller.command;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
-import ua.den.model.entity.dto.Ticket;
+import ua.den.model.entity.tables.Ticket;
 import ua.den.model.exception.NoSuchIdException;
 import ua.den.model.service.AdminSearchService;
 import org.apache.logging.log4j.LogManager;

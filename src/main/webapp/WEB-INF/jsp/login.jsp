@@ -30,6 +30,11 @@
                         ${sessionLocalization['login.invalid_login_pass']}
                     </div>
                 </c:if>
+                <c:if test="${not empty error}">
+                    <div class="alert alert-danger" role="alert">
+                        ${sessionLocalization['login.invalid_login_pass']}
+                    </div>
+                </c:if>
                 <c:if test="${noSuchId}">
                     <div class="alert alert-danger" role="alert">
                         ${sessionLocalization['login.account_not_exists']}

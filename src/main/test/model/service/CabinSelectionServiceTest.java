@@ -1,8 +1,8 @@
 package ua.den.model.service;
 
-import ua.den.model.entity.dto.Cruise;
-import ua.den.model.entity.dto.Room;
-import ua.den.model.entity.dto.Ticket;
+import ua.den.model.entity.tables.Cruise;
+import ua.den.model.entity.tables.Room;
+import ua.den.model.entity.tables.Ticket;
 import ua.den.model.exception.NoSuchIdException;
 import org.junit.Before;
 import org.junit.Test;

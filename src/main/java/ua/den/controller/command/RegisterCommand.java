@@ -3,7 +3,7 @@ package ua.den.controller.command;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.NotUniqueLoginException;
-import ua.den.model.entity.dto.User;
+import ua.den.model.entity.tables.User;
 import ua.den.model.entity.enums.UserType;
 import ua.den.model.service.RegisterService;
 import org.apache.logging.log4j.LogManager;

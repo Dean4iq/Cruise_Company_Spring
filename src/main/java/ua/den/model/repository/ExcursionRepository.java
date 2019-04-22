@@ -1,6 +1,6 @@
 package ua.den.model.repository;
 
-import ua.den.model.entity.dto.Excursion;
+import ua.den.model.entity.tables.Excursion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

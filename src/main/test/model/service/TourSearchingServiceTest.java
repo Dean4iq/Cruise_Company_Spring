@@ -1,6 +1,6 @@
 package ua.den.model.service;
 
-import ua.den.model.entity.dto.Cruise;
+import ua.den.model.entity.tables.Cruise;
 import ua.den.model.exception.NoResultException;
 import org.junit.Before;
 import org.junit.Test;
