@@ -1,14 +1,18 @@
-package ua.den.controller.command;
+package ua.den.controller.controller;
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
-import ua.den.model.exception.NoResultException;
-import ua.den.model.entity.tables.Cruise;
-import ua.den.model.entity.tables.Route;
-import ua.den.model.service.TourSearchingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ua.den.model.entity.tables.Cruise;
+import ua.den.model.entity.tables.Route;
+import ua.den.model.exception.NoResultException;
+import ua.den.model.service.CruiseService;
 import ua.den.util.PropertiesSource;
 import ua.den.util.ResourceBundleGetter;
 
@@ -19,48 +23,42 @@ import java.util.stream.Collectors;
 
 import static java.util.Map.Entry.comparingByValue;
 
-/**
- * Class {@code SearchCommand} provide methods to search cruises
- *
- * @author Dean4iq
- * @version 1.0
- */
-@Component
-@SessionScope
-public class SearchCommand implements Command {
-    private static final Logger LOG = LogManager.getLogger(SearchCommand.class);
+@Controller
+@RequestMapping("/user/search")
+public class UserSearchController {
+    private static final Logger LOG = LogManager.getLogger(UserSearchController.class);
     private static final String USER_SEARCH_PAGE_JSP = "user/search";
     private static final String TICKETS_PAGE_REDIRECT = "redirect:/user/tickets";
 
     @Autowired
-    private TourSearchingService tourSearchingService;
+    private CruiseService cruiseService;
 
-    /**
-     * Calls methods to get cruise info and provides them to the user and returns link to
-     * the search page
-     *
-     * @param request stores and provides user data to process and link to session and context
-     * @return link to the cruise search page or to the room selecting page (after cruise selection)
-     */
-    @Override
-    public String execute(HttpServletRequest request) {
-        if (request.getParameter("searchCruise") != null) {
-            String countryToVisit = request.getParameter("countryToVisit");
+    @GetMapping("")
+    public String getSearchPage(HttpServletRequest request) {
+        setCountryMap(request);
 
+        return USER_SEARCH_PAGE_JSP;
+    }
+
+    @PostMapping("")
+    public String processSearch(@Param("countryToVisit") String country,
+                                @Param("cruiseId") Integer cruiseId,
+                                HttpServletRequest request) {
+        if (cruiseId != null) {
+            request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
+            return TICKETS_PAGE_REDIRECT;
+        } else if (country != null) {
             try {
-                List<Cruise> cruiseList = tourSearchingService.searchCruiseByCountry(countryToVisit);
+                List<Cruise> cruiseList = cruiseService.searchCruiseByCountry(country);
 
                 setCruiseDuration(cruiseList);
 
                 request.setAttribute("searchCommitted", true);
                 request.setAttribute("cruiseList", cruiseList);
             } catch (NoResultException e) {
-                LOG.warn("No results for request: '{}'", countryToVisit);
+                LOG.warn("No results for request: '{}'", country);
                 request.setAttribute("noResult", true);
             }
-        } else if (request.getParameter("cruiseId") != null) {
-            request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
-            return TICKETS_PAGE_REDIRECT;
         }
 
         setCountryMap(request);
@@ -69,11 +67,6 @@ public class SearchCommand implements Command {
         return USER_SEARCH_PAGE_JSP;
     }
 
-    /**
-     * Initializes duration field of cruise
-     *
-     * @param cruiseList list of cruises
-     */
     private void setCruiseDuration(List<Cruise> cruiseList) {
         Comparator<Route> routeComparator = Comparator.comparingLong(o -> o.getArrival().getTime());
         cruiseList.forEach(cruise ->
@@ -88,16 +81,11 @@ public class SearchCommand implements Command {
         });
     }
 
-    /**
-     * Method to add locale values of country names
-     *
-     * @param request stores and provides user data to process and link to session and context
-     */
     private void setCountryMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
+        Locale sessionLocale = LocaleContextHolder.getLocale();
 
         Map<String, String> countryMap =
-                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.COUNTRY.source, sessionLanguage);
+                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.COUNTRY.source, sessionLocale);
 
         countryMap = countryMap.entrySet()
                 .stream()
@@ -108,16 +96,11 @@ public class SearchCommand implements Command {
         request.setAttribute("countryMap", countryMap);
     }
 
-    /**
-     * Method to add locale values of harbor names
-     *
-     * @param request stores and provides user data to process and link to session and context
-     */
     private void setHarborMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute("sessionLanguage");
+        Locale sessionLocale = LocaleContextHolder.getLocale();
 
         Map<String, String> harborMap =
-                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.HARBOR.source, sessionLanguage);
+                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.HARBOR.source, sessionLocale);
 
         harborMap = harborMap.entrySet()
                 .stream()

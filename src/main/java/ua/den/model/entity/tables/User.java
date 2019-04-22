@@ -1,23 +1,38 @@
 package ua.den.model.entity.tables;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
     @Id
     @Column(name = "login")
+    @NotNull
+    @NotEmpty
     private String login;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "password")
     private String password;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "email")
     private String email;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "name")
     private String name;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "surname")
     private String surname;
 

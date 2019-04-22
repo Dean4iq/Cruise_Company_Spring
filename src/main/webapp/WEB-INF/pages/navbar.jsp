@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#00802b;margin:10px">
             <a class="navbar-brand" href=""></a>
@@ -10,13 +11,13 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="${pageContext.request.contextPath}">
-                            ${sessionLocalization['menu.main']}
+                            <spring:message code="menu.main"/>
                         </a>
                     </li>
                     <c:forEach items="${Role.menuBarLinks}" var="keyValue">
                         <li class="nav-item active">
                             <a class="nav-link" href="${pageContext.request.contextPath}/${keyValue.key}">
-                                <c:out value="${sessionLocalization[keyValue.value]}"/>
+                                <spring:message code="${keyValue.value}"/>
                             </a>
                         </li>
                     </c:forEach>
@@ -25,12 +26,12 @@
                     <c:if test="${Role.type == 'USER'}">
                         <c:if test="${not empty sessionCart}">
                             <a class="nav-link" style="color:#FFF;" href="${pageContext.request.contextPath}/user/cart">
-                                ${sessionLocalization['cart.head']}
+                                <spring:message code="cart.head"/>
                                 (1)
                         </c:if>
                         <c:if test="${empty sessionCart}">
                             <a class="nav-link" href="${pageContext.request.contextPath}/user/cart">
-                                ${sessionLocalization['cart.head']}
+                                <spring:message code="cart.head"/>
                                 (0)
                         </c:if>
                         </a>
@@ -40,10 +41,10 @@
                     </li>
                     <li class="nav-item active" style="margin-right:35px;">
                         <a class="nav-link" href="${pageContext.request.contextPath}/logout">
-                            ${sessionLocalization['menu.logout']}
+                            <spring:message code="menu.logout"/>
                         </a>
                     </li>
-                    <form method="POST" align="right">
+                    <form align="right">
                         <button style="background:transparent;border:none;display:block;" type="submit" name="preferredLanguage" value="en"><img src="${pageContext.request.contextPath}/styles/img/icon_US.png"/></button>
                         <button style="background:transparent;border:none;display:block;" type="submit" name="preferredLanguage" value="uk"><img src="${pageContext.request.contextPath}/styles/img/icon_UA.png"/></button>
                     </form>

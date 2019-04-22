@@ -2,10 +2,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <html>
     <head>
-        <title>${sessionLocalization['search.head']}</title>
+        <title><spring:message code="search.head"/></title>
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/css/bootstrap.min.css"/>
         <script type = "text/javascript" src = "${pageContext.request.contextPath}/styles/js/bootstrap.min.js" ></script>
@@ -18,7 +19,7 @@
             <table>
                 <tbody>
                     <tr>
-                        <td>${sessionLocalization['search.land_option']}</td>
+                        <td><spring:message code="search.land_option"/></td>
                         <td>
                             <select name="countryToVisit">
                                 <c:forEach var="country" items="${countryMap}">
@@ -27,7 +28,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="submit" name="searchCruise" value="${sessionLocalization['search.submit']}"/>
+                            <input type="submit" name="searchCruise" value="<spring:message code='search.submit'/>"/>
                         </td>
                     </tr>
                 </tbody>
@@ -36,7 +37,7 @@
 
         <c:choose>
             <c:when test="${searchCommitted && (empty cruiseList)}">
-                <h2 align="center">${sessionLocalization['search.empty_result']}</h2>
+                <h2 align="center"><spring:message code="search.empty_result"/></h2>
             </c:when>
             <c:when test="${searchCommitted && (not empty cruiseList)}">
                 <fmt:setLocale value="${sessionLanguage}" scope="session"/>
@@ -44,12 +45,12 @@
                     <caption style="caption-side:top;">${sessionLocalization['search.result']}</caption>
                     <thead>
                         <tr>
-                            <th scope="col">${sessionLocalization['search.th.cruise_name']}</th>
-                            <th scope="col">${sessionLocalization['search.th.from']}</th>
-                            <th scope="col">${sessionLocalization['search.th.to']}</th>
-                            <th scope="col">${sessionLocalization['search.th.date']}</th>
-                            <th scope="col">${sessionLocalization['search.th.duration']}</th>
-                            <th scope="col">${sessionLocalization['search.th.price']}</th>
+                            <th scope="col"><spring:message code="search.th.cruise_name"/></th>
+                            <th scope="col"><spring:message code="search.th.from"/></th>
+                            <th scope="col"><spring:message code="search.th.to"/></th>
+                            <th scope="col"><spring:message code="search.th.date"/></th>
+                            <th scope="col"><spring:message code="search.th.duration"/></th>
+                            <th scope="col"><spring:message code="search.th.price"/></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -68,28 +69,28 @@
                                         (${countryMap[cruise.routeList[fn:length(cruise.routeList)-1].harbor.country.name]})
                                     </td>
                                     <td><fmt:formatDate value="${cruise.date}" type="date"/></td>
-                                    <td>${cruise.daysInRoute} ${sessionLocalization['search.days']}</td>
+                                    <td>${cruise.daysInRoute} <spring:message code="search.days"/></td>
                                     <td><fmt:formatNumber value="${cruise.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/></td>
                                     <td>
                                         <form method="get">
                                             <input type="hidden" name="cruiseId" value="${cruise.id}"/>
-                                            <input type="submit" name="cruise" value="${sessionLocalization['form.look_ticket']}"/>
+                                            <input type="submit" name="cruise" value="<spring:message code='form.look_ticket'/>"/>
                                         </form>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5">
                                         <details>
-                                            <summary>${sessionLocalization['search.th.details']}</summary>
+                                            <summary><spring:message code="search.th.details"/></summary>
                                             <p style="font-weight: bold;font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji"; display:inline;">
-                                            ${sessionLocalization['search.th.ship']}: '${cruise.ship.name}'
+                                            <spring:message code="search.th.ship"/>: '${cruise.ship.name}'
                                             </p>
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
-                                                        <th>${sessionLocalization['search.th.route']}</th>
-                                                        <th>${sessionLocalization['search.th.arrival']}</th>
-                                                        <th>${sessionLocalization['search.th.departure']}</th>
+                                                        <th><spring:message code="search.th.route"/></th>
+                                                        <th><spring:message code="search.th.arrival"/></th>
+                                                        <th><spring:message code="search.th.departure"/></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

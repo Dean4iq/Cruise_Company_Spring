@@ -1,5 +1,6 @@
 package ua.den.controller.command;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 import ua.den.model.exception.AlreadyReservedException;
@@ -7,11 +8,11 @@ import ua.den.model.exception.NoResultException;
 import ua.den.model.exception.NoSuchIdException;
 import ua.den.model.entity.tables.Cart;
 import ua.den.model.entity.tables.*;
-import ua.den.model.service.CabinSelectionService;
 import ua.den.model.service.CartService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import ua.den.model.service.TicketService;
 import ua.den.util.PropertiesSource;
 import ua.den.util.ResourceBundleGetter;
 
@@ -44,7 +45,7 @@ public class CartCommand implements Command {
     @Autowired
     private CartService cartService;
     @Autowired
-    private CabinSelectionService cabinSelectionService;
+    private TicketService ticketService;
 
     /**
      * Calls methods to operate with session cart and returns link to the cart page
@@ -109,7 +110,7 @@ public class CartCommand implements Command {
     private Ticket setTicketData(HttpServletRequest request)
             throws NoResultException, AlreadyReservedException {
         HttpSession session = request.getSession();
-        String cruiseId = (String) session.getAttribute(SELECTED_CRUISE_ID);
+        Long cruiseId = Long.parseLong((String) session.getAttribute(SELECTED_CRUISE_ID));
         String roomId = (String) session.getAttribute(ROOM_ID);
 
         if (cruiseId == null || roomId == null) {
@@ -139,13 +140,13 @@ public class CartCommand implements Command {
      * @param cruiseId number of cruise to define
      * @throws AlreadyReservedException if room for cruise is already taken
      */
-    private void checkTicketAvailability(HttpServletRequest request, String roomId, String cruiseId)
+    private void checkTicketAvailability(HttpServletRequest request, String roomId, Long cruiseId)
             throws AlreadyReservedException {
         Set<HttpSession> sessions = (HashSet<HttpSession>) request.getServletContext()
                 .getAttribute("userSession");
 
         int roomNumber = Integer.parseInt(roomId);
-        int cruiseNumber = Integer.parseInt(cruiseId);
+        Long cruiseNumber = cruiseId;
 
         if (!(checkAvailabilityInCart(sessions, roomNumber, cruiseNumber)
                 && checkAvailabilityInDB(roomNumber, cruiseId))) {
@@ -161,7 +162,7 @@ public class CartCommand implements Command {
      * @param cruiseId   number of cruise to define
      * @return true if room is available
      */
-    private boolean checkAvailabilityInCart(Set<HttpSession> sessions, int roomNumber, int cruiseId) {
+    private boolean checkAvailabilityInCart(Set<HttpSession> sessions, int roomNumber, Long cruiseId) {
         return sessions.stream().noneMatch(session -> {
             Cart cart = (Cart) session.getAttribute(SESSION_CART);
             if (cart != null && cart.getTicket() != null) {
@@ -179,8 +180,8 @@ public class CartCommand implements Command {
      * @param cruiseId   number of cruise to define
      * @return true if room is available
      */
-    private boolean checkAvailabilityInDB(int roomNumber, String cruiseId) {
-        List<Ticket> tickets = cabinSelectionService.getTicketsForCruise(cruiseId);
+    private boolean checkAvailabilityInDB(int roomNumber, Long cruiseId) {
+        List<Ticket> tickets = ticketService.getTicketsForCruise(cruiseId);
 
         return tickets.stream().noneMatch(ticket ->
                 roomNumber == ticket.getRoom().getId());
@@ -286,10 +287,10 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void setCountryMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute(SESSION_LANGUAGE);
+        Locale sessionLocale = LocaleContextHolder.getLocale();
 
         Map<String, String> countryMap =
-                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.COUNTRY.source, sessionLanguage);
+                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.COUNTRY.source, sessionLocale);
 
         countryMap = countryMap.entrySet()
                 .stream()
@@ -306,10 +307,10 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void setHarborMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute(SESSION_LANGUAGE);
+        Locale sessionLocale = LocaleContextHolder.getLocale();
 
         Map<String, String> harborMap =
-                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.HARBOR.source, sessionLanguage);
+                ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.HARBOR.source, sessionLocale);
 
         request.setAttribute("harborMap", harborMap);
     }
@@ -320,11 +321,11 @@ public class CartCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      */
     private void setExcursionInfoMap(HttpServletRequest request) {
-        String sessionLanguage = (String) request.getSession().getAttribute(SESSION_LANGUAGE);
+        Locale sessionLocale = LocaleContextHolder.getLocale();
 
         Map<String, String> excursionInfoMap =
                 ResourceBundleGetter.INSTANCE.getResourceMap(PropertiesSource.EXCURSION_INFO.source,
-                        sessionLanguage);
+                        sessionLocale);
 
         request.setAttribute("localeTourInfo", excursionInfoMap);
     }

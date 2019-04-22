@@ -1,6 +1,5 @@
 package ua.den.util;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public enum ResourceBundleGetter {
@@ -8,9 +7,9 @@ public enum ResourceBundleGetter {
 
     private ResourceBundle resourceBundle;
 
-    public Map<String, String> getResourceMap(String source, String locale) {
+    public Map<String, String> getResourceMap(String source, Locale locale) {
         Map<String, String> resultedMap = new HashMap<>();
-        resourceBundle = ResourceBundle.getBundle(source, new Locale(locale));
+        resourceBundle = ResourceBundle.getBundle(source, locale);
 
         Enumeration<String> keys = resourceBundle.getKeys();
 
@@ -23,8 +22,8 @@ public enum ResourceBundleGetter {
         return resultedMap;
     }
 
-    public String getResourceString(String source, String locale, String key) {
-        resourceBundle = ResourceBundle.getBundle(source, new Locale(locale));
+    public String getResourceString(String source, Locale locale, String key) {
+        resourceBundle = ResourceBundle.getBundle(source, locale);
 
         return resourceBundle.getString(key);
     }

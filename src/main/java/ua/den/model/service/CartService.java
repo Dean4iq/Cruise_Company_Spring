@@ -41,10 +41,10 @@ public class CartService {
      * @param cruiseId id of cruise to find
      * @return cruise from DB
      */
-    public Cruise getCruiseInfo(String cruiseId) {
+    public Cruise getCruiseInfo(Long cruiseId) {
         LOG.trace("getCruiseInfo({})", cruiseId);
 
-        return cruiseRepository.getOne(Long.parseLong(cruiseId));
+        return cruiseRepository.getOne(cruiseId);
     }
 
     /**

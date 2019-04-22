@@ -1,11 +1,12 @@
 package ua.den.model.entity.tables;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "authority")
-public class Authority {
+public class Authority implements Serializable {
     @Id()
     @Column(name = "auth_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
