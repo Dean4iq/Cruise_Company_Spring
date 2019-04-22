@@ -29,7 +29,8 @@ public class SpringSecurity extends WebSecurityConfigurerAdapter {
             "/**/*.css",
             "/**/*.js",
             "/**/*.png",
-            "/**/*.jsp"
+            "/**/*.jsp",
+            "/**/*.properties"
     };
 
     @Override
