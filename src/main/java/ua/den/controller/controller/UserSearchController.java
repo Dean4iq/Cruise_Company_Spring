@@ -4,11 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ua.den.model.entity.tables.Cruise;
 import ua.den.model.entity.tables.Route;
 import ua.den.model.exception.NoResultException;
@@ -40,26 +40,28 @@ public class UserSearchController {
         return USER_SEARCH_PAGE_JSP;
     }
 
-    @PostMapping("")
-    public String processSearch(@Param("countryToVisit") String country,
-                                @Param("cruiseId") Integer cruiseId,
+    @PostMapping("/commit-search")
+    public String processSearch(@RequestParam("cruiseId") Integer cruiseId,
                                 HttpServletRequest request) {
-        if (cruiseId != null) {
-            request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
-            return TICKETS_PAGE_REDIRECT;
-        } else if (country != null) {
-            try {
-                List<Cruise> cruiseList = cruiseService.searchCruiseByCountry(country);
+        request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
+        return TICKETS_PAGE_REDIRECT;
+    }
 
-                setCruiseDuration(cruiseList);
+    @PostMapping("")
+    public String processSearch(@RequestParam("countryToVisit") String country,
+                                HttpServletRequest request) {
+        try {
+            List<Cruise> cruiseList = cruiseService.searchCruiseByCountry(country);
 
-                request.setAttribute("searchCommitted", true);
-                request.setAttribute("cruiseList", cruiseList);
-            } catch (NoResultException e) {
-                LOG.warn("No results for request: '{}'", country);
-                request.setAttribute("noResult", true);
-            }
+            setCruiseDuration(cruiseList);
+
+            request.setAttribute("searchCommitted", true);
+            request.setAttribute("cruiseList", cruiseList);
+        } catch (NoResultException e) {
+            LOG.warn("No results for request: '{}'", country);
+            request.setAttribute("noResult", true);
         }
+
 
         setCountryMap(request);
         setHarborMap(request);

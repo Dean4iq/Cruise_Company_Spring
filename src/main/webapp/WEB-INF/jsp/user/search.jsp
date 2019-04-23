@@ -72,7 +72,7 @@
                                     <td>${cruise.daysInRoute} <spring:message code="search.days"/></td>
                                     <td><fmt:formatNumber value="${cruise.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/></td>
                                     <td>
-                                        <form method="get">
+                                        <form action="${pageContext.request.contextPath}/user/search/commit-search" method="post">
                                             <input type="hidden" name="cruiseId" value="${cruise.id}"/>
                                             <input type="submit" name="cruise" value="<spring:message code='form.look_ticket'/>"/>
                                         </form>
