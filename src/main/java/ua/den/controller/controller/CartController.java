@@ -109,9 +109,9 @@ public class CartController {
         Long cruiseId = (Long) session.getAttribute(SELECTED_CRUISE_ID);
         Long roomId = (Long) session.getAttribute(ROOM_ID);
 
-        if (cruiseId == null || roomId == null) {
-            throw new NoResultException();
-        }
+        cruiseId = Optional.ofNullable(cruiseId).orElseThrow(NoResultException::new);
+        roomId = Optional.ofNullable(roomId).orElseThrow(NoResultException::new);
+
         checkTicketAvailability(request, roomId, cruiseId);
 
         Cruise cruise = cruiseService.getCruiseById(cruiseId);
