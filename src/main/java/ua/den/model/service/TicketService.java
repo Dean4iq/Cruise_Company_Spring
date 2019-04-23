@@ -12,6 +12,10 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    public Ticket getTicketById(Long id) {
+        return ticketRepository.getOne(id);
+    }
+
     public void insertTicketInDB(Ticket ticket) {
         ticketRepository.save(ticket);
     }
