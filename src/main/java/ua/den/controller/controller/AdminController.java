@@ -16,25 +16,10 @@ import java.util.Optional;
 public class AdminController {
     private static final Logger LOG = LogManager.getLogger(AdminController.class);
     private static final String ADMIN_HOMEPAGE_JSP = "admin/admin_homepage";
-    private static final String ADMIN_SEARCH_PAGE_JSP = "admin/search";
 
     @GetMapping("")
     public String getHomePage() {
         LOG.trace("Execute()");
         return ADMIN_HOMEPAGE_JSP;
-    }
-
-    @RequestMapping("/ticket")
-    public String getTicketPage() {
-        return ADMIN_SEARCH_PAGE_JSP;
-    }
-
-    @RequestMapping("/ticket/{id}")
-    public String processRequest(@Param("id") Ticket ticket, HttpServletRequest request) {
-        Optional.ofNullable(ticket).ifPresent(tick -> request.setAttribute("foundedTicket", tick));
-
-        request.setAttribute("foundedTicket", ticket);
-
-        return ADMIN_SEARCH_PAGE_JSP;
     }
 }

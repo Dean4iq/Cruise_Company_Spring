@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.den.model.entity.tables.Ticket;
+import ua.den.model.exception.NoSuchIdException;
 import ua.den.model.service.TicketService;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/admin/ticket")
 public class AdminSearchController {
     private static final Logger LOG = LogManager.getLogger(AdminSearchController.class);
     private static final String ADMIN_SEARCH_PAGE_JSP = "admin/search";
@@ -30,16 +31,14 @@ public class AdminSearchController {
     @PostMapping("")
     public String processRequest(@RequestParam("ticketId") Long ticketId,
                                  HttpServletRequest request) {
-        Ticket ticket = ticketService.getTicketById(ticketId);
-
-        if (ticket == null) {
+        try {
+            Ticket ticket = ticketService.getTicketById(ticketId);
+            request.setAttribute("foundedTicket", ticket);
+        } catch (NoSuchIdException e) {
             LOG.error("Ticket {} not found", ticketId);
             request.setAttribute("ticketNotFound", true);
-
-            return ADMIN_SEARCH_PAGE_JSP;
         }
 
-        request.setAttribute("foundedTicket", ticket);
         return ADMIN_SEARCH_PAGE_JSP;
     }
 }
