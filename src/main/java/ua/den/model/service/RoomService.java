@@ -13,6 +13,10 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
 
+    public Room getRoomById(Long roomId) {
+        return roomRepository.getOne(roomId);
+    }
+
     public Page<Room> getCruiseLoadInfo(Long cruiseId, int page, int elementsOnPage) {
         Pageable pageable = PageRequest.of(page, elementsOnPage);
 

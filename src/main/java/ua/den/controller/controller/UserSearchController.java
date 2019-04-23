@@ -29,21 +29,26 @@ public class UserSearchController {
     private static final Logger LOG = LogManager.getLogger(UserSearchController.class);
     private static final String USER_SEARCH_PAGE_JSP = "user/search";
     private static final String TICKETS_PAGE_REDIRECT = "redirect:/user/tickets";
+    private static final String CART_PAGE_REDIRECT = "redirect:/user/cart";
 
     @Autowired
     private CruiseService cruiseService;
 
     @GetMapping("")
     public String getSearchPage(HttpServletRequest request) {
+        if (request.getSession().getAttribute("selectedCruiseId") != null && request.getSession().getAttribute("roomId") != null) {
+            return CART_PAGE_REDIRECT;
+        }
+
         setCountryMap(request);
 
         return USER_SEARCH_PAGE_JSP;
     }
 
     @PostMapping("/commit-search")
-    public String processSearch(@RequestParam("cruiseId") Integer cruiseId,
+    public String processSearch(@RequestParam("cruiseId") Long cruiseId,
                                 HttpServletRequest request) {
-        request.getSession().setAttribute("selectedCruiseId", request.getParameter("cruiseId"));
+        request.getSession().setAttribute("selectedCruiseId", cruiseId);
         return TICKETS_PAGE_REDIRECT;
     }
 

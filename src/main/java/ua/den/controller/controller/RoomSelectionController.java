@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ua.den.model.entity.tables.Cart;
 import ua.den.model.entity.tables.Cruise;
 import ua.den.model.entity.tables.Room;
@@ -46,20 +44,6 @@ public class RoomSelectionController {
             return USER_CART_REDIRECT;
         }
 
-        return USER_TICKET_PAGE_JSP;
-    }
-
-    @PostMapping("")
-    public String processRequest(@Param("roomId") Long roomId,
-                                 HttpServletRequest request) {
-        HttpSession session = request.getSession();
-
-        if (roomId != null) {
-            session.setAttribute("roomId", roomId);
-            session.setAttribute("shipRoomNumber", request.getParameter("shipRoomId"));
-            return USER_CART_REDIRECT;
-        }
-
         List<Room> roomList = setUpList(request);
 
         request.setAttribute("roomList", roomList);
@@ -67,11 +51,50 @@ public class RoomSelectionController {
         return USER_TICKET_PAGE_JSP;
     }
 
+    @GetMapping("/page/{number}")
+    public String getPageInfo(@PathVariable("number") Integer pageNumber,
+                              HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        if (session.getAttribute("sessionCart") != null) {
+            return USER_CART_REDIRECT;
+        }
+
+        pageNumber -= 1;
+        List<Room> roomList = setUpList(request, pageNumber);
+
+        request.setAttribute("roomList", roomList);
+
+        return USER_TICKET_PAGE_JSP;
+    }
+
+    @PostMapping("/submit-select")
+    public String processRequest(@Param("roomId") Long roomId,
+                                 @RequestParam("shipRoomId") Integer shipRoomId,
+                                 HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        session.setAttribute("roomId", roomId);
+        session.setAttribute("shipRoomNumber", shipRoomId);
+
+        return USER_CART_REDIRECT;
+    }
+
     private List<Room> setUpList(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Long cruiseId = Long.parseLong((String) session.getAttribute("selectedCruiseId"));
+        Long cruiseId = (Long) session.getAttribute("selectedCruiseId");
 
         List<Room> roomList = setUpPages(request, cruiseId);
+        setUpRoomList(request, roomList, cruiseId);
+
+        return roomList;
+    }
+
+    private List<Room> setUpList(HttpServletRequest request, Integer pageNumber) {
+        HttpSession session = request.getSession();
+        Long cruiseId = (Long) session.getAttribute("selectedCruiseId");
+
+        List<Room> roomList = setUpPages(request, cruiseId, pageNumber);
         setUpRoomList(request, roomList, cruiseId);
 
         return roomList;
@@ -106,15 +129,25 @@ public class RoomSelectionController {
     }
 
     private List<Room> setUpPages(HttpServletRequest request, Long cruiseId) {
-        String pageNumber = request.getParameter("page");
-        int page = (pageNumber != null && !pageNumber.equals("")) ? Integer.parseInt(pageNumber) : 0;
+        int currPage = 0;
 
-        Page<Room> roomList = roomService.getCruiseLoadInfo(cruiseId, page, ELEMENTS_ON_PAGE);
+        Page<Room> roomList = roomService.getCruiseLoadInfo(cruiseId, currPage, ELEMENTS_ON_PAGE);
 
-        request.setAttribute("currentPage", page);
+        request.setAttribute("currentPage", currPage + 1);
 
         request.setAttribute("pageNumber", getPageNumber(roomList));
-        request.setAttribute("countModifier", page * ELEMENTS_ON_PAGE);
+        request.setAttribute("countModifier", currPage * ELEMENTS_ON_PAGE);
+
+        return roomList.getContent();
+    }
+
+    private List<Room> setUpPages(HttpServletRequest request, Long cruiseId, Integer pageNumber) {
+        Page<Room> roomList = roomService.getCruiseLoadInfo(cruiseId, pageNumber, ELEMENTS_ON_PAGE);
+
+        request.setAttribute("currentPage", pageNumber + 1);
+
+        request.setAttribute("pageNumber", getPageNumber(roomList));
+        request.setAttribute("countModifier", pageNumber * ELEMENTS_ON_PAGE);
 
         return roomList.getContent();
     }

@@ -68,10 +68,14 @@
                     </tr>
                 </table>
 
-                <form method="post" style="margin-left: 100px;">
-                    <input type="submit" name="payForTicket" value="<spring:message code='cart.purchasing.accept'/>"/>
-                    <input type="submit" name="declinePayment" value="<spring:message code='cart.purchasing.decline'/>"/>
-                </form>
+                <div style="margin-bottom:25px;">
+                    <form action="${pageContext.request.contextPath}/user/cart/accept-payment" method="post" style="margin-left: 100px; display:inline;">
+                        <button type="submit" class="btn btn-success"><spring:message code='cart.purchasing.accept'/></button>
+                    </form>
+                    <form action="${pageContext.request.contextPath}/user/cart/decline-payment" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger"><spring:message code='cart.purchasing.decline'/></button>
+                    </form>
+                </div>
 
                 <p style="margin:0 30px; background:#EFEFEF;">
                     <spring:message code="cart.excursion.selected"/>:
@@ -87,7 +91,7 @@
                         <tbody>
                             <c:forEach var="excursion" items="${sessionCart.excursionList}">
                                 <tr>
-                                    <form method="get">
+                                    <form action="${pageContext.request.contextPath}/user/cart/remove-excursion" method="post">
                                         <td>${localeTourInfo[excursion.information]}</td>
                                         <td>
                                             <c:set var="HarborName" value="${excursion.harbor.country.name}.${excursion.harbor.name}"/>
@@ -97,7 +101,7 @@
                                         <td><fmt:formatNumber value="${excursion.price}" minFractionDigits="2" type="currency" currencySymbol="₴"/></td>
                                         <td>
                                             <input type="hidden" name="excursionId" value="${excursion.id}"/>
-                                            <input type="submit" name="removeExcursion" value="<spring:message code='cart.excursion.remove''/>"/>
+                                            <input type="submit" name="removeExcursion" value="<spring:message code='cart.excursion.remove'/>"/>
                                         </td>
                                     </form>
                                 </tr>
@@ -119,7 +123,7 @@
                         <tbody>
                             <c:forEach var="excursion" items="${excursionList}">
                                 <tr>
-                                    <form method="get">
+                                    <form action="${pageContext.request.contextPath}/user/cart/add-excursion" method="post">
                                         <td>${localeTourInfo[excursion.information]}</td>
                                         <td>
                                             <c:set var="HarborName" value="${excursion.harbor.country.name}.${excursion.harbor.name}"/>

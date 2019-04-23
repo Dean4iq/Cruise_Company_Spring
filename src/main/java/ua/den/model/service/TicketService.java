@@ -12,6 +12,10 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    public void insertTicketInDB(Ticket ticket) {
+        ticketRepository.save(ticket);
+    }
+
     public List<Ticket> getTicketsForCruise(Long cruiseId) {
         return ticketRepository.findAllByCruiseId(cruiseId);
     }

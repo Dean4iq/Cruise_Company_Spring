@@ -7,4 +7,8 @@ public class AlreadyReservedException extends Exception {
     public AlreadyReservedException(String message) {
         super(message);
     }
+
+    public AlreadyReservedException(Long message) {
+        super(Long.toString(message));
+    }
 }

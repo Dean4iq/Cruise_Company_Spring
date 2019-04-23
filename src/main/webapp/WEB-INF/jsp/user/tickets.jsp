@@ -40,7 +40,7 @@
                         </td>
                         <td>
                             <c:if test="${room.available}">
-                                <form method="get">
+                                <form action="${pageContext.request.contextPath}/user/tickets/submit-select" method="post">
                                     <input type="hidden" name="roomId" value="${room.id}"/>
                                     <input type="hidden" name="shipRoomId" value="${count}"/>
                                     <input type="submit" value="<spring:message code='tickets.select_ticket'/>"/>

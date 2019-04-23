@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component
 @SessionScope
-public class AdminSearchCommand implements Command {
+public class AdminSearchCommand {
     private static final Logger LOG = LogManager.getLogger(AdminSearchCommand.class);
     private static final String ADMIN_SEARCH_PAGE_JSP = "admin/search";
 
@@ -32,7 +32,6 @@ public class AdminSearchCommand implements Command {
      * @param request stores and provides user data to process and link to session and context
      * @return link to the search page
      */
-    @Override
     public String execute(HttpServletRequest request) {
         if (request.getParameter("searchSubmit") != null) {
             Long ticketId = Long.parseLong(request.getParameter("ticketId"));

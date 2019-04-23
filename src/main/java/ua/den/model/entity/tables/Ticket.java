@@ -143,6 +143,14 @@ public class Ticket implements Serializable {
         this.cruise = cruise;
     }
 
+    public Set<Excursion> getExcursions() {
+        return excursions;
+    }
+
+    public void setExcursions(Set<Excursion> excursions) {
+        this.excursions = excursions;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {
