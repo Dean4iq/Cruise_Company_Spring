@@ -26,4 +26,8 @@ public class CruiseService {
 
         return cruiseList;
     }
+
+    public List<Cruise> getAllCruises() {
+        return cruiseRepository.findAll();
+    }
 }
