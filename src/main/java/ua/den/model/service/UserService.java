@@ -41,4 +41,7 @@ public class UserService {
         throw new NotUniqueLoginException(login);
     }
 
+    public User updateUserData(User user) {
+        return userRepository.save(user);
+    }
 }

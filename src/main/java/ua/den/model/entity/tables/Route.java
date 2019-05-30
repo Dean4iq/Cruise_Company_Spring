@@ -1,5 +1,7 @@
 package ua.den.model.entity.tables;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -14,13 +16,17 @@ public class Route implements Serializable {
     @ManyToOne
     @MapsId("cruise_cr_id")
     @JoinColumn(name = "cruise_cr_id")
+    @JsonIgnore
     private Cruise cruise;
+
     @ManyToOne
     @MapsId("harbor_hb_id")
     @JoinColumn(name = "harbor_hb_id")
     private Harbor harbor;
+
     @Column(name = "arrival")
     private Timestamp arrival;
+
     @Column(name = "departure")
     private Timestamp departure;
 

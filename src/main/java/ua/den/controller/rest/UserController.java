@@ -5,9 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ua.den.model.entity.tables.Cruise;
 import ua.den.model.entity.tables.Ticket;
+import ua.den.model.entity.tables.User;
 import ua.den.model.service.CruiseService;
 import ua.den.model.service.TicketService;
+import ua.den.model.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -17,8 +20,10 @@ public class UserController {
     private TicketService ticketService;
     @Autowired
     private CruiseService cruiseService;
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("cruises")
+    @GetMapping(value = "cruises",produces = "application/json")
     public List<Cruise> getCruisesList() {
         return cruiseService.getAllCruises();
     }
@@ -35,7 +40,7 @@ public class UserController {
 
     @GetMapping("cruises/{cruise-id}/tickets/page/{page}")
     public Page<Ticket> getTicketsForCruisePageable(@PathVariable("cruise-id") Cruise cruise,
-                                            @PathVariable("page") Integer page) {
+                                                    @PathVariable("page") Integer page) {
         return ticketService.getPaginatedTicketListForCruise(cruise.getId(), page);
     }
 
@@ -49,8 +54,18 @@ public class UserController {
         return ticket;
     }
 
+    @GetMapping("/{login}/profile")
+    public User getUserData(@PathVariable User user) {
+        return user;
+    }
+
     @PostMapping("tickets")
-    public void createTicket(@ModelAttribute("ticket-data") Ticket ticket) {
+    public void createTicket(@RequestBody Ticket ticket) {
         ticketService.insertTicketInDB(ticket);
+    }
+
+    @PutMapping("/{login}/profile")
+    public void updateProfileData(@RequestBody User user) {
+        userService.updateUserData(user);
     }
 }

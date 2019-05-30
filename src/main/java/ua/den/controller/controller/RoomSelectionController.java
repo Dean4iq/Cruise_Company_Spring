@@ -19,8 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Controller
-@RequestMapping("user/tickets")
+/*@Controller
+@RequestMapping("user/tickets")*/
 public class RoomSelectionController {
     private static final String USER_TICKET_PAGE_JSP = "user/tickets";
     private static final String USER_CART_REDIRECT = "redirect:/user/cart";
@@ -36,7 +36,7 @@ public class RoomSelectionController {
     @Autowired
     private TicketService ticketService;
 
-    @GetMapping("")
+    //@GetMapping("")
     public String getPage(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
@@ -51,7 +51,7 @@ public class RoomSelectionController {
         return USER_TICKET_PAGE_JSP;
     }
 
-    @GetMapping("/page/{number}")
+    //@GetMapping("/page/{number}")
     public String getPageInfo(@PathVariable("number") Integer pageNumber,
                               HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -68,7 +68,7 @@ public class RoomSelectionController {
         return USER_TICKET_PAGE_JSP;
     }
 
-    @PostMapping("/submit-select")
+    //@PostMapping("/submit-select")
     public String processRequest(@Param("roomId") Long roomId,
                                  @RequestParam("shipRoomId") Integer shipRoomId,
                                  HttpServletRequest request) {

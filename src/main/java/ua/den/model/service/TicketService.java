@@ -24,7 +24,9 @@ public class TicketService {
     }
 
     public Page<Ticket> getPaginatedTicketListForCruise(Long cruiseId, Integer page) {
-        return ticketRepository.findByCruiseId(cruiseId, PageRequest.of(page, 10));
+        int actualPageForPageRequest = page - 1;
+
+        return ticketRepository.findByCruiseId(cruiseId, PageRequest.of(actualPageForPageRequest, 10));
     }
 
     public Ticket getTicketById(Long id) throws NoSuchIdException {
