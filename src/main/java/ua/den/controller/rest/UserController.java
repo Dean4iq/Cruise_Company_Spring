@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @GetMapping("/{login}/profile")
-    public User getUserData(@PathVariable User user) {
+    public User getUserData(@PathVariable("login") User user) {
         return user;
     }
 
