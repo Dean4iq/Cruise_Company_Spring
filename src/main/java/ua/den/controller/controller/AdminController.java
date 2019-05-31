@@ -10,14 +10,14 @@ import ua.den.model.entity.tables.Ticket;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
-/*
+
 @Controller
-@RequestMapping("/admin")*/
+@RequestMapping("/admin")
 public class AdminController {
     private static final Logger LOG = LogManager.getLogger(AdminController.class);
     private static final String ADMIN_HOMEPAGE_JSP = "admin/admin_homepage";
 
-    //@GetMapping("")
+    @GetMapping("")
     public String getHomePage() {
         LOG.trace("Execute()");
         return ADMIN_HOMEPAGE_JSP;

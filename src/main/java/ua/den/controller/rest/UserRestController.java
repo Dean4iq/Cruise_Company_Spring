@@ -10,12 +10,11 @@ import ua.den.model.service.CruiseService;
 import ua.den.model.service.TicketService;
 import ua.den.model.service.UserService;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
 @RequestMapping("user")
-public class UserController {
+public class UserRestController {
     @Autowired
     private TicketService ticketService;
     @Autowired
@@ -54,7 +53,7 @@ public class UserController {
         return ticket;
     }
 
-    @GetMapping("/{login}/profile")
+    @GetMapping("/profile/{login}")
     public User getUserData(@PathVariable("login") User user) {
         return user;
     }
@@ -64,7 +63,7 @@ public class UserController {
         ticketService.insertTicketInDB(ticket);
     }
 
-    @PutMapping("/{login}/profile")
+    @PutMapping("/profile/{login}")
     public void updateProfileData(@RequestBody User user) {
         userService.updateUserData(user);
     }
