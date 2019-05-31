@@ -18,9 +18,4 @@ public class UserController {
     public String getHomePage() {
         return USER_HOMEPAGE_JSP;
     }
-
-    @RequestMapping("/search")
-    public String getSearchPage() {
-        return USER_SEARCH_PAGE_JSP;
-    }
 }

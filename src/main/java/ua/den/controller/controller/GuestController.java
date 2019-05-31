@@ -41,7 +41,7 @@ public class GuestController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = {"", "/"})
+    @GetMapping(value = {"", "/"})
     public String setStartPage() {
         Set<String> roles = AuthorityUtils.authorityListToSet(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
 
@@ -54,7 +54,7 @@ public class GuestController {
         return "redirect:/login";
     }
 
-    @RequestMapping(value = "/login")
+    @GetMapping(value = "/login")
     public String setloginPage() {
         return LOGIN_PAGE_JSP;
     }

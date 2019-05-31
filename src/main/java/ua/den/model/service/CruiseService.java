@@ -17,12 +17,8 @@ public class CruiseService {
         return cruiseRepository.getOne(id);
     }
 
-    public List<Cruise> searchCruiseByCountry(String country) throws NoResultException {
+    public List<Cruise> searchCruiseByCountry(String country) {
         List<Cruise> cruiseList = cruiseRepository.getCruiseByCountry(country);
-
-        if (cruiseList.isEmpty()) {
-            throw new NoResultException();
-        }
 
         return cruiseList;
     }
