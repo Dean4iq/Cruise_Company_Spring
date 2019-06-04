@@ -61,7 +61,7 @@ public class UserRestController {
         return ticket;
     }
 
-    @GetMapping("user/profile")
+    @GetMapping("profile")
     public User getUserData(@PathVariable("login") User user) {
         return user;
     }
@@ -86,7 +86,7 @@ public class UserRestController {
         roomService.updateRoom(room);
     }
 
-    @PutMapping("user/profile")
+    @PutMapping("profile")
     public void updateProfileData(@RequestBody User user) {
         userService.updateUserData(user);
     }
