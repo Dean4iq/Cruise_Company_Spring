@@ -7,6 +7,7 @@ import ua.den.model.service.TicketService;
 
 import java.util.List;
 
+//REST controller for ROLE_ADMIN
 @RestController
 @RequestMapping("admin")
 public class AdminRestController {
