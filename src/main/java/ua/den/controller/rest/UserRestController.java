@@ -12,6 +12,7 @@ import ua.den.model.service.TicketService;
 import ua.den.model.service.UserService;
 import java.util.List;
 
+//REST controller for ROLE_USER
 @RestController
 @RequestMapping("user")
 public class UserRestController {
