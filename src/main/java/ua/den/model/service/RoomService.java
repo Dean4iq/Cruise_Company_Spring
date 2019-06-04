@@ -40,4 +40,8 @@ public class RoomService {
 
         return roomRepository.findByCruise(cruiseId, pageable);
     }
+
+    public Room updateRoom(Room room) {
+        return roomRepository.save(room);
+    }
 }

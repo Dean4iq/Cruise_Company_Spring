@@ -11,6 +11,7 @@ import ua.den.model.service.RoomService;
 import ua.den.model.service.TicketService;
 import ua.den.model.service.UserService;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.util.List;
 
 @RestController
@@ -43,13 +44,10 @@ public class UserRestController {
     }
 
     @GetMapping("cruises/{cruise-id}/places")
-    public Page<Room> getTicketsForCruise(@PathVariable("cruise-id") Cruise cruise) {
-        return roomService.getRoomListByCruise(cruise.getId(), 1);
-    }
-
-    @GetMapping("cruises/{cruise-id}/places/page/{page}")
     public Page<Room> getTicketsForCruisePageable(@PathVariable("cruise-id") Cruise cruise,
-                                                  @PathVariable("page") Integer page) {
+                                                  @RequestParam("page") Integer page) {
+        page = (page == null || page == 0) ? 1 : page;
+
         return roomService.getRoomListByCruise(cruise.getId(), page);
     }
 
@@ -63,7 +61,7 @@ public class UserRestController {
         return ticket;
     }
 
-    @GetMapping("/profile/{login}")
+    @GetMapping("user/profile")
     public User getUserData(@PathVariable("login") User user) {
         return user;
     }
@@ -73,7 +71,22 @@ public class UserRestController {
         ticketService.insertTicketInDB(ticket);
     }
 
-    @PutMapping("/profile/{login}")
+    @PostMapping("cruises")
+    public void createCruise(@RequestBody Cruise cruise) {
+        cruiseService.createCruise(cruise);
+    }
+
+    @PutMapping("cruises/{cruise-id}")
+    public void updateCruise(@RequestBody Cruise cruise) {
+        cruiseService.updateCruise(cruise);
+    }
+
+    @PutMapping("cruises/{cruise-id}/places/{id}")
+    public void updatePlaceData(@RequestBody Room room) {
+        roomService.updateRoom(room);
+    }
+
+    @PutMapping("user/profile")
     public void updateProfileData(@RequestBody User user) {
         userService.updateUserData(user);
     }

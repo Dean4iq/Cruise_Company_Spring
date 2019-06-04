@@ -26,4 +26,12 @@ public class CruiseService {
     public List<Cruise> getAllCruises() {
         return cruiseRepository.findAll();
     }
+
+    public Cruise createCruise(Cruise cruise) {
+        return cruiseRepository.save(cruise);
+    }
+
+    public Cruise updateCruise(Cruise cruise) {
+        return cruiseRepository.save(cruise);
+    }
 }
