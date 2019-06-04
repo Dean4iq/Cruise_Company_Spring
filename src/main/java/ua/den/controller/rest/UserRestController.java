@@ -2,16 +2,14 @@ package ua.den.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ua.den.model.entity.tables.*;
-import ua.den.model.exception.NoResultException;
 import ua.den.model.repository.HarborRepository;
 import ua.den.model.service.CruiseService;
 import ua.den.model.service.RoomService;
 import ua.den.model.service.TicketService;
 import ua.den.model.service.UserService;
-
-import java.lang.management.PlatformLoggingMXBean;
 import java.util.List;
 
 @RestController
@@ -45,7 +43,7 @@ public class UserRestController {
 
     @GetMapping("cruises/{cruise-id}/places")
     public Page<Room> getTicketsForCruisePageable(@PathVariable("cruise-id") Cruise cruise,
-                                                  @RequestParam("page") Integer page) {
+                                                  @Nullable @RequestParam("page") Integer page) {
         page = (page == null || page == 0) ? 1 : page;
 
         return roomService.getRoomListByCruise(cruise.getId(), page);
@@ -62,7 +60,7 @@ public class UserRestController {
     }
 
     @GetMapping("profile")
-    public User getUserData(@PathVariable("login") User user) {
+    public User getUserData(@RequestParam("login") User user) {
         return user;
     }
 
